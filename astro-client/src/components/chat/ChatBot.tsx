@@ -1,4 +1,5 @@
-import { createSignal, createEffect, For, Show } from "solid-js";
+/** @jsxImportSource solid-js */
+import { createSignal, createEffect, For, Show, type Accessor } from "solid-js";
 
 interface Message {
   role: "user" | "assistant";
