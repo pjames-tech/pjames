@@ -1,0 +1,107 @@
+---
+import "../styles/global.css";
+import ThreeHero from "../components/ui/ThreeHero.jsx";
+import ThemeToggle from "../components/ui/ThemeToggle.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { 
+  title = "P. James | AI Brand Architect",
+  description = "AI Systems Architect & Brand Strategist based in Ibadan. Identity systems, landing pages, and revenue automation."
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <!-- Fonts: Space Grotesk (Display) + Poppins (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/hero-ai.png" />
+    
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    
+    <!-- Theme Init (Prevent FOUC) -->
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return 'dark';
+      })();
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
+  </head>
+  <body class="bg-bg text-text transition-colors duration-300">
+    <!-- Global 3D Background -->
+    <div style="position: fixed; inset: 0; z-index: -1;">
+      <ThreeHero client:only="react" />
+    </div>
+    
+    <ThemeToggle />
+    
+    <slot />
+    <script>
+      import Lenis from 'lenis';
+
+      const initLenis = () => {
+        const lenis = new Lenis({
+          lerp: 0.1,
+          duration: 1.2,
+          smoothWheel: true,
+        });
+
+        function raf(time: number) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        // Expose for other components
+        (window as any).lenis = lenis;
+      };
+
+      // Init on load and Astro navigation
+      initLenis();
+      document.addEventListener('astro:after-swap', initLenis);
+
+      // Global Scroll Reveal
+      const initReveal = () => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal-visible');
+              observer.unobserve(entry.target); // Run once
+            }
+          });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.reveal-fx').forEach((el) => observer.observe(el));
+      };
+
+      document.addEventListener('DOMContentLoaded', initReveal);
+      document.addEventListener('astro:page-load', initReveal);
+    </script>
+  </body>
+</html>
+

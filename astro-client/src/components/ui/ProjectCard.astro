@@ -1,0 +1,96 @@
+---
+// ProjectCard UI component - Solutions Gallery style with technical badges
+interface Props {
+  title: string;
+  category: string;
+  year: string;
+  badge?: string;
+  image: string;
+  description: string;
+  tools: string[];
+  details: string;
+  gallery: string[];
+  link: string;
+}
+
+const { title, category, year, badge = "CONCEPT", image, description, tools, details, gallery, link } = Astro.props;
+---
+
+<div
+  class="project-card group relative block aspect-[4/5] overflow-hidden rounded-[var(--radius-lg)] bg-panel border border-[rgb(var(--border)/0.1)] hover:border-[rgb(var(--accent)/0.5)] transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl"
+  data-title={title}
+  data-category={`${year} • ${category}`}
+  data-image={image}
+  data-tools={tools.join(",")}
+  data-gallery={gallery.join(",")}
+  data-details={details}
+  data-link={link}
+  tabindex="0"
+  role="button"
+  aria-label={`View ${title} project details`}
+>
+  <!-- Image with zoom effect -->
+  <div class="absolute inset-0 overflow-hidden">
+    <img
+      src={image}
+      alt={title}
+      class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+      loading="lazy"
+    />
+  </div>
+  
+  <!-- Gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-t from-[rgb(var(--bg))] via-[rgb(var(--bg)/0.4)] to-transparent z-10"></div>
+  
+  <!-- Technical Badge -->
+  <div class="absolute top-4 left-4 z-20">
+    <span class="inline-flex items-center gap-1 px-2 py-1 rounded border border-[rgb(var(--border)/0.2)] bg-[rgb(var(--panel)/0.9)] backdrop-blur-sm">
+      <span class="w-1.5 h-1.5 rounded-full bg-[rgb(var(--accent))] animate-pulse"></span>
+      <span class="font-mono text-[10px] uppercase tracking-wider text-muted">
+        [ {badge} ]
+      </span>
+    </span>
+  </div>
+  
+  <!-- View indicator -->
+  <div class="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <div class="p-2 rounded-full bg-[rgb(var(--accent))] text-white shadow-lg">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M15 3h6v6M10 14L21 3"/>
+      </svg>
+    </div>
+  </div>
+  
+  <!-- Content -->
+  <div class="absolute bottom-0 left-0 right-0 p-6 z-20">
+    <!-- Category Tag -->
+    <p class="text-[10px] uppercase tracking-[0.2em] text-[rgb(var(--accent))] font-bold mb-2">
+      {category}
+    </p>
+    
+    <!-- Title -->
+    <h3 class="font-display font-bold text-xl text-text mb-2 group-hover:text-[rgb(var(--accent))] transition-colors">
+      {title}
+    </h3>
+    
+    <!-- Description -->
+    <p class="text-sm text-muted leading-relaxed line-clamp-2">
+      {description}
+    </p>
+  </div>
+</div>
+
+<style>
+  .project-card:focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+  }
+  
+  /* Line clamp for description */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

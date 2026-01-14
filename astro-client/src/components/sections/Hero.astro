@@ -1,0 +1,346 @@
+---
+// Hero section - Refactored for proper alignment and clean CSS
+interface FeatureCard {
+  title: string;
+  description: string;
+}
+
+const features: FeatureCard[] = [
+  { title: "Authority Command", description: "Position yourself as the high-ticket prize." },
+  { title: "Velocity Pipelines", description: "Systems that capture, qualify, and convert leads instantly." },
+  { title: "Zero-Touch Closing", description: "AI infrastructure that nurtures and sells 24/7." },
+];
+
+import ThreeHero from "../ui/ThreeHero.jsx";
+---
+
+<header id="top" class="hero-section">
+  <!-- Background Image - Heavily Faded -->
+  <!-- Background Image - Heavily Faded -->
+  <!-- Overlays removed for seamless blend -->
+  <div class="background-layer hidden"></div>
+
+  <!-- Main Grid Container -->
+  <div class="container-fluid hero-grid">
+    
+    <!-- Left Column: Content -->
+    <div class="hero-content">
+      <!-- Status Badge -->
+      <div class="status-badge">
+        <span class="status-dot animate-pulse"></span>
+        <span class="status-text">
+          AI Brand Architect • Available
+        </span>
+      </div>
+      
+      <!-- Headline -->
+      <h1 class="hero-headline">
+        Stop Building Websites.
+        <br />
+        <span class="text-accent architect-glow">Architect a Revenue Engine.</span>
+      </h1>
+      
+      <!-- Description -->
+      <p class="hero-description">
+        Deploy an AI-driven brand architecture that runs on autopilot. From authority systems to automated pipelines—turn traffic into revenue while you sleep.
+      </p>
+      
+      <!-- CTAs -->
+      <div class="hero-actions">
+        <a
+          href="#services"
+          class="btn-primary-custom group"
+        >
+          <span class="relative z-10">Build My Engine</span>
+          <div class="btn-hover-overlay"></div>
+        </a>
+        <a
+          href="#work"
+          class="btn-secondary-custom"
+        >
+          See The System
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+    
+    <!-- Right Column: Feature Cards -->
+    <div class="hero-features">
+      {features.map((feature) => (
+        <div class="feature-card group">
+          <h3 class="feature-title group-hover:text-accent">
+            {feature.title}
+          </h3>
+          <p class="feature-desc">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Base Layout */
+  .hero-section {
+    position: relative;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-x: hidden;
+    padding-block: 2rem 4rem;
+  }
+
+  /* Background */
+  .background-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-bg-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+  }
+
+  .bg-radial {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgb(var(--bg)) 85%);
+  }
+
+  .bg-fade-bottom {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(var(--bg)) 0%, transparent 30%);
+  }
+
+  /* Grid Layout (Aligns with Global Container) */
+  .hero-grid {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    gap: 3rem; /* Tighter gap */
+    align-items: center;
+    grid-template-columns: 1.2fr 0.8fr; /* More space for text, compact cards */
+    max-width: 1150px; /* Tighter container to prevent 'scattered' look */
+    margin-inline: auto;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .hero-features {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Closer cards */
+    max-width: 420px; /* Constrain card width */
+    width: 100%;
+    margin-left: auto; /*Align to right side of its column */
+  }
+
+  /* Components */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgb(var(--border) / 0.15);
+    background: rgb(var(--panel) / 0.8);
+    padding: 0.5rem 1.25rem;
+    backdrop-filter: blur(16px);
+    width: fit-content;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .status-dot {
+    height: 0.5rem;
+    width: 0.5rem;
+    border-radius: 9999px;
+    background-color: #2EFF2E;
+    box-shadow: 0 0 10px rgba(46, 255, 46, 0.5);
+  }
+
+  .status-text {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(var(--text),0.8);
+    font-weight: 500;
+  }
+
+  .hero-headline {
+    font-weight: 600;
+    font-size: clamp(2rem, 3.5vw + 1rem, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: rgb(var(--text));
+  }
+
+  .hero-description {
+    font-size: clamp(0.95rem, 0.5vw + 0.6rem, 1.1rem);
+    color: rgba(var(--text),0.7);
+    max-width: 46ch;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* Buttons */
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .btn-primary-custom {
+    position: relative;
+    overflow: hidden;
+    border-radius: 9999px;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    background-color: rgb(var(--accent));
+    color: black;
+    transition: all 0.3s;
+  }
+
+  .btn-primary-custom:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgb(var(--accent) / 0.6);
+  }
+
+  .btn-hover-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(var(--text),0.2);
+    transform: translateY(100%);
+    transition: transform 0.3s;
+  }
+
+  .group:hover .btn-hover-overlay {
+    transform: translateY(0);
+  }
+
+  .btn-secondary-custom {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgb(var(--text));
+    border: 1px solid rgb(var(--border) / 0.2);
+    background: rgb(var(--panel) / 0.8);
+    transition: all 0.2s ease-out;
+    text-decoration: none;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-secondary-custom:hover {
+    background: rgb(var(--panel));
+    border-color: rgb(var(--accent) / 0.5);
+    color: rgb(var(--accent));
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Cards */
+  .feature-card {
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-md, 12px);
+    background: rgb(var(--panel) / 0.8);
+    border: 1px solid rgb(var(--border) / 0.12);
+    backdrop-filter: blur(16px);
+    transition: all 0.2s ease-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .feature-card:hover {
+    border-color: rgb(var(--accent) / 0.4);
+    background: rgb(var(--panel));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .feature-title {
+    font-weight: 500;
+    font-size: 1rem; /* Smaller title */
+    color: rgb(var(--text));
+    transition: color 0.3s;
+    margin-bottom: 0.3rem;
+  }
+
+  .feature-desc {
+    font-size: 0.85rem; /* Smaller desc */
+    color: rgba(var(--text),0.6);
+    line-height: 1.4;
+    font-weight: 300;
+  }
+
+  /* Responsive Mobile */
+  @media (max-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 3rem;
+    }
+    .hero-content {
+      align-items: center;
+      text-align: center;
+    }
+    .hero-actions {
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  // Smooth scroll to section center
+  const initSmoothScroll = () => {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+        
+        const target = document.querySelector(href);
+        if (!target) return;
+        
+        e.preventDefault();
+        
+        // Calculate position to scroll to CENTER of viewport
+        const targetRect = target.getBoundingClientRect();
+        const targetHeight = targetRect.height;
+        const viewportHeight = window.innerHeight;
+        
+        // Always center the target, even if it's tall
+        const centerOffset = (viewportHeight - targetHeight) / 2;
+        const scrollPosition = target.offsetTop - centerOffset;
+        
+        if ((window as any).lenis) {
+          (window as any).lenis.scrollTo(Math.max(0, scrollPosition), {
+            duration: 1.5,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential easing
+          });
+        } else {
+          window.scrollTo({
+            top: Math.max(0, scrollPosition),
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', initSmoothScroll);
+  document.addEventListener('astro:page-load', initSmoothScroll);
+</script>

@@ -1,0 +1,133 @@
+---
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+const navLinks: NavLink[] = [
+  { href: "#services", label: "Services" },
+  { href: "#work", label: "Systems" },
+  { href: "#infrastructure", label: "Infrastructure" },
+  { href: "#about", label: "About" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<!-- Fixed Navbar (ScrollNav) -->
+<div
+  id="nav-container"
+  class="fixed left-1/2 top-[var(--space-2)] z-50 -translate-x-1/2 transition duration-300 opacity-0 -translate-y-3 pointer-events-none"
+  aria-hidden="true"
+>
+  <nav class="glass soft-border-strong shadow-glow rounded-pill px-2 py-2 flex items-center gap-2">
+    <a href="#top" class="flex-shrink-0 ml-3 outline-none">
+      <img
+        src="/logo-new.png"
+        alt="P. JAMES"
+        class="h-10 w-auto object-contain"
+      />
+    </a>
+    <span class="h-5 w-px bg-white/10 mx-1 hidden md:block"></span>
+
+    <!-- Desktop Nav Links -->
+    <ul class="hidden md:flex items-center gap-1 overflow-x-auto no-scrollbar max-w-[min(60vw,40rem)] pr-1">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class="nav-link relative rounded-pill px-3 py-2 text-[var(--step--1)] transition-all duration-300 text-muted hover:text-text hover:bg-white/5"
+          >
+            <span class="nav-bg absolute inset-0 -z-10 rounded-pill bg-[rgb(var(--accent))/0.18] soft-border hidden transition-all"></span>
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Hamburger Button (Mobile) -->
+    <button
+      id="nav-toggle"
+      class="md:hidden p-2 rounded-full hover:bg-white/10 transition ml-auto mr-1"
+      aria-label="Open menu"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M3 12h18M3 6h18M3 18h18" />
+      </svg>
+    </button>
+  </nav>
+</div>
+
+<script>
+  // Navbar scroll show/hide + scrollspy
+  const initNav = () => {
+    const navContainer = document.getElementById("nav-container");
+    const navLinks = document.querySelectorAll<HTMLAnchorElement>(".nav-link");
+    const sections = document.querySelectorAll("section[id], header[id], footer[id]");
+    
+    if (!navContainer) return;
+    
+    let lastScroll = 0;
+    const heroHeight = window.innerHeight;
+
+    // Show/hide navbar on scroll
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      const isVisible = currentScroll > heroHeight * 0.5;
+
+      navContainer.classList.toggle("opacity-0", !isVisible);
+      navContainer.classList.toggle("-translate-y-3", !isVisible);
+      navContainer.classList.toggle("pointer-events-none", !isVisible);
+      navContainer.setAttribute("aria-hidden", String(!isVisible));
+
+      lastScroll = currentScroll;
+    };
+
+    // Scrollspy - highlight active section
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0px -70% 0px",
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navLinks.forEach((link) => {
+            const bg = link.querySelector(".nav-bg");
+            const isActive = link.getAttribute("href") === `#${id}`;
+            
+            link.classList.toggle("text-text", isActive);
+            link.classList.toggle("text-muted", !isActive);
+            bg?.classList.toggle("hidden", !isActive);
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((section) => observer.observe(section));
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
+  };
+
+  // Run on page load
+  document.addEventListener("DOMContentLoaded", initNav);
+  
+  // Re-run on Astro page transitions
+  document.addEventListener("astro:page-load", initNav);
+</script>
+
+<style>
+  /* Scoped styles for navbar */
+  .nav-link.text-text .nav-bg {
+    display: block;
+  }
+</style>

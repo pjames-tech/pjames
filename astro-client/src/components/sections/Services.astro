@@ -1,0 +1,65 @@
+---
+// Services section with numbered service items
+interface ServiceItem {
+  number: string;
+  title: string;
+  description: string;
+}
+
+const services: ServiceItem[] = [
+  { number: "01", title: "Brand Strategy", description: "Identity systems that position you as the authority." },
+  { number: "02", title: "Conversion UI", description: "Interfaces designed psychologically to convert traffic." },
+  { number: "03", title: "AI Automation", description: "Smart pipelines that nurture leads while you sleep." },
+];
+---
+
+<section id="services" class="py-[var(--space-5)] relative">
+  <!-- Background glow -->
+  <div class="absolute inset-[-30%] bg-[radial-gradient(closest-side,rgb(var(--accent)/0.24),transparent_70%),radial-gradient(closest-side,rgb(var(--ring)/0.10),transparent_70%)] blur-[40px] pointer-events-none"></div>
+  
+  <div class="container-fluid relative z-10">
+    <div class="mb-12">
+      <p class="text-[var(--step--1)] uppercase tracking-[0.18em] text-[rgb(var(--accent))] font-medium mb-3">
+        AI Brand Architect
+      </p>
+      <h2 class="font-display font-bold text-[var(--step-3)] leading-[1.1] max-w-[20ch]">
+        Architecture, NOT Aesthetics.
+      </h2>
+    </div>
+
+    <div id="packages" class="rounded-[2rem] bg-[rgb(var(--panel))] soft-border p-8 lg:p-12 shadow-glow relative overflow-hidden group">
+      <div class="relative z-10 max-w-4xl mx-auto text-center">
+        <h3 class="font-display font-bold text-[var(--step-3)] leading-tight mb-8">
+          As an AI Brand Architect, <br />
+          I build <span class="text-[rgb(var(--accent))] architect-glow">revenue ecosystems</span>.
+        </h3>
+        
+        <div class="text-left grid gap-4 mb-10 max-w-2xl mx-auto">
+          {services.map((service) => (
+            <div class="flex items-center gap-4 rounded-xl bg-panel soft-border shadow-sm p-4 hover:border-text/10 transition">
+              <div class="p-2 rounded-lg bg-[rgb(var(--accent)/0.1)] text-[rgb(var(--accent))]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-display font-bold text-text text-lg leading-none">
+                  {service.title}
+                </h4>
+                <p class="text-sm text-muted mt-1">{service.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <button
+          id="pricing-btn"
+          class="inline-flex items-center gap-2 rounded-full px-8 py-4 text-[var(--step-0)] font-bold btn-primary text-[rgb(var(--bg))] shadow-[0_0_20px_rgb(var(--accent)/0.3)] hover:scale-105 hover:shadow-[0_0_40px_rgb(var(--accent)/0.6)] transition duration-300"
+        >
+          View Pricing & Packages
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

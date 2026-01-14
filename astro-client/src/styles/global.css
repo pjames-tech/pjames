@@ -1,0 +1,316 @@
+/* 
+  P. James Design System v2.0
+  High-Performance Standards: Space Grotesk + Poppins, Tech Slate Palette
+*/
+
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Typography */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  /* Colors: Tech Slate Dark Mode */
+  --bg: 11 15 25; /* #0B0F19 - Deep void */
+  --panel: 17 24 39; /* #111827 - Elevated surface */
+  --panel2: 15 23 42; /* #0F172A - Secondary surface */
+
+  --text: 248 250 252; /* #F8FAFC - Crisp white */
+  --muted: 148 163 184; /* #94A3B8 - Slate 400 */
+
+  /* Accent: Signal Orange */
+  --accent: 255 115 0; /* #ff7300 */
+  --accent2: 255 140 40; /* Warmer highlight */
+  --ring: 255 160 80;
+
+  /* Borders (RGB for theme-aware opacity) */
+  --border: 255 255 255; /* White base for dark mode */
+
+  /* Radius Scale */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Fluid Type Scale (1.25 ratio) */
+  --step--2: clamp(0.72rem, 0.69rem + 0.14vw, 0.8rem);
+  --step--1: clamp(0.9rem, 0.86rem + 0.18vw, 1rem);
+  --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --step-1: clamp(1.125rem, 1.06rem + 0.33vw, 1.25rem);
+  --step-2: clamp(1.406rem, 1.3rem + 0.53vw, 1.75rem);
+  --step-3: clamp(1.758rem, 1.56rem + 1vw, 2.5rem);
+  --step-4: clamp(2.197rem, 1.88rem + 1.6vw, 3.5rem);
+
+  /* Fluid Spacing (8px baseline) */
+  --space-1: clamp(0.5rem, 0.45rem + 0.25vw, 0.75rem); /* 8-12px */
+  --space-2: clamp(1rem, 0.9rem + 0.5vw, 1.5rem); /* 16-24px */
+  --space-3: clamp(1.5rem, 1.35rem + 0.75vw, 2rem); /* 24-32px */
+  --space-4: clamp(2rem, 1.8rem + 1vw, 3rem); /* 32-48px */
+  --space-5: clamp(4rem, 3.5rem + 2.5vw, 7rem); /* 64-112px */
+
+  /* Container */
+  --container: clamp(20rem, 90vw, 72rem);
+
+  color-scheme: dark;
+}
+
+/* Light Mode Overrides */
+[data-theme="light"] {
+  --bg: 248 250 252; /* #F8FAFC - Crisp off-white */
+  --panel: 255 255 255; /* Pure white cards */
+  --panel2: 241 245 249; /* #F1F5F9 - Slate 100 */
+
+  --text: 15 23 42; /* #0F172A - Slate 900 */
+  --muted: 71 85 105; /* #475569 - Slate 600 */
+
+  /* Darker orange for light mode contrast */
+  --accent: 234 88 12; /* #EA580C - Orange 600 */
+  --accent2: 249 115 22;
+  --ring: 251 146 60;
+
+  /* Border base for light mode */
+  --border: 0 0 0; /* Black base */
+
+  color-scheme: light;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html {
+  font-family: var(--font-body);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.35);
+}
+
+* {
+  scroll-margin-top: 6rem;
+}
+
+/* Focus Visible for Accessibility */
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LAYOUT UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.container-fluid {
+  width: min(var(--container), 100%);
+  margin-inline: auto;
+  padding-inline: var(--space-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BORDER & SURFACE UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.soft-border {
+  border: 1px solid rgb(var(--border) / 0.08);
+}
+
+[data-theme="dark"] .soft-border,
+:root:not([data-theme="light"]) .soft-border {
+  border: 1px solid rgb(var(--border) / 0.1);
+}
+
+.soft-border-strong {
+  border: 1px solid rgb(var(--border) / 0.12);
+}
+
+[data-theme="dark"] .soft-border-strong,
+:root:not([data-theme="light"]) .soft-border-strong {
+  border: 1px solid rgb(var(--border) / 0.14);
+}
+
+.glass {
+  background: rgb(var(--panel) / 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTON SYSTEM
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.btn-primary {
+  background: linear-gradient(135deg, rgb(var(--accent)), rgb(var(--accent2)));
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  transition: all 0.2s ease-out;
+  box-shadow: 0 0 0 1px rgb(var(--ring) / 0.35),
+    0 4px 16px rgb(var(--accent) / 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgb(var(--ring) / 0.5),
+    0 8px 24px rgb(var(--accent) / 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  background: rgb(var(--text) / 0.04);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease-out;
+}
+
+.btn-ghost:hover {
+  background: rgb(var(--text) / 0.08);
+}
+
+.rounded-pill {
+  border-radius: var(--radius-full);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 40px rgb(var(--accent) / 0.15);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEMANTIC COLOR UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.bg-bg {
+  background: rgb(var(--bg));
+}
+.bg-panel {
+  background: rgb(var(--panel));
+}
+.bg-panel2 {
+  background: rgb(var(--panel2));
+}
+.text-text {
+  color: rgb(var(--text));
+}
+.text-muted {
+  color: rgb(var(--muted));
+}
+.text-accent {
+  color: rgb(var(--accent));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLLBAR & MODAL
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+}
+
+dialog[open] {
+  animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes orange-glow-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(255, 115, 0, 0.4));
+    opacity: 0.9;
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(255, 115, 0, 0.8));
+    opacity: 1;
+  }
+}
+
+.architect-glow {
+  animation: orange-glow-pulse 4s ease-in-out infinite;
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 30px rgba(255, 115, 0, 0.4);
+}
+
+/* Scroll Reveal */
+.reveal-fx {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-100 {
+  transition-delay: 100ms;
+}
+.delay-200 {
+  transition-delay: 200ms;
+}
+.delay-300 {
+  transition-delay: 300ms;
+}
+.delay-400 {
+  transition-delay: 400ms;
+}

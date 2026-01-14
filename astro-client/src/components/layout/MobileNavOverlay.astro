@@ -1,0 +1,91 @@
+---
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+const navLinks: NavLink[] = [
+  { href: "#services", label: "Services" },
+  { href: "#work", label: "Systems" },
+  { href: "#infrastructure", label: "Infrastructure" },
+  { href: "#about", label: "About" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<!-- Mobile Nav Overlay -->
+<div
+  id="mobile-nav"
+  class="fixed inset-0 z-[60] bg-bg/95 backdrop-blur-lg flex flex-col items-center justify-center gap-6 transition-all duration-300 opacity-0 pointer-events-none"
+>
+  <button
+    id="mobile-nav-close"
+    class="absolute top-6 right-6 p-2 rounded-full hover:bg-text/10 transition"
+    aria-label="Close menu"
+  >
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path d="M18 6L6 18M6 6l12 12" />
+    </svg>
+  </button>
+  
+  {navLinks.map((link) => (
+    <a
+      href={link.href}
+      class="mobile-nav-link text-2xl font-semibold hover:text-[rgb(var(--accent))] transition"
+    >
+      {link.label}
+    </a>
+  ))}
+</div>
+
+<script>
+  const initMobileNav = () => {
+    const toggle = document.getElementById("nav-toggle");
+    const mobileNav = document.getElementById("mobile-nav");
+    const closeBtn = document.getElementById("mobile-nav-close");
+    const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+
+    if (!toggle || !mobileNav || !closeBtn) return;
+
+    const openMobileNav = () => {
+      mobileNav.classList.remove("opacity-0", "pointer-events-none");
+      document.body.style.overflow = "hidden";
+      // Hide theme toggle to prevent overlap
+      const themeToggle = document.getElementById("theme-toggle");
+      if (themeToggle) themeToggle.style.opacity = "0";
+    };
+
+    const closeMobileNav = () => {
+      mobileNav.classList.add("opacity-0", "pointer-events-none");
+      document.body.style.overflow = "";
+      // Show theme toggle again
+      const themeToggle = document.getElementById("theme-toggle");
+      if (themeToggle) themeToggle.style.opacity = "1";
+    };
+
+    toggle.addEventListener("click", openMobileNav);
+    closeBtn.addEventListener("click", closeMobileNav);
+    
+    // Close on link click
+    mobileLinks.forEach((link) => {
+      link.addEventListener("click", closeMobileNav);
+    });
+
+    // Close on escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !mobileNav.classList.contains("opacity-0")) {
+        closeMobileNav();
+      }
+    });
+  };
+
+  document.addEventListener("DOMContentLoaded", initMobileNav);
+  document.addEventListener("astro:page-load", initMobileNav);
+</script>

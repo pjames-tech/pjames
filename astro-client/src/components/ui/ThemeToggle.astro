@@ -1,0 +1,89 @@
+---
+// ThemeToggle.astro - Toggle switch design
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  class="fixed top-6 right-6 z-50 flex h-9 w-16 items-center rounded-full bg-panel border border-text/20 p-1 shadow-lg backdrop-blur-md transition-colors hover:bg-panel/80 isolate"
+  aria-label="Toggle theme"
+  aria-pressed="false"
+>
+  <!-- Screen reader text -->
+  <span class="sr-only">Toggle theme</span>
+
+  <!-- Switch Track / Indicator -->
+  <div 
+    id="toggle-indicator"
+    class="pointer-events-none absolute h-7 w-7 rounded-full bg-[rgb(var(--accent))] shadow-sm transition-transform duration-300 ease-spring"
+  ></div>
+
+  <!-- Icons Container -->
+  <div class="relative z-10 flex w-full justify-between px-1">
+    <!-- Sun Icon -->
+    <svg 
+      class="h-5 w-5 text-yellow-300 transition-opacity duration-300" 
+      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+    >
+      <circle cx="12" cy="12" r="5"></circle>
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+    </svg>
+
+    <!-- Moon Icon -->
+    <svg 
+      class="h-5 w-5 text-text transition-opacity duration-300" 
+      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </div>
+</button>
+
+<style>
+  /* Custom easing for snappy toggle feel */
+  .ease-spring {
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  /* Light mode state: Indicator on left */
+  :global([data-theme="light"]) #toggle-indicator {
+    transform: translateX(0);
+  }
+  
+  /* Dark mode state: Indicator on right (36px translation for w-16 container - padding) */
+  :global([data-theme="dark"]) #toggle-indicator {
+    transform: translateX(100%);
+  }
+</style>
+
+<script>
+  const initThemeToggle = () => {
+    const toggleBtn = document.getElementById("theme-toggle");
+    if (!toggleBtn) return;
+
+    const handleToggle = () => {
+      const element = document.documentElement;
+      const current = element.getAttribute("data-theme");
+      const next = current === "light" ? "dark" : "light";
+      
+      element.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      
+      // Update aria-pressed for accessibility
+      toggleBtn.setAttribute("aria-pressed", String(next === "dark"));
+    };
+
+    // Remove existing listeners to avoid duplicates if re-running
+    const newBtn = toggleBtn.cloneNode(true);
+    toggleBtn.parentNode?.replaceChild(newBtn, toggleBtn);
+    newBtn.addEventListener("click", handleToggle);
+
+    // Initial State Check
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+    (newBtn as HTMLElement).setAttribute("aria-pressed", String(currentTheme === "dark"));
+  };
+
+  // Run on load and view transitions
+  document.addEventListener("DOMContentLoaded", initThemeToggle);
+  document.addEventListener("astro:page-load", initThemeToggle);
+</script>
