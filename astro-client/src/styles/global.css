@@ -163,9 +163,7 @@ h6,
 }
 
 .glass {
-  background: rgb(var(--panel) / 0.8);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgb(var(--panel) / 0.9);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -245,8 +243,7 @@ h6,
 }
 
 dialog::backdrop {
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.92);
 }
 
 dialog[open] {

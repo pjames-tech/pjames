@@ -2,19 +2,28 @@
 // Brief Form for "Start a Project" submissions
 ---
 
-<div class="rounded-[1.25rem] bg-panel soft-border shadow-lg p-[var(--space-3)] backdrop-blur-sm">
+<div class="rounded-[1.25rem] bg-panel soft-border shadow-lg p-[var(--space-3)]">
   <h3 class="font-display font-bold text-[var(--step-1)] mb-4">
     Start a Project
   </h3>
   
-  <div id="brief-notice" class="hidden mb-4 p-4 rounded-xl text-sm"></div>
+  <!-- Order Summary Badge (shown when coming from pricing) -->
+  <div class="order-summary hidden p-3 mb-4 text-sm text-[rgb(var(--accent))] bg-[rgb(var(--accent)/0.1)] border border-[rgb(var(--accent)/0.2)] rounded-lg">
+    <span class="font-medium">Selected:</span> <span class="summary-text"></span>
+  </div>
   
-  <form id="brief-form" class="space-y-4">
+  <div class="brief-notice hidden mb-4 p-4 rounded-xl text-sm"></div>
+  
+  <form class="brief-form-logic space-y-4">
+    <!-- Hidden field for estimated price -->
+    <input type="hidden" name="estimated_price" class="hidden-price" />
+    
     <div class="grid grid-cols-2 gap-3">
       <label class="block">
         <span class="text-xs uppercase tracking-widest text-muted">Your name</span>
         <input
           name="name"
+          autocomplete="name"
           class="mt-2 w-full rounded-pill bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow"
           required
         />
@@ -24,6 +33,7 @@
         <input
           name="email"
           type="email"
+          autocomplete="email"
           class="mt-2 w-full rounded-pill bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow"
           required
         />
@@ -34,6 +44,7 @@
       <span class="text-xs uppercase tracking-widest text-muted">Business / Niche</span>
       <input
         name="business"
+        autocomplete="organization"
         placeholder="e.g. Real Estate, Coaching, SaaS"
         class="mt-2 w-full rounded-pill bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow"
       />
@@ -43,8 +54,9 @@
       <span class="text-xs uppercase tracking-widest text-muted">What do you need?</span>
       <input
         name="package"
+        autocomplete="off"
         placeholder="Brand / Web / Bot"
-        class="mt-2 w-full rounded-pill bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow"
+        class="project-need-input mt-2 w-full rounded-pill bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow read-only:bg-[rgb(var(--accent)/0.1)] read-only:text-[rgb(var(--accent))]"
       />
     </label>
     
@@ -68,64 +80,70 @@
 </div>
 
 <script>
-  const initBriefForm = () => {
-    const form = document.getElementById("brief-form") as HTMLFormElement;
-    const notice = document.getElementById("brief-notice");
+  const initBriefForms = () => {
+    const forms = document.querySelectorAll(".brief-form-logic");
 
-    if (!form || !notice) return;
+    forms.forEach((formElement) => {
+      const form = formElement as HTMLFormElement;
+      // Find the sibling notice div (it's in the parent container, previous sibling of form usually)
+      const notice = form.parentElement?.querySelector(".brief-notice") as HTMLElement;
 
-    const showNotice = (message: string, isError = false) => {
-      notice.textContent = message;
-      notice.className = `mb-4 p-4 rounded-xl text-sm ${
-        isError 
-          ? "bg-red-500/20 text-red-300 border border-red-500/30" 
-          : "bg-green-500/20 text-green-300 border border-green-500/30"
-      }`;
-      notice.classList.remove("hidden");
-    };
+      if (!notice) return;
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      
-      const formData = new FormData(form);
-      const data = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        business: formData.get("business"),
-        package: formData.get("package"),
-        details: formData.get("details"),
-        ts: new Date().toISOString(),
-        source: "website-brief",
+      const showNotice = (message: string, isError = false) => {
+        notice.textContent = message;
+        notice.className = `brief-notice mb-4 p-4 rounded-xl text-sm ${
+          isError 
+            ? "bg-red-500/20 text-red-300 border border-red-500/30" 
+            : "bg-green-500/20 text-green-300 border border-green-500/30"
+        }`;
+        notice.classList.remove("hidden");
       };
 
-      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = "Sending...";
-      submitBtn.disabled = true;
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          business: formData.get("business"),
+          package: formData.get("package"),
+          details: formData.get("details"),
+          estimated_price: formData.get("estimated_price"),
+          ts: new Date().toISOString(),
+          source: "website-brief",
+        };
 
-      try {
-        const res = await fetch("/api/brief", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
+        const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = "Sending...";
+        submitBtn.disabled = true;
 
-        if (res.ok) {
-          showNotice("Brief sent! I'll get back to you within 24 hours. 🚀");
-          form.reset();
-        } else {
-          const text = await res.text();
-          showNotice(text || "Something went wrong. Try again.", true);
+        try {
+          const res = await fetch("/api/brief", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          if (res.ok) {
+            showNotice("Brief sent! I'll get back to you within 24 hours. 🚀");
+            form.reset();
+          } else {
+            const text = await res.text();
+            showNotice(text || "Something went wrong. Try again.", true);
+          }
+        } catch (err) {
+          showNotice("Couldn't send. Email me directly at pjames1643@gmail.com", true);
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
         }
-      } catch (err) {
-        showNotice("Couldn't send. Email me directly at pjames1643@gmail.com", true);
-      } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }
+      });
     });
   };
 
-  document.addEventListener("DOMContentLoaded", initBriefForm);
-  document.addEventListener("astro:page-load", initBriefForm);
+  document.addEventListener("DOMContentLoaded", initBriefForms);
+  document.addEventListener("astro:page-load", initBriefForms);
 </script>

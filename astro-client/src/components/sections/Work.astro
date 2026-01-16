@@ -1,74 +1,34 @@
 ---
 // Work section - System Architectures / Solutions Gallery
+// Links to dedicated case study pages (no modal)
 import ProjectCard from "../ui/ProjectCard.astro";
-
-interface Project {
-  title: string;
-  category: string;
-  year: string;
-  badge: string;
-  image: string;
-  description: string;
-  tools: string[];
-  details: string;
-  gallery: string[];
-  link: string;
-}
-
-const projects: Project[] = [
-  {
-    title: "RealtyOS: Auto-Qualifier",
-    category: "Automation Logic",
-    year: "2024",
-    badge: "FRAMEWORK",
-    image: "/project-1.png",
-    description: "Zero-latency lead engagement system. Qualifies, tags, and books appointments without human intervention.",
-    tools: ["OpenAI", "Node.js", "Twilio", "React"],
-    details: "A 24/7 AI sales agent that engages website visitors naturally. It qualifies leads based on budget and timeline, answers frequent questions, and directly books appointments into the team's calendar. Built with OpenAI and Node.js, this system increased lead conversion by 40% in the first month.",
-    gallery: ["/project-1.png", "/project-2.png", "/project-3.png", "/hero-ai.png"],
-    link: "#",
-  },
-  {
-    title: "Authority Protocol: Education",
-    category: "Identity System",
-    year: "2023",
-    badge: "CONCEPT",
-    image: "/project-2.png",
-    description: "Institutional rebranding framework designed to maximize perceived value and enrollment conversion.",
-    tools: ["Adobe CC", "Figma", "Canva"],
-    details: "A complete identity overhaul for a private educational institution. We delivered a cohesive visual system, 50+ ready-to-use Canva social media templates, and a comprehensive brand voice guide. The entire project was executed in just 5 days, establishing immediate trust with prospective parents.",
-    gallery: ["/project-2.png", "/project-1.png", "/project-3.png", "/hero-ai.png"],
-    link: "#",
-  },
-  {
-    title: "Pipeline Command Center",
-    category: "Operations Architecture",
-    year: "2025",
-    badge: "FRAMEWORK",
-    image: "/project-3.png",
-    description: "Full-visibility revenue dashboards and automated client retention loops.",
-    tools: ["Zapier", "Make", "HubSpot", "Python"],
-    details: "An end-to-end automated pipeline connecting Facebook Ads to WhatsApp and Email sequencers. This solution includes a custom dashboard for tracking lead status in real-time, ensuring zero lead leakage and providing automated follow-ups for 12 months.",
-    gallery: ["/project-3.png", "/project-1.png", "/project-2.png", "/hero-ai.png"],
-    link: "#",
-  },
-];
+import { projects } from "../../data/projects";
 ---
 
-<section id="work" class="py-[var(--space-5)] container-fluid">
-  <div class="mb-12">
-    <p class="text-[var(--step--1)] uppercase tracking-[0.25em] text-[rgb(var(--accent))] font-bold mb-3">
+<section id="work" class="py-[var(--space-4)] container-fluid">
+  <div class="mb-8">
+    <p class="text-[var(--step--1)] uppercase tracking-[0.25em] text-orange-400 font-bold mb-3">
       System Architectures
     </p>
-    <h2 class="font-display font-bold text-[var(--step-3)] leading-[1.1] max-w-[28ch]">
+    <h2 class="font-display font-bold text-[var(--step-3)] leading-[1.1] max-w-[28ch] text-white">
       Deployable frameworks engineered for high-velocity growth.
     </h2>
   </div>
 
   <div class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(20rem,100%),1fr))]">
-    {projects.map((project) => (
+    {projects.slice(0, 3).map((project) => (
       <ProjectCard {...project} />
     ))}
+  </div>
+  
+  <div class="mt-8 md:mt-12 flex justify-center">
+    <a 
+      href="/work" 
+      class="inline-flex items-center gap-2 border border-orange-500/50 text-orange-500 hover:bg-orange-500/10 px-8 py-4 rounded-full uppercase tracking-wider text-sm font-bold transition-all group"
+    >
+      Explore Intelligence Vault
+      <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+    </a>
   </div>
   
   <div id="work-bottom"></div>

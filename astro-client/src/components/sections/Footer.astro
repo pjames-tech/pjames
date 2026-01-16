@@ -6,13 +6,15 @@ import SocialLinks from "../ui/SocialLinks.astro";
 import ChatBot from "../chat/ChatBot.tsx";
 ---
 
-<footer id="contact" class="border-t border-white/10 bg-[rgb(var(--panel2))]/70 backdrop-blur-xl py-[var(--space-5)]">
-  <div class="container-fluid grid gap-8 lg:grid-cols-2 items-end">
+<footer id="contact" class="border-t border-[rgb(var(--border)/0.1)] bg-bg py-[var(--space-5)]">
+  <div class="container-fluid grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
     <!-- Col 1: Form (LEFT) -->
     <BriefForm />
 
     <!-- Col 2: Chatbot (RIGHT) -->
-    <ChatBot client:visible />
+    <div class="chatbot-wrapper">
+      <ChatBot client:visible />
+    </div>
   </div>
 
   <!-- Newsletter Section -->

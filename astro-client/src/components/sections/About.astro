@@ -1,48 +1,25 @@
 ---
-// About section - "AI Brand Architect" Bento Box Design
-interface ProcessStep {
-  number: string;
-  title: string;
-  description: string;
-}
-
-const processSteps: ProcessStep[] = [
-  { 
-    number: "01", 
-    title: "DISCOVERY & STRATEGY", 
-    description: "We decode your market position and engineer a roadmap for dominance. No guessing." 
-  },
-  { 
-    number: "02", 
-    title: "ARCHITECTURE & DEPLOYMENT", 
-    description: "High-fidelity brand systems fused with robust code. Built for speed, scale, and authority." 
-  },
-  { 
-    number: "03", 
-    title: "REVENUE ENGINE", 
-    description: "AI-driven pipelines that nurture leads and close deals 24/7. Turn traffic into cash flow." 
-  },
-];
+// About section - "AI Brand Architect" Profile
+// Refactored: Process steps moved to dedicated Process.astro component
 ---
 
-<section id="about" class="py-[var(--space-5)] container-fluid">
+<section id="about" class="py-[var(--space-6)] container-fluid">
   <!-- Section Header -->
-  <div class="mb-12">
+  <div class="mb-12 text-center">
     <p class="text-[var(--step--1)] uppercase tracking-[0.18em] text-[rgb(var(--accent))] font-medium mb-3">
-      About
+      The Mind Behind
     </p>
     <h2 class="font-display font-bold text-[var(--step-3)] leading-[1.1]">
       The Architect.
     </h2>
   </div>
   
-  <!-- Bento Grid -->
-  <div class="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
+  <!-- Single Profile Card (Centered) -->
+  <div class="max-w-4xl mx-auto">
     
-    <!-- Left Card: Profile -->
-    <div class="bento-card group">
+    <div class="bento-card group flex flex-col md:flex-row items-center gap-8 md:gap-12 p-8 md:p-12">
       <!-- Photo -->
-      <div class="profile-image-container mb-6">
+      <div class="profile-image-container flex-shrink-0">
         <img
           src="/profile.jpg"
           alt="P. James - AI Brand Architect"
@@ -51,57 +28,88 @@ const processSteps: ProcessStep[] = [
         <div class="profile-glow"></div>
       </div>
       
-      <!-- Identity -->
-      <div class="text-center lg:text-left">
-        <h3 class="font-display font-bold text-[var(--step-2)] text-text mb-1">
+      <!-- Bio Content -->
+      <div class="text-center md:text-left flex-1">
+        <h3 class="font-display font-bold text-[var(--step-2)] text-text mb-2">
           P. James | AI Brand Architect
         </h3>
-        <p class="flex items-center justify-center lg:justify-start gap-2 text-sm">
-          <svg class="w-4 h-4 text-[rgb(var(--accent))]" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-          <span class="text-[rgb(var(--accent))] font-medium">Based in Nigeria</span>
-          <span class="text-muted">•</span>
-          <span class="text-muted">Active Globally</span>
-        </p>
-      </div>
-      
-      <!-- Bio -->
-      <p class="mt-6 text-[var(--step-0)] text-muted leading-relaxed">
-        I architect digital ecosystems engineered for growth. Where others see "pages", I see pipelines. 
-        My systems are built on a simple premise:
-        <span class="text-text font-medium">clarity converts, confusion costs.</span>
-      </p>
-    </div>
-    
-    <!-- Right Card: Process Modules -->
-    <div class="bento-card">
-      <h3 class="font-display font-bold text-[var(--step-1)] text-text mb-6 flex items-center gap-3">
-        <span class="w-8 h-px bg-[rgb(var(--accent))]"></span>
-        THE PROCESS
-      </h3>
-      
-      <div class="space-y-3">
-        {processSteps.map((step) => (
-          <div class="process-module group">
-            <div class="flex items-start gap-4">
-              <!-- Step Number -->
-              <div class="step-number">
-                {step.number}
-              </div>
-              
-              <!-- Content -->
-              <div class="flex-1">
-                <h4 class="font-display font-bold text-sm tracking-wide text-text group-hover:text-[rgb(var(--accent))] transition-colors">
-                  {step.title}
-                </h4>
-                <p class="text-sm text-muted leading-relaxed mt-1">
-                  {step.description}
-                </p>
-              </div>
-            </div>
+        
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 text-sm mb-6">
+          <div class="flex items-center gap-1.5 text-[rgb(var(--accent))] font-medium px-3 py-1 rounded-full bg-[rgb(var(--accent)/0.1)] border border-[rgb(var(--accent)/0.2)]">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <span>Based in Nigeria</span>
           </div>
-        ))}
+          <span class="text-muted hidden md:inline">•</span>
+          <span class="text-muted">Active Globally</span>
+        </div>
+        
+        <p class="text-[var(--step-0)] text-muted leading-relaxed mb-8">
+          I architect digital ecosystems engineered for growth. Where others see "pages", I see pipelines. 
+          My systems are built on a simple premise:
+          <br class="hidden md:block" />
+          <span class="text-text font-medium text-lg block mt-2">clarity converts, confusion costs.</span>
+        </p>
+
+        <!-- THE TRINITY: Competence Stack -->
+        <div class="border-t border-dashed border-zinc-800/50 pt-8 mt-8">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-[10px] font-mono uppercase tracking-widest text-[#FF7300] bg-[#FF7300]/10 px-2 py-1 rounded">The Trinity</span>
+            <div class="h-px bg-zinc-800 flex-1"></div>
+          </div>
+
+          <div class="space-y-4">
+            
+            <!-- 1. DESIGN -->
+            <div class="group/stack">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">01 // DESIGN</span>
+                <span class="text-[10px] text-zinc-500 uppercase tracking-widest">Visual Authority</span>
+              </div>
+              <div class="relative h-1 bg-zinc-800/50 rounded-full overflow-hidden mb-2">
+                <div class="absolute inset-y-0 left-0 w-[95%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
+              </div>
+              <p class="text-sm text-zinc-400">
+                <span class="text-white font-medium">I design interfaces that build instant trust.</span>
+                <span class="hidden sm:inline text-zinc-600 ml-1">// UI/UX, Identity Systems</span>
+              </p>
+            </div>
+
+            <!-- 2. CODE -->
+            <div class="group/stack">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">02 // CODE</span>
+                <span class="text-[10px] text-zinc-500 uppercase tracking-widest">Full-Stack Arch</span>
+              </div>
+              <div class="relative h-1 bg-zinc-800/50 rounded-full overflow-hidden mb-2">
+                <div class="absolute inset-y-0 left-0 w-[90%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
+              </div>
+              <p class="text-sm text-zinc-400">
+                <span class="text-white font-medium">I build speed, security, and scalability.</span>
+                <span class="hidden sm:inline text-zinc-600 ml-1">// Next.js, Astro, TS</span>
+              </p>
+            </div>
+
+            <!-- 3. AUTOMATION -->
+            <div class="group/stack">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">03 // AUTOMATION</span>
+                <span class="text-[10px] text-zinc-500 uppercase tracking-widest">AI Agents</span>
+              </div>
+              <div class="relative h-1 bg-zinc-800/50 rounded-full overflow-hidden mb-2">
+                <div class="absolute inset-y-0 left-0 w-[100%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
+              </div>
+              <p class="text-sm text-zinc-400">
+                <span class="text-white font-medium">I engineer systems that sell while you sleep.</span>
+                <span class="hidden sm:inline text-zinc-600 ml-1">// LLMs, Workflows, n8n</span>
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Signature / CTA or decorative element could go here -->
       </div>
     </div>
     
@@ -113,88 +121,50 @@ const processSteps: ProcessStep[] = [
   .bento-card {
     background: rgb(var(--panel));
     border: 1px solid rgb(var(--border) / 0.1);
-    border-radius: var(--radius-lg, 16px);
-    padding: var(--space-4);
-    transition: all 0.2s ease-out;
+    border-radius: var(--radius-lg, 24px);
+    transition: all 0.3s ease-out;
   }
 
   .bento-card:hover {
-    border-color: rgb(var(--border) / 0.15);
+    border-color: rgb(var(--border) / 0.2);
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
   }
 
   /* Profile Image */
   .profile-image-container {
     position: relative;
-    width: 140px;
-    height: 140px;
-    margin-inline: auto;
-  }
-
-  @media (min-width: 1024px) {
-    .profile-image-container {
-      margin-inline: 0;
-    }
+    width: 200px;
+    height: 200px;
   }
 
   .profile-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: var(--radius-md, 12px);
+    border-radius: var(--radius-md, 20px);
     border: 1px solid rgb(var(--border) / 0.1);
+    filter: grayscale(100%);
+    transition: filter 0.5s;
+  }
+  
+  .group:hover .profile-image {
+    filter: grayscale(0%);
   }
 
   .profile-glow {
     position: absolute;
-    inset: -4px;
-    background: linear-gradient(135deg, rgb(var(--accent) / 0.2), transparent 60%);
-    border-radius: var(--radius-lg, 16px);
+    inset: -8px;
+    background: radial-gradient(circle at center, rgb(var(--accent) / 0.3), transparent 70%);
+    border-radius: 50%;
     z-index: -1;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.5s, transform 0.5s;
+    transform: scale(0.8);
   }
 
   .group:hover .profile-glow {
     opacity: 1;
-  }
-
-  /* Process Module */
-  .process-module {
-    background: rgb(var(--bg) / 0.5);
-    border: 1px solid rgb(var(--border) / 0.08);
-    border-radius: var(--radius-md, 12px);
-    padding: 1rem 1.25rem;
-    transition: all 0.2s ease-out;
-  }
-
-  .process-module:hover {
-    background: rgb(var(--bg) / 0.8);
-    border-color: rgb(var(--accent) / 0.2);
-    transform: translateX(4px);
-  }
-
-  .step-number {
-    font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-    font-weight: 700;
-    font-size: 0.75rem;
-    color: rgb(var(--accent));
-    background: rgb(var(--accent) / 0.1);
-    border: 1px solid rgb(var(--accent) / 0.2);
-    border-radius: 6px;
-    padding: 0.25rem 0.5rem;
-    min-width: 2rem;
-    text-align: center;
-    flex-shrink: 0;
-  }
-
-  /* Mobile Stacking */
-  @media (max-width: 1023px) {
-    .bento-card {
-      padding: var(--space-3);
-    }
-
-    .process-module {
-      padding: 1rem;
-    }
+    transform: scale(1);
   }
 </style>

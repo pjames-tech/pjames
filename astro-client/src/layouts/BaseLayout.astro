@@ -1,7 +1,7 @@
 ---
+// VOID MODE: Dark-only high-ticket aesthetic
 import "../styles/global.css";
 import ThreeHero from "../components/ui/ThreeHero.jsx";
-import ThemeToggle from "../components/ui/ThemeToggle.astro";
 
 interface Props {
   title?: string;
@@ -40,34 +40,63 @@ const {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     
-    <!-- Theme Init (Prevent FOUC) -->
+    <!-- VOID MODE: Hardcoded dark theme -->
     <script is:inline>
-      const theme = (() => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        return 'dark';
-      })();
-      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('data-theme', 'dark');
+    </script>
+    
+    <!-- Cal.com Embed Script -->
+    <script is:inline>
+      (function (C, A, L) { 
+        let p = function (a, ar) { a.q.push(ar); }; 
+        let d = C.document; 
+        C.Cal = C.Cal || function () { 
+          let cal = C.Cal; 
+          let ar = arguments; 
+          if (!cal.loaded) { 
+            cal.ns = {}; 
+            cal.q = cal.q || []; 
+            d.head.appendChild(d.createElement("script")).src = A; 
+            cal.loaded = true; 
+          } 
+          if (ar[0] === L) { 
+            const api = function () { p(api, arguments); }; 
+            const namespace = ar[1]; 
+            api.q = api.q || []; 
+            typeof namespace === "string" ? (cal.ns[namespace] = api) && p(api, ar) : p(cal, ar); 
+            return; 
+          } 
+          p(cal, ar); 
+        }; 
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+      
+      Cal("init", { origin: "https://cal.com" });
     </script>
   </head>
-  <body class="bg-bg text-text transition-colors duration-300">
+  <body class="bg-black text-gray-100">
     <!-- Global 3D Background -->
     <div style="position: fixed; inset: 0; z-index: -1;">
       <ThreeHero client:only="react" />
     </div>
-    
-    <ThemeToggle />
     
     <slot />
     <script>
       import Lenis from 'lenis';
 
       const initLenis = () => {
+        // Disable Lenis on touch devices for native scrolling performance
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        if (isTouchDevice) {
+          // Use native scroll on mobile for best performance
+          return;
+        }
+
         const lenis = new Lenis({
-          lerp: 0.1,
-          duration: 1.2,
+          lerp: 0.15,           // Higher = snappier (0.1 was too smooth/laggy)
+          duration: 0.8,        // Shorter duration
           smoothWheel: true,
+          wheelMultiplier: 1.2, // Faster wheel response
         });
 
         function raf(time: number) {
@@ -101,6 +130,84 @@ const {
 
       document.addEventListener('DOMContentLoaded', initReveal);
       document.addEventListener('astro:page-load', initReveal);
+
+      // ================================================
+      // GLOBAL NERVE CENTER: Event Delegation for Booking
+      // Any element with class "action-book" triggers booking modal
+      // ================================================
+      // ================================================
+      // GLOBAL NERVE CENTER: Event Delegation for Booking
+      // Any element with class "action-book" triggers booking modal
+      // ================================================
+      const initGlobalActions = () => {
+        document.addEventListener('click', (e: MouseEvent) => {
+          const target = e.target as HTMLElement;
+          const bookingTrigger = target.closest('.action-book');
+          
+          if (bookingTrigger) {
+            e.preventDefault();
+            
+            // Extract Data Context
+            const packageName = bookingTrigger.getAttribute('data-package');
+            const packagePrice = bookingTrigger.getAttribute('data-price');
+            
+            // Get Form Elements (Scoped to Modal)
+            const modal = document.getElementById('booking-modal');
+            if (modal) {
+              const orderSummary = modal.querySelector('.order-summary');
+              const summaryText = modal.querySelector('.summary-text');
+              const projectNeedInput = modal.querySelector('.project-need-input') as HTMLInputElement;
+              const hiddenPriceInput = modal.querySelector('.hidden-price') as HTMLInputElement;
+              const detailsInput = modal.querySelector('textarea[name="details"]') as HTMLTextAreaElement;
+              
+              // Context Injection Logic
+              if (packageName && projectNeedInput) {
+                // CASE: Pricing Button Clicked
+                modal.dataset.context = 'pricing';
+                
+                if (orderSummary && summaryText) {
+                  orderSummary.classList.remove('hidden');
+                  summaryText.textContent = packagePrice ? `${packageName} (${packagePrice})` : packageName;
+                }
+                
+                projectNeedInput.value = packageName;
+                projectNeedInput.readOnly = true;
+                
+                if (detailsInput) {
+                   detailsInput.value = `I'm interested in the ${packageName} package.`;
+                }
+                
+                if (hiddenPriceInput && packagePrice) {
+                  hiddenPriceInput.value = packagePrice;
+                }
+                
+                // Optional: Notify Archibot
+                window.dispatchEvent(new CustomEvent('booking-context-update', { 
+                  detail: { package: packageName, price: packagePrice } 
+                }));
+                
+              } else if (projectNeedInput) {
+                // CASE: Generic Contact Click (Clean Slate)
+                modal.dataset.context = 'generic';
+                
+                if (orderSummary) orderSummary.classList.add('hidden');
+                
+                projectNeedInput.value = '';
+                projectNeedInput.readOnly = false;
+                if (hiddenPriceInput) hiddenPriceInput.value = '';
+                if (detailsInput) detailsInput.value = '';
+              }
+            }
+
+
+            // Open Modal
+            window.dispatchEvent(new CustomEvent('open-booking-modal'));
+          }
+        });
+      };
+
+      // Run once on initial load
+      initGlobalActions();
     </script>
   </body>
 </html>

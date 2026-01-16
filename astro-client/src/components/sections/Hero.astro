@@ -47,13 +47,12 @@ import ThreeHero from "../ui/ThreeHero.jsx";
       
       <!-- CTAs -->
       <div class="hero-actions">
-        <a
-          href="#services"
-          class="btn-primary-custom group"
+        <button
+          class="btn-primary-custom group action-book"
         >
           <span class="relative z-10">Build My Engine</span>
           <div class="btn-hover-overlay"></div>
-        </a>
+        </button>
         <a
           href="#work"
           class="btn-secondary-custom"
@@ -85,9 +84,17 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     overflow-x: hidden;
-    padding-block: 2rem 4rem;
+    padding-block: 3rem 2rem;
+    will-change: transform;
+  }
+
+  @media (min-width: 768px) {
+    .hero-section {
+      justify-content: center;
+      padding-block: 1rem 3rem;
+    }
   }
 
   /* Background */
@@ -149,30 +156,50 @@ import ThreeHero from "../ui/ThreeHero.jsx";
   .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     border-radius: 9999px;
     border: 1px solid rgb(var(--border) / 0.15);
-    background: rgb(var(--panel) / 0.8);
-    padding: 0.5rem 1.25rem;
-    backdrop-filter: blur(16px);
+    background: rgb(var(--panel) / 0.9);
+    padding: 0.4rem 1rem;
     width: fit-content;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
+  @media (min-width: 768px) {
+    .status-badge {
+      padding: 0.3rem 0.8rem;
+      gap: 0.35rem;
+    }
+  }
+
   .status-dot {
-    height: 0.5rem;
-    width: 0.5rem;
+    height: 0.4rem;
+    width: 0.4rem;
     border-radius: 9999px;
     background-color: #2EFF2E;
-    box-shadow: 0 0 10px rgba(46, 255, 46, 0.5);
+    box-shadow: 0 0 8px rgba(46, 255, 46, 0.5);
+  }
+
+  @media (min-width: 768px) {
+    .status-dot {
+      height: 0.35rem;
+      width: 0.35rem;
+    }
   }
 
   .status-text {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     color: rgba(var(--text),0.8);
     font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
+    .status-text {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+    }
   }
 
   .hero-headline {
@@ -240,10 +267,9 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     font-weight: 500;
     color: rgb(var(--text));
     border: 1px solid rgb(var(--border) / 0.2);
-    background: rgb(var(--panel) / 0.8);
+    background: rgb(var(--panel) / 0.9);
     transition: all 0.2s ease-out;
     text-decoration: none;
-    backdrop-filter: blur(16px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
@@ -258,9 +284,8 @@ import ThreeHero from "../ui/ThreeHero.jsx";
   .feature-card {
     padding: 1.25rem 1.5rem;
     border-radius: var(--radius-md, 12px);
-    background: rgb(var(--panel) / 0.8);
+    background: rgb(var(--panel) / 0.9);
     border: 1px solid rgb(var(--border) / 0.12);
-    backdrop-filter: blur(16px);
     transition: all 0.2s ease-out;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
@@ -287,8 +312,73 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     font-weight: 300;
   }
 
-  /* Responsive Mobile */
-  @media (max-width: 1024px) {
+  /* ========================================
+     MOBILE RESPONSIVE (< 768px)
+     ======================================== */
+  @media (max-width: 767px) {
+    .hero-section {
+      padding-block: 5rem 2rem;
+    }
+
+    .hero-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .hero-content {
+      align-items: center;
+      text-align: center;
+      order: 1;
+    }
+
+    /* Compact badge on mobile */
+    .status-badge {
+      padding: 0.375rem 0.75rem;
+      gap: 0.375rem;
+    }
+
+    .status-text {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+    }
+
+    /* Full-width stacked CTAs on mobile */
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+      max-width: 300px;
+      gap: 0.75rem;
+    }
+
+    .btn-primary-custom,
+    .btn-secondary-custom {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Feature cards below CTA */
+    .hero-features {
+      order: 2;
+      margin-top: 0.5rem;
+      max-width: 100%;
+    }
+
+    .feature-card {
+      padding: 1rem 1.25rem;
+    }
+
+    .feature-title {
+      font-size: 0.9rem;
+    }
+
+    .feature-desc {
+      font-size: 0.8rem;
+    }
+  }
+
+  /* Tablet (768px - 1023px) */
+  @media (min-width: 768px) and (max-width: 1023px) {
     .hero-grid {
       grid-template-columns: 1fr;
       text-align: center;
@@ -300,6 +390,10 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     }
     .hero-actions {
       justify-content: center;
+    }
+    .hero-features {
+      max-width: 500px;
+      margin-inline: auto;
     }
   }
 </style>

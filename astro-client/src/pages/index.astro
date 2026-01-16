@@ -1,11 +1,13 @@
 ---
 // Main landing page - assembles all components
+// ARCHITECTURE: "Money Magnet" Conversion Funnel
+// COLOR PROTOCOL: "Void & Ember" (Black + Orange)
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 // Layout components
 import Navbar from "../components/layout/Navbar.astro";
 import MobileNavOverlay from "../components/layout/MobileNavOverlay.astro";
-import BackToTop from "../components/layout/BackToTop.astro";
+import FloatingAction from "../components/layout/FloatingAction.astro";
 
 // Section components
 import Hero from "../components/sections/Hero.astro";
@@ -13,12 +15,14 @@ import TheShift from "../components/sections/TheShift.astro";
 import Services from "../components/sections/Services.astro";
 import Work from "../components/sections/Work.astro";
 import Infrastructure from "../components/sections/Infrastructure.astro";
+import Process from "../components/sections/Process.astro";
 import About from "../components/sections/About.astro";
+import FAQ from "../components/sections/FAQ.astro";
+import BookingCTA from "../components/sections/BookingCTA.astro";
 import Footer from "../components/sections/Footer.astro";
 
 // Modal components
-import PricingModal from "../components/modals/PricingModal.astro";
-import ProjectModal from "../components/modals/ProjectModal.astro";
+import BookingModal from "../components/modals/BookingModal.astro";
 ---
 
 <BaseLayout>
@@ -33,16 +37,18 @@ import ProjectModal from "../components/modals/ProjectModal.astro";
     <Services />
     <Work />
     <Infrastructure />
+    <Process />
     <About />
+    <FAQ />
+    <BookingCTA />
   </main>
 
-  <!-- Footer (includes contact forms and chatbot) -->
+  <!-- Footer -->
   <Footer />
 
   <!-- Modals -->
-  <PricingModal />
-  <ProjectModal />
+  <BookingModal />
 
-  <!-- Utilities -->
-  <BackToTop />
+  <!-- Floating Action: Desktop = Back to Top, Mobile = Book CTA -->
+  <FloatingAction />
 </BaseLayout>

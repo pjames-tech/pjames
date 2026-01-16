@@ -1,63 +1,79 @@
 ---
+// Navbar - Desktop links + Phone icon CTA, Mobile hamburger
+// PERFORMANCE: No blur filters
+// COLOR: Void & Ember (Black + Orange)
+interface Props {
+  alwaysVisible?: boolean;
+}
+
+const { alwaysVisible = false } = Astro.props;
+
 interface NavLink {
   href: string;
   label: string;
 }
 
 const navLinks: NavLink[] = [
+  { href: "#work", label: "Work" },
   { href: "#services", label: "Services" },
-  { href: "#work", label: "Systems" },
-  { href: "#infrastructure", label: "Infrastructure" },
   { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
 ];
 ---
 
 <!-- Fixed Navbar (ScrollNav) -->
 <div
   id="nav-container"
-  class="fixed left-1/2 top-[var(--space-2)] z-50 -translate-x-1/2 transition duration-300 opacity-0 -translate-y-3 pointer-events-none"
-  aria-hidden="true"
+  data-always-visible={alwaysVisible}
+  class={`fixed left-1/2 top-[var(--space-2)] z-50 -translate-x-1/2 transition duration-300 ${
+    alwaysVisible ? '' : 'opacity-0 -translate-y-3 pointer-events-none'
+  }`}
+  aria-hidden={!alwaysVisible}
 >
-  <nav class="glass soft-border-strong shadow-glow rounded-pill px-2 py-2 flex items-center gap-2">
-    <a href="#top" class="flex-shrink-0 ml-3 outline-none">
+  <nav class="nav-glass rounded-pill px-3 py-2 flex items-center gap-4">
+    <!-- Logo (Left) -->
+    <a href="/" class="flex-shrink-0 outline-none">
       <img
         src="/logo-new.png"
         alt="P. JAMES"
         class="h-10 w-auto object-contain"
       />
     </a>
-    <span class="h-5 w-px bg-white/10 mx-1 hidden md:block"></span>
 
-    <!-- Desktop Nav Links -->
-    <ul class="hidden md:flex items-center gap-1 overflow-x-auto no-scrollbar max-w-[min(60vw,40rem)] pr-1">
+    <!-- Desktop Nav Links (Center) -->
+    <ul class="hidden md:flex items-center gap-1">
       {navLinks.map((link) => (
         <li>
           <a
             href={link.href}
-            class="nav-link relative rounded-pill px-3 py-2 text-[var(--step--1)] transition-all duration-300 text-muted hover:text-text hover:bg-white/5"
+            class="nav-link px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white rounded-full hover:bg-zinc-800/50 transition-all"
           >
-            <span class="nav-bg absolute inset-0 -z-10 rounded-pill bg-[rgb(var(--accent))/0.18] soft-border hidden transition-all"></span>
             {link.label}
           </a>
         </li>
       ))}
     </ul>
 
-    <!-- Hamburger Button (Mobile) -->
+    <!-- Spacer -->
+    <div class="flex-1"></div>
+
+    <!-- Desktop: Phone Icon Button (Right) - Uses .action-book -->
+    <button
+      id="navbar-phone-cta"
+      class="action-book phone-cta hidden md:flex"
+      aria-label="Book Consultation"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+      </svg>
+    </button>
+
+    <!-- Mobile: Hamburger Button -->
     <button
       id="nav-toggle"
-      class="md:hidden p-2 rounded-full hover:bg-white/10 transition ml-auto mr-1"
+      class="md:hidden p-2 rounded-full hover:bg-zinc-800/50 transition text-zinc-400 hover:text-white"
       aria-label="Open menu"
     >
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M3 12h18M3 6h18M3 18h18" />
       </svg>
     </button>
@@ -65,18 +81,16 @@ const navLinks: NavLink[] = [
 </div>
 
 <script>
-  // Navbar scroll show/hide + scrollspy
   const initNav = () => {
     const navContainer = document.getElementById("nav-container");
-    const navLinks = document.querySelectorAll<HTMLAnchorElement>(".nav-link");
-    const sections = document.querySelectorAll("section[id], header[id], footer[id]");
     
     if (!navContainer) return;
     
-    let lastScroll = 0;
+    const isAlwaysVisible = navContainer.getAttribute('data-always-visible') === 'true';
+    if (isAlwaysVisible) return; // Skip scroll logic if always visible
+
     const heroHeight = window.innerHeight;
 
-    // Show/hide navbar on scroll
     const handleScroll = () => {
       const currentScroll = window.scrollY;
       const isVisible = currentScroll > heroHeight * 0.5;
@@ -85,49 +99,45 @@ const navLinks: NavLink[] = [
       navContainer.classList.toggle("-translate-y-3", !isVisible);
       navContainer.classList.toggle("pointer-events-none", !isVisible);
       navContainer.setAttribute("aria-hidden", String(!isVisible));
-
-      lastScroll = currentScroll;
     };
-
-    // Scrollspy - highlight active section
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0px -70% 0px",
-      threshold: 0,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          navLinks.forEach((link) => {
-            const bg = link.querySelector(".nav-bg");
-            const isActive = link.getAttribute("href") === `#${id}`;
-            
-            link.classList.toggle("text-text", isActive);
-            link.classList.toggle("text-muted", !isActive);
-            bg?.classList.toggle("hidden", !isActive);
-          });
-        }
-      });
-    }, observerOptions);
-
-    sections.forEach((section) => observer.observe(section));
     
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    handleScroll();
   };
-
-  // Run on page load
-  document.addEventListener("DOMContentLoaded", initNav);
   
-  // Re-run on Astro page transitions
+  document.addEventListener("DOMContentLoaded", initNav);
   document.addEventListener("astro:page-load", initNav);
 </script>
 
 <style>
-  /* Scoped styles for navbar */
-  .nav-link.text-text .nav-bg {
-    display: block;
+  /* Nav Glass Effect - Uses design tokens */
+  .nav-glass {
+    background: rgb(var(--panel) / 0.95);
+    border: 1px solid rgb(var(--border) / 0.1);
+    box-shadow: 0 4px 24px rgb(var(--bg) / 0.5);
+  }
+
+  /* Phone CTA Button - Circular with accent glow */
+  .phone-cta {
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgb(var(--accent));
+    color: rgb(var(--bg));
+    border: 2px solid rgb(var(--accent));
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+      0 0 0 3px rgb(var(--accent) / 0.2),
+      0 0 20px rgb(var(--accent) / 0.3);
+  }
+
+  .phone-cta:hover {
+    transform: scale(1.1);
+    box-shadow: 
+      0 0 0 4px rgb(var(--accent) / 0.3),
+      0 0 30px rgb(var(--accent) / 0.5);
   }
 </style>

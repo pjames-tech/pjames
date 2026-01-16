@@ -1,0 +1,115 @@
+---
+// FAQ Section - "Clarities & Protocol"
+// Uses a custom accordion with JS for smooth height animation
+
+const faqs = [
+  {
+    question: "Do you just design logos, or build the whole system?",
+    answer: "I am a Systems Architect, not just a graphic designer. While I create world-class visual identities, my primary focus is the entire revenue ecosystem: your brand positioning, your web infrastructure, and the automation pipelines that turn visitors into clients. You get a complete business engine, not just a pretty picture."
+  },
+  {
+    question: "What makes your 'AI-First' approach different?",
+    answer: "Most agencies build static websites that sit there. I build dynamic systems powered by AI. This means your platform can qualify leads, schedule appointments, and personalize content automatically. We use proprietary AI workflows to accelerate development, meaning you get enterprise-grade tech at a fraction of the traditional timeline."
+  },
+  {
+    question: "How long does a typical project take?",
+    answer: "Speed is a core protocol. A standard 'Brand Identity Sprint' takes 5 days. The full 'Conversion Engine' web build typically takes 2-3 weeks. Complex custom architectures (SaaS, Web Apps) generally range from 4-6 weeks. We move fast because we utilize a modular, pre-engineered code base."
+  },
+  {
+    question: "Do I own the code and assets?",
+    answer: "100%. Once the project is paid for, you own every pixel, line of code, and strategy document. We do not hold your brand hostage. You will receive a complete handoff package with source files, access keys, and training on how to run your new system."
+  },
+  {
+    question: "I have a custom requirement. Can you handle it?",
+    answer: "Likely, yes. I have deployed everything from real estate AI chatbots to fintech dashboards. If it involves web technology and automation, I can architect it. Switch to 'Lead Capture' mode in the chat or book a consultation to discuss your specific infrastructure needs."
+  }
+];
+---
+
+<section id="faq" class="py-24 container-fluid max-w-4xl mx-auto px-6">
+  
+  <div class="mb-16 text-center">
+    <span class="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-widest text-[#FF7300] uppercase bg-[#FF7300]/10 rounded-full border border-[#FF7300]/20">
+      Clarification
+    </span>
+    <h2 class="font-display font-bold text-4xl md:text-5xl text-white mb-6">
+      Protocol & <span class="text-[#FF7300]">Answers.</span>
+    </h2>
+    <p class="text-zinc-400 max-w-lg mx-auto">
+      Common queries regarding the engagement process and deliverables.
+    </p>
+  </div>
+
+  <div class="space-y-4">
+    {faqs.map((faq, index) => (
+      <div class="faq-item group bg-black/40 border border-zinc-800 rounded-2xl overflow-hidden transition-colors duration-300 hover:border-[#FF7300]/30">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 md:p-8 text-left focus:outline-none">
+          <span class="font-display font-medium text-lg md:text-xl text-zinc-200 group-hover:text-white transition-colors pr-8">
+            {faq.question}
+          </span>
+          <span class="relative flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-zinc-900 border border-zinc-800 group-hover:border-[#FF7300] group-hover:text-[#FF7300] transition-all duration-300">
+            <!-- Vertical Line (Rotates for minus) -->
+            <span class="icon-line-v absolute w-0.5 h-3 bg-current transition-transform duration-300 ease-out origin-center"></span>
+            <!-- Horizontal Line -->
+            <span class="absolute w-3 h-0.5 bg-current"></span>
+          </span>
+        </button>
+        
+        <div class="faq-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out">
+          <div class="overflow-hidden">
+            <div class="p-6 md:p-8 pt-0 text-zinc-400 leading-relaxed border-t border-dashed border-zinc-800/50 mt-2">
+              {faq.answer}
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+</section>
+
+<script>
+  const initAccordion = () => {
+    const triggers = document.querySelectorAll('.faq-trigger');
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-item');
+        const content = item?.querySelector('.faq-content');
+        const iconVertical = item?.querySelector('.icon-line-v');
+        
+        // Toggle current
+        const isOpen = content?.classList.contains('is-open'); // We check class, or grid state? 
+        // Better: check if it has the specific class I'll use for open state styles
+        
+        // Close others (Accordion behavior - optional, creates focus)
+        document.querySelectorAll('.faq-content').forEach(c => {
+          if (c !== content && c.classList.contains('grid-rows-[1fr]')) {
+            c.classList.remove('grid-rows-[1fr]');
+            c.classList.add('grid-rows-[0fr]');
+            // Reset icon of OTHER items
+            const otherItem = c.closest('.faq-item');
+            const otherIcon = otherItem?.querySelector('.icon-line-v');
+            if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+          }
+        });
+
+        // Toggle state
+        if (content) {
+          if (content.classList.contains('grid-rows-[1fr]')) {
+            content.classList.remove('grid-rows-[1fr]');
+            content.classList.add('grid-rows-[0fr]');
+            if (iconVertical) iconVertical.style.transform = 'rotate(0deg)';
+          } else {
+            content.classList.remove('grid-rows-[0fr]');
+            content.classList.add('grid-rows-[1fr]');
+            if (iconVertical) iconVertical.style.transform = 'rotate(90deg)';
+          }
+        }
+      });
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', initAccordion);
+  document.addEventListener('astro:page-load', initAccordion);
+</script>

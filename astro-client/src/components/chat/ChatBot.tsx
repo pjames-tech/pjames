@@ -206,14 +206,14 @@ export default function ChatBot() {
   };
 
   return (
-    <div class="rounded-[var(--radius-lg)] bg-panel soft-border shadow-lg p-[var(--space-3)] flex flex-col h-[400px]">
+    <div class="rounded-[var(--radius-lg)] bg-panel soft-border shadow-lg p-[var(--space-3)] flex flex-col min-h-[350px] max-h-[450px] h-full">
       {/* Header */}
-      <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div>
           <h3 class="font-display font-bold text-lg text-text">ARCHIBOT</h3>
           <p class="text-xs text-muted">Assistant</p>
         </div>
-        <div class="flex gap-1">
+        <div class="flex gap-1 flex-wrap">
           <button
             onClick={() => handleModeSwitch("lead")}
             class={`px-3 py-1 text-xs rounded-full transition ${
@@ -271,7 +271,9 @@ export default function ChatBot() {
       {/* Input */}
       <form onSubmit={handleSubmit} class="flex gap-2">
         <input
+          id="archibot-input"
           type="text"
+          autocomplete="off"
           value={input()}
           onInput={(e) => setInput(e.currentTarget.value)}
           placeholder={currentPlaceholder()}
@@ -281,8 +283,20 @@ export default function ChatBot() {
         <button
           type="submit"
           disabled={isLoading() || !input().trim() || isReady()}
-          class="px-4 py-2 rounded-full bg-[rgb(var(--accent))] text-white font-medium text-sm hover:brightness-110 transition disabled:opacity-50">
-          Send
+          class="px-3 md:px-4 py-2 rounded-full bg-[rgb(var(--accent))] text-white font-medium text-sm hover:brightness-110 transition disabled:opacity-50 flex items-center justify-center">
+          {/* Paper plane icon on mobile */}
+          <svg
+            class="w-5 h-5 md:hidden"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+          </svg>
+          {/* Text on desktop */}
+          <span class="hidden md:inline">Send</span>
         </button>
       </form>
     </div>

@@ -1,0 +1,237 @@
+---
+// Case Study Page Template with Image Gallery
+// Dynamic route for individual project case studies
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Navbar from "../../components/layout/Navbar.astro";
+import MobileNavOverlay from "../../components/layout/MobileNavOverlay.astro";
+import FloatingAction from "../../components/layout/FloatingAction.astro";
+import Footer from "../../components/sections/Footer.astro";
+import BookingModal from "../../components/modals/BookingModal.astro";
+import { projects } from "../../data/projects";
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const project = projects.find((p) => p.slug === slug);
+
+if (!project) {
+  return Astro.redirect("/404");
+}
+---
+
+<BaseLayout title={`${project.title} | P. James`} description={project.description}>
+  <Navbar />
+  <MobileNavOverlay />
+  
+  <main class="min-h-screen pt-8 md:pt-16 pb-16">
+    <!-- Hero Section -->
+    <section class="container-fluid mb-12">
+      <a href="/work" class="inline-flex items-center gap-2 text-zinc-400 hover:text-orange-400 transition mb-8 group">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:-translate-x-1 transition-transform">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Systems
+      </a>
+      
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Content -->
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="inline-flex items-center gap-1 px-2 py-1 rounded border border-orange-500/30 bg-orange-500/10">
+              <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
+              <span class="font-mono text-[10px] uppercase tracking-wider text-orange-400">
+                [ {project.badge} ]
+              </span>
+            </span>
+            <span class="text-zinc-500 text-sm">{project.year}</span>
+          </div>
+          
+          <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+            {project.title}
+          </h1>
+          
+          <p class="text-lg text-zinc-400 mb-6 leading-relaxed">
+            {project.description}
+          </p>
+          
+          <div class="flex flex-wrap gap-2 mb-8">
+            {project.tools.map((tool) => (
+              <span class="px-3 py-1 text-xs font-medium bg-zinc-800 text-zinc-300 rounded-full border border-zinc-700">
+                {tool}
+              </span>
+            ))}
+          </div>
+          
+          <a href={project.link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-6 py-3 bg-orange-500 text-black font-bold rounded-full hover:bg-orange-400 transition-all hover:scale-105">
+            <span>View Project</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+        </div>
+        
+        <!-- Main Image -->
+        <div class="relative aspect-video rounded-2xl overflow-hidden border border-zinc-800">
+          <img 
+            src={project.image} 
+            alt={project.title}
+            class="w-full h-full object-cover"
+            loading="eager"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Image Gallery -->
+    <section class="container-fluid mb-16">
+      <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
+        <span class="w-8 h-px bg-orange-500"></span>
+        Project Gallery
+      </h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {project.gallery.map((img, index) => (
+          <button 
+            class="gallery-thumb group relative aspect-video rounded-xl overflow-hidden border border-zinc-800 hover:border-orange-500/50 transition-all cursor-pointer"
+            data-index={index}
+          >
+            <img 
+              src={img} 
+              alt={`${project.title} - Image ${index + 1}`}
+              class="w-full h-full object-cover transition-transform group-hover:scale-105"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+              </svg>
+            </div>
+          </button>
+        ))}
+      </div>
+    </section>
+    
+    <!-- Case Study Content (Optional) -->
+    <section class="container-fluid">
+      <div class="max-w-3xl mx-auto">
+        
+        <!-- The Challenge -->
+        {project.challenge && (
+          <div class="mb-12">
+            <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+              <span class="w-8 h-px bg-orange-500"></span>
+              The Challenge
+            </h2>
+            <p class="text-zinc-400 leading-relaxed text-lg">
+              {project.challenge}
+            </p>
+          </div>
+        )}
+        
+        <!-- The Solution -->
+        {project.solution && (
+          <div class="mb-12">
+            <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+              <span class="w-8 h-px bg-orange-500"></span>
+              The Solution
+            </h2>
+            <p class="text-zinc-400 leading-relaxed text-lg">
+              {project.solution}
+            </p>
+          </div>
+        )}
+        
+        <!-- Results -->
+        {project.results && project.results.length > 0 && (
+          <div class="mb-12">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <span class="w-8 h-px bg-orange-500"></span>
+              The Results
+            </h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+              {project.results.map((result) => (
+                <div class="p-4 rounded-xl bg-zinc-900 border border-zinc-800">
+                  <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="text-zinc-300">{result}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        <!-- CTA -->
+        <div class="text-center p-8 rounded-2xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/20">
+          <h3 class="text-2xl font-bold text-white mb-3">
+            Ready to Build Your System?
+          </h3>
+          <p class="text-zinc-400 mb-6">
+            Let's architect something that works while you sleep.
+          </p>
+          <a href="/pricing" class="inline-flex items-center gap-3 px-8 py-4 bg-orange-500 text-black font-bold text-lg rounded-full hover:bg-orange-400 transition-all hover:scale-105">
+            <span>View Pricing</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Lightbox for Gallery -->
+  <dialog id="lightbox" class="fixed inset-0 z-[100] bg-black/95 backdrop:bg-black/95 p-4 max-w-full max-h-full w-full h-full">
+    <div class="relative w-full h-full flex items-center justify-center">
+      <button id="lightbox-close" class="absolute top-4 right-4 p-2 text-white hover:text-orange-400 transition">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[85vh] object-contain rounded-lg"/>
+    </div>
+  </dialog>
+  
+  <Footer />
+  <BookingModal />
+  <FloatingAction />
+</BaseLayout>
+
+<script>
+  const initGallery = () => {
+    const thumbs = document.querySelectorAll('.gallery-thumb');
+    const lightbox = document.getElementById('lightbox') as HTMLDialogElement;
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const closeBtn = document.getElementById('lightbox-close');
+    
+    if (!lightbox || !lightboxImg) return;
+    
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        const img = thumb.querySelector('img');
+        if (img) {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.showModal();
+        }
+      });
+    });
+    
+    closeBtn?.addEventListener('click', () => lightbox.close());
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.close();
+    });
+  };
+  
+  document.addEventListener('DOMContentLoaded', initGallery);
+  document.addEventListener('astro:page-load', initGallery);
+</script>

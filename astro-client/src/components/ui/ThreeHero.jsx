@@ -17,6 +17,8 @@ export default function ThreeHero() {
     );
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
+    // PERFORMANCE: Cap pixel ratio to 2 to prevent lag on 4k/Retina screens
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current.appendChild(renderer.domElement);
 
@@ -123,6 +125,7 @@ export default function ThreeHero() {
       }
       geometry.dispose();
       material.dispose();
+      renderer.dispose();
     };
   }, []);
 
