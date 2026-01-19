@@ -40,7 +40,7 @@ const LEAD_QUESTIONS = [
 ];
 
 export default function ChatBot() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [viewState, setViewState] = useState<ViewState>("welcome");
   const [mode, setMode] = useState<ChatMode>("lead");
   const [messages, setMessages] = useState<Message[]>([]);
