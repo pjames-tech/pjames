@@ -16,10 +16,17 @@ export default defineConfig({
 
   integrations: [
     solidJs({
-      include: ["**/src/components/chat/**"], // Chatbot is Solid
+      // Exclude React components from Solid.js processing
+      exclude: [
+        "**/src/components/ui/ThreeHero.jsx",
+        "**/src/components/chat/**",
+      ],
     }),
     react({
-      include: ["**/src/components/ui/ThreeHero.jsx"], // ThreeHero is React
+      include: [
+        "**/src/components/ui/ThreeHero.jsx",
+        "**/src/components/chat/**",
+      ],
     }),
   ],
   adapter: vercel(),

@@ -42,7 +42,7 @@ import ThreeHero from "../ui/ThreeHero.jsx";
       
       <!-- Description -->
       <p class="hero-description">
-        Deploy an AI-driven brand architecture that runs on autopilot. From authority systems to automated pipelines—turn traffic into revenue while you sleep.
+        Deploy an AI-driven brand architecture that runs on autopilot. From authority systems to automated pipelines; turn traffic into revenue on autopilot.
       </p>
       
       <!-- CTAs -->
@@ -317,7 +317,7 @@ import ThreeHero from "../ui/ThreeHero.jsx";
      ======================================== */
   @media (max-width: 767px) {
     .hero-section {
-      padding-block: 5rem 2rem;
+      padding-block: 3rem 2rem;
     }
 
     .hero-grid {
@@ -327,8 +327,8 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     }
 
     .hero-content {
-      align-items: center;
-      text-align: center;
+      align-items: flex-start;
+      text-align: left;
       order: 1;
     }
 
@@ -357,11 +357,9 @@ import ThreeHero from "../ui/ThreeHero.jsx";
       justify-content: center;
     }
 
-    /* Feature cards below CTA */
+    /* Feature cards hidden on mobile */
     .hero-features {
-      order: 2;
-      margin-top: 0.5rem;
-      max-width: 100%;
+      display: none;
     }
 
     .feature-card {

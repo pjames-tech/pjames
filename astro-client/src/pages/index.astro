@@ -7,7 +7,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 // Layout components
 import Navbar from "../components/layout/Navbar.astro";
 import MobileNavOverlay from "../components/layout/MobileNavOverlay.astro";
-import FloatingAction from "../components/layout/FloatingAction.astro";
+import ChatBot from "../components/chat/ChatBot.tsx";
 
 // Section components
 import Hero from "../components/sections/Hero.astro";
@@ -49,6 +49,6 @@ import BookingModal from "../components/modals/BookingModal.astro";
   <!-- Modals -->
   <BookingModal />
 
-  <!-- Floating Action: Desktop = Back to Top, Mobile = Book CTA -->
-  <FloatingAction />
+  <!-- ChatBot Floating Widget -->
+  <ChatBot client:only="react" />
 </BaseLayout>

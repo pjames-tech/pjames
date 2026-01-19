@@ -4,7 +4,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Navbar from "../components/layout/Navbar.astro";
 import MobileNavOverlay from "../components/layout/MobileNavOverlay.astro";
-import FloatingAction from "../components/layout/FloatingAction.astro";
+import ChatBot from "../components/chat/ChatBot.tsx";
 import Footer from "../components/sections/Footer.astro";
 import BookingModal from "../components/modals/BookingModal.astro";
 
@@ -80,8 +80,6 @@ const packages: Package[] = [
 ---
 
 <BaseLayout title="Pricing & Packages | P. James" description="Balanced pricing for every stage of growth. From $149 digital cards to full authority ecosystems.">
-  <Navbar alwaysVisible={true} />
-  <MobileNavOverlay />
   
   <main class="min-h-screen pt-8 md:pt-16 pb-16">
     <!-- Hero -->
@@ -216,7 +214,7 @@ const packages: Package[] = [
   
   <Footer />
   <BookingModal />
-  <FloatingAction />
+  <ChatBot client:only="react" />
 </BaseLayout>
 
 <style>

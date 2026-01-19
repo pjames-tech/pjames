@@ -4,7 +4,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Navbar from "../../components/layout/Navbar.astro";
 import MobileNavOverlay from "../../components/layout/MobileNavOverlay.astro";
-import FloatingAction from "../../components/layout/FloatingAction.astro";
+import ChatBot from "../../components/chat/ChatBot.tsx";
 import Footer from "../../components/sections/Footer.astro";
 import BookingModal from "../../components/modals/BookingModal.astro";
 import { projects } from "../../data/projects";
@@ -203,7 +203,7 @@ if (!project) {
   
   <Footer />
   <BookingModal />
-  <FloatingAction />
+  <ChatBot client:only="react" />
 </BaseLayout>
 
 <script>

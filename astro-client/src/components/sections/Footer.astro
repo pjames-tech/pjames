@@ -1,20 +1,14 @@
 ---
-// Footer section with brief form, chatbot, and newsletter
+// Footer section with brief form and newsletter
 import BriefForm from "../forms/BriefForm.astro";
 import NewsletterForm from "../forms/NewsletterForm.astro";
 import SocialLinks from "../ui/SocialLinks.astro";
-import ChatBot from "../chat/ChatBot.tsx";
 ---
 
 <footer id="contact" class="border-t border-[rgb(var(--border)/0.1)] bg-bg py-[var(--space-5)]">
-  <div class="container-fluid grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-    <!-- Col 1: Form (LEFT) -->
+  <div class="container-fluid">
+    <!-- Brief Form -->
     <BriefForm />
-
-    <!-- Col 2: Chatbot (RIGHT) -->
-    <div class="chatbot-wrapper">
-      <ChatBot client:visible />
-    </div>
   </div>
 
   <!-- Newsletter Section -->
