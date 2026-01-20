@@ -3,9 +3,9 @@
 // Purpose: Lead capture form with context injection + Cal.com/WhatsApp options
 import BriefForm from "../forms/BriefForm.astro";
 
-const calLink = "p.-james-t0ur5o/30min"; // Your Cal.com booking path
+const calLink = "p.james-booking/30min"; // Your Cal.com booking path
 const whatsappNumber = "2347033302085"; // User's number
-const whatsappMessage = "Hi, I'm interested in working with you.";
+const whatsappMessage = "Hi P.James, I'm interested in working with you.";
 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 ---
 
@@ -59,8 +59,8 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(w
 
       <div class="pt-4 border-t border-zinc-800">
         <p class="text-sm text-zinc-500 mb-2">Have a project scope ready?</p>
-        <button id="btn-show-form-direct" class="text-orange-400 font-medium hover:underline text-sm">
-          Start a Project (Fill Brief) &rarr;
+        <button id="btn-go-to-form" class="text-orange-400 font-medium hover:underline text-sm">
+          Fill the Brief &rarr;
         </button>
       </div>
     </div>
@@ -104,7 +104,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(w
     
     // Buttons
     const btnShowCal = document.getElementById("btn-show-cal");
-    const btnShowFormDirect = document.getElementById("btn-show-form-direct");
+    const btnGoToForm = document.getElementById("btn-go-to-form");
     const btnBackCal = document.getElementById("back-to-selection-cal");
     const btnBackForm = document.getElementById("back-to-selection-form");
 
@@ -149,7 +149,19 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(w
 
     // View Navigation
     btnShowCal?.addEventListener("click", () => switchView('cal'));
-    btnShowFormDirect?.addEventListener("click", () => switchView('form'));
+    
+    // "Fill the Brief" button - close modal and scroll to contact section
+    btnGoToForm?.addEventListener("click", () => {
+      modal.close();
+      // Small delay to let modal close animation finish
+      setTimeout(() => {
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    });
+    
     btnBackCal?.addEventListener("click", () => switchView('selection'));
     btnBackForm?.addEventListener("click", () => switchView('selection'));
   };

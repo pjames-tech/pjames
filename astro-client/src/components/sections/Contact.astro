@@ -1,0 +1,22 @@
+---
+// Contact section with brief form and newsletter
+// Sits above the global footer
+import BriefForm from "../forms/BriefForm.astro";
+import NewsletterForm from "../forms/NewsletterForm.astro";
+---
+
+<section id="contact" class="border-t border-[rgb(var(--border)/0.1)] bg-bg py-24">
+  <div class="container-fluid">
+    <!-- Brief Form -->
+    <div class="max-w-2xl mx-auto">
+      <BriefForm />
+    </div>
+  </div>
+
+  <!-- Newsletter Section -->
+  <div class="container-fluid mt-12 pt-8 border-t border-white/10">
+    <div class="max-w-md mx-auto">
+      <NewsletterForm />
+    </div>
+  </div>
+</section>

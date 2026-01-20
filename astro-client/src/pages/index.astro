@@ -6,7 +6,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 // Layout components
 import Navbar from "../components/layout/Navbar.astro";
-import MobileNavOverlay from "../components/layout/MobileNavOverlay.astro";
 import ChatBot from "../components/chat/ChatBot.tsx";
 
 // Section components
@@ -18,7 +17,7 @@ import Infrastructure from "../components/sections/Infrastructure.astro";
 import Process from "../components/sections/Process.astro";
 import About from "../components/sections/About.astro";
 import FAQ from "../components/sections/FAQ.astro";
-import BookingCTA from "../components/sections/BookingCTA.astro";
+import Contact from "../components/sections/Contact.astro";
 import Footer from "../components/sections/Footer.astro";
 
 // Modal components
@@ -28,7 +27,6 @@ import BookingModal from "../components/modals/BookingModal.astro";
 <BaseLayout>
   <!-- Navigation -->
   <Navbar />
-  <MobileNavOverlay />
 
   <!-- Main Content -->
   <main>
@@ -40,7 +38,7 @@ import BookingModal from "../components/modals/BookingModal.astro";
     <Process />
     <About />
     <FAQ />
-    <BookingCTA />
+    <Contact />
   </main>
 
   <!-- Footer -->

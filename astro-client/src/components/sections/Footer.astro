@@ -1,30 +1,32 @@
 ---
-// Footer section with brief form and newsletter
-import BriefForm from "../forms/BriefForm.astro";
-import NewsletterForm from "../forms/NewsletterForm.astro";
 import SocialLinks from "../ui/SocialLinks.astro";
 ---
 
-<footer id="contact" class="border-t border-[rgb(var(--border)/0.1)] bg-bg py-[var(--space-5)]">
+<footer class="border-t border-white/5 bg-[rgb(var(--panel)/0.6)] backdrop-blur-sm py-12 mt-auto">
   <div class="container-fluid">
-    <!-- Brief Form -->
-    <BriefForm />
-  </div>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+      
+      <!-- Brand & Copyright -->
+      <div class="text-center md:text-left">
+        <h4 class="font-display font-bold text-xl text-white mb-2">P. JAMES</h4>
+        <p class="text-xs text-muted opacity-60">
+          © 2026. All rights reserved.
+        </p>
+      </div>
 
-  <!-- Newsletter Section -->
-  <div class="container-fluid mt-12 pt-8 border-t border-white/10">
-    <div class="max-w-md mx-auto">
-      <NewsletterForm />
-    </div>
-  </div>
+      <!-- Useful Links -->
+      <div class="flex gap-6 text-sm font-medium text-muted">
+        <a href="/" class="hover:text-orange-500 transition-colors">Home</a>
+        <a href="/work" class="hover:text-orange-500 transition-colors">Work</a>
+        <a href="/pricing" class="hover:text-orange-500 transition-colors">Pricing</a>
+        <a href="/privacy" class="hover:text-orange-500 transition-colors">Privacy</a>
+      </div>
 
-  <!-- Social Links & Copyright -->
-  <div class="container-fluid mt-12 pt-8 border-t border-white/10">
-    <div class="flex flex-col items-center gap-6">
-      <SocialLinks />
-      <p class="text-xs text-muted opacity-50">
-        © 2026 P. James. All rights reserved.
-      </p>
+      <!-- Social Links -->
+      <div>
+        <SocialLinks />
+      </div>
+
     </div>
   </div>
 </footer>

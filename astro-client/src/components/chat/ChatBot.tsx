@@ -40,7 +40,7 @@ const LEAD_QUESTIONS = [
 ];
 
 export default function ChatBot() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [viewState, setViewState] = useState<ViewState>("welcome");
   const [mode, setMode] = useState<ChatMode>("lead");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -51,6 +51,16 @@ export default function ChatBot() {
   const [isReady, setIsReady] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Check if first visit and auto-open chatbot
+  useEffect(() => {
+    const hasVisited = localStorage.getItem("archibot-visited");
+    if (!hasVisited) {
+      // First visit - open the chatbot and mark as visited
+      setIsOpen(true);
+      localStorage.setItem("archibot-visited", "true");
+    }
+  }, []);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -263,19 +273,12 @@ export default function ChatBot() {
             {/* Header */}
             <div className="bg-slate-900 px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-[#ff7300] flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 3.502a1.125 1.125 0 01-1.006 1.541L15 21.5M5 14.5l-1.202 3.502a1.125 1.125 0 001.006 1.541L10 21.5m5-1v-7.5"
-                    />
-                  </svg>
+                <div className="h-10 w-10 rounded-full bg-[#ff7300] overflow-hidden flex items-center justify-center border border-[#ff7300]">
+                  <img
+                    src="/archibot-avatar.svg"
+                    alt="Archibot Avatar"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-white text-sm">Archibot</h3>
@@ -327,19 +330,12 @@ export default function ChatBot() {
               {viewState === "welcome" ? (
                 /* Welcome View */
                 <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-                  <div className="h-16 w-16 rounded-full bg-[#ff7300]/20 flex items-center justify-center mb-4">
-                    <svg
-                      className="w-8 h-8 text-[#ff7300]"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"
-                      />
-                    </svg>
+                  <div className="h-20 w-20 rounded-full bg-[#ff7300]/10 flex items-center justify-center mb-4 border border-[#ff7300]/20 overflow-hidden">
+                    <img
+                      src="/archibot-avatar.svg"
+                      alt="Archibot"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <h4 className="text-white font-semibold text-lg mb-2">
                     Hey there! 👋

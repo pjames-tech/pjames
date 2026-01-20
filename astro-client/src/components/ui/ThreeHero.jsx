@@ -13,7 +13,7 @@ export default function ThreeHero() {
       75,
       window.innerWidth / window.innerHeight,
       0.1,
-      1000
+      1000,
     );
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
@@ -27,10 +27,10 @@ export default function ThreeHero() {
     const material = new THREE.MeshStandardMaterial({
       color: 0xff7300,
       emissive: 0xff7300,
-      emissiveIntensity: 2.5,
+      emissiveIntensity: 1.5,
       wireframe: true,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.4,
       toneMapped: false,
     });
     const sphere = new THREE.Mesh(geometry, material);
@@ -49,8 +49,8 @@ export default function ThreeHero() {
     let targetRotationX = 0;
     let targetRotationY = 0;
 
-    let baseIntensity = 2.5; // From previous MeshStandardMaterial
-    let targetIntensity = 2.5;
+    let baseIntensity = 1.5; // Reduced for better content readability
+    let targetIntensity = 1.5;
 
     // Listeners
     const onMouseMove = (event) => {

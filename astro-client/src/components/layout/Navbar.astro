@@ -1,6 +1,6 @@
 ---
-// Navbar - Desktop links + Phone icon CTA, Mobile hamburger
-// PERFORMANCE: No blur filters
+// Navbar - Desktop links + Phone icon CTA, Mobile offcanvas menu
+// Offcanvas slides from right, takes 50% screen width
 // COLOR: Void & Ember (Black + Orange)
 interface Props {
   alwaysVisible?: boolean;
@@ -20,16 +20,16 @@ const navLinks: NavLink[] = [
 ];
 ---
 
-<!-- Fixed Navbar (ScrollNav) -->
+<!-- Fixed Navbar -->
 <div
   id="nav-container"
   data-always-visible={alwaysVisible}
-  class={`fixed left-1/2 top-[var(--space-2)] z-50 -translate-x-1/2 transition duration-300 ${
+  class={`fixed left-1/2 top-[var(--space-2)] z-50 -translate-x-1/2 transition-all duration-300 ${
     alwaysVisible ? '' : 'opacity-0 -translate-y-3 pointer-events-none'
   }`}
   aria-hidden={!alwaysVisible}
 >
-  <nav class="nav-glass rounded-pill px-3 py-2 flex items-center gap-4">
+  <nav class="nav-glass nav-bar rounded-pill px-4 py-2 flex items-center gap-4">
     <!-- Logo (Left) -->
     <a href="/" class="flex-shrink-0 outline-none">
       <img
@@ -56,7 +56,7 @@ const navLinks: NavLink[] = [
     <!-- Spacer -->
     <div class="flex-1"></div>
 
-    <!-- Desktop: Phone Icon Button (Right) - Uses .action-book -->
+    <!-- Desktop: Phone Icon Button (Right) -->
     <button
       id="navbar-phone-cta"
       class="action-book phone-cta hidden md:flex"
@@ -71,38 +71,156 @@ const navLinks: NavLink[] = [
     <button
       id="nav-toggle"
       class="md:hidden p-2 rounded-full hover:bg-zinc-800/50 transition text-zinc-400 hover:text-white"
-      aria-label="Open menu"
+      aria-label="Toggle menu"
+      aria-expanded="false"
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg id="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M3 12h18M3 6h18M3 18h18" />
+      </svg>
+      <svg id="close-icon" class="hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12" />
       </svg>
     </button>
   </nav>
 </div>
 
+<!-- Overlay backdrop -->
+<div id="offcanvas-overlay" class="offcanvas-overlay"></div>
+
+<!-- Offcanvas Menu (50% width from right) -->
+<div 
+  id="offcanvas-menu" 
+  class="offcanvas-menu"
+  inert
+>
+  <div class="offcanvas-content">
+    <!-- Close button inside offcanvas -->
+    <button id="offcanvas-close" class="offcanvas-close" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+    
+    <ul class="offcanvas-links">
+      {navLinks.map((link) => (
+        <li>
+          <a href={link.href} class="offcanvas-link">
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    
+    <button id="offcanvas-cta" class="action-book offcanvas-cta">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+      </svg>
+      Book a Call
+    </button>
+  </div>
+</div>
+
 <script>
   const initNav = () => {
     const navContainer = document.getElementById("nav-container");
+    const navToggle = document.getElementById("nav-toggle");
+    const offcanvasMenu = document.getElementById("offcanvas-menu");
+    const offcanvasOverlay = document.getElementById("offcanvas-overlay");
+    const offcanvasClose = document.getElementById("offcanvas-close");
+    const hamburgerIcon = document.getElementById("hamburger-icon");
+    const closeIcon = document.getElementById("close-icon");
+    const offcanvasLinks = offcanvasMenu?.querySelectorAll(".offcanvas-link");
+    const offcanvasCta = document.getElementById("offcanvas-cta");
     
     if (!navContainer) return;
     
-    const isAlwaysVisible = navContainer.getAttribute('data-always-visible') === 'true';
-    if (isAlwaysVisible) return; // Skip scroll logic if always visible
-
-    const heroHeight = window.innerHeight;
-
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      const isVisible = currentScroll > heroHeight * 0.5;
-
-      navContainer.classList.toggle("opacity-0", !isVisible);
-      navContainer.classList.toggle("-translate-y-3", !isVisible);
-      navContainer.classList.toggle("pointer-events-none", !isVisible);
-      navContainer.setAttribute("aria-hidden", String(!isVisible));
+    let isOpen = false;
+    
+    const openMenu = () => {
+      if (isOpen || !offcanvasMenu || !offcanvasOverlay) return;
+      isOpen = true;
+      
+      offcanvasMenu.classList.add("is-open");
+      offcanvasOverlay.classList.add("is-visible");
+      offcanvasMenu.removeAttribute("inert");
+      
+      // Toggle icons
+      hamburgerIcon?.classList.add("hidden");
+      closeIcon?.classList.remove("hidden");
+      navToggle?.setAttribute("aria-expanded", "true");
+      
+      // Prevent body scroll
+      document.body.style.overflow = "hidden";
+      if ((window as any).lenis) (window as any).lenis.stop();
     };
     
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    const closeMenu = () => {
+      if (!isOpen || !offcanvasMenu || !offcanvasOverlay) return;
+      isOpen = false;
+      
+      offcanvasMenu.classList.remove("is-open");
+      offcanvasOverlay.classList.remove("is-visible");
+      offcanvasMenu.setAttribute("inert", "");
+      
+      // Toggle icons
+      hamburgerIcon?.classList.remove("hidden");
+      closeIcon?.classList.add("hidden");
+      navToggle?.setAttribute("aria-expanded", "false");
+      
+      // Restore body scroll
+      document.body.style.overflow = "";
+      if ((window as any).lenis) (window as any).lenis.start();
+    };
+    
+    // Toggle handler
+    navToggle?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      isOpen ? closeMenu() : openMenu();
+    });
+    
+    // Close button handler
+    offcanvasClose?.addEventListener("click", closeMenu);
+    
+    // Overlay click closes menu
+    offcanvasOverlay?.addEventListener("click", closeMenu);
+    
+    // Close on link click
+    offcanvasLinks?.forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+    
+    // CTA click handler
+    offcanvasCta?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      window.dispatchEvent(new CustomEvent("open-booking-modal"));
+      closeMenu();
+    });
+    
+    // Close on escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && isOpen) closeMenu();
+    });
+    
+    // Scroll visibility logic
+    const isAlwaysVisible = navContainer.getAttribute('data-always-visible') === 'true';
+    if (!isAlwaysVisible) {
+      const heroHeight = window.innerHeight;
+
+      const handleScroll = () => {
+        if (isOpen) return;
+        
+        const currentScroll = window.scrollY;
+        const isVisible = currentScroll > heroHeight * 0.5;
+
+        navContainer.classList.toggle("opacity-0", !isVisible);
+        navContainer.classList.toggle("-translate-y-3", !isVisible);
+        navContainer.classList.toggle("pointer-events-none", !isVisible);
+        navContainer.setAttribute("aria-hidden", String(!isVisible));
+      };
+      
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      handleScroll();
+    }
   };
   
   document.addEventListener("DOMContentLoaded", initNav);
@@ -110,14 +228,139 @@ const navLinks: NavLink[] = [
 </script>
 
 <style>
-  /* Nav Glass Effect - Uses design tokens */
+  /* ========== NAV BAR ========== */
+  .nav-bar {
+    transition: all 0.3s ease;
+  }
+  
   .nav-glass {
     background: rgb(var(--panel) / 0.95);
     border: 1px solid rgb(var(--border) / 0.1);
     box-shadow: 0 4px 24px rgb(var(--bg) / 0.5);
   }
 
-  /* Phone CTA Button - Circular with accent glow */
+  /* ========== OVERLAY ========== */
+  .offcanvas-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 98;
+  }
+  
+  .offcanvas-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* ========== OFFCANVAS MENU ========== */
+  .offcanvas-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100vh;
+    height: 100dvh;
+    background: rgb(var(--panel));
+    border-left: 1px solid rgb(var(--border) / 0.15);
+    box-shadow: -8px 0 32px rgb(var(--bg) / 0.5);
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 99;
+    display: none;
+  }
+  
+  @media (max-width: 767px) {
+    .offcanvas-menu {
+      display: block;
+    }
+  }
+  
+  .offcanvas-menu.is-open {
+    transform: translateX(0);
+  }
+  
+  .offcanvas-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 24px 20px;
+    padding-top: 60px;
+  }
+
+  /* ========== CLOSE BUTTON ========== */
+  .offcanvas-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    color: rgb(var(--text-secondary));
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .offcanvas-close:hover {
+    background: rgb(var(--border) / 0.1);
+    color: rgb(var(--text));
+  }
+
+  /* ========== OFFCANVAS LINKS ========== */
+  .offcanvas-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+  }
+  
+  .offcanvas-link {
+    display: block;
+    padding: 18px 0;
+    color: rgb(var(--text-secondary));
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid rgb(var(--border) / 0.1);
+    transition: color 0.2s ease, padding-left 0.2s ease;
+  }
+  
+  .offcanvas-link:hover {
+    color: rgb(var(--accent));
+    padding-left: 8px;
+  }
+
+  /* ========== OFFCANVAS CTA ========== */
+  .offcanvas-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    margin-top: auto;
+    background: rgb(var(--accent));
+    color: rgb(var(--bg));
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .offcanvas-cta:hover {
+    background: rgb(var(--accent-light));
+  }
+
+  /* ========== PHONE CTA (Desktop) ========== */
   .phone-cta {
     width: 44px;
     height: 44px;

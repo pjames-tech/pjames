@@ -3,7 +3,6 @@
 // Dynamic route for individual project case studies
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Navbar from "../../components/layout/Navbar.astro";
-import MobileNavOverlay from "../../components/layout/MobileNavOverlay.astro";
 import ChatBot from "../../components/chat/ChatBot.tsx";
 import Footer from "../../components/sections/Footer.astro";
 import BookingModal from "../../components/modals/BookingModal.astro";
@@ -25,7 +24,6 @@ if (!project) {
 
 <BaseLayout title={`${project.title} | P. James`} description={project.description}>
   <Navbar />
-  <MobileNavOverlay />
   
   <main class="min-h-screen pt-8 md:pt-16 pb-16">
     <!-- Hero Section -->

@@ -1,0 +1,34 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF7300;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF9500;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Background with subtle technological darkness -->
+  <rect width="200" height="200" fill="#0A0A0A" rx="40" />
+  
+  <!-- Outer Ring / Orbit -->
+  <circle cx="100" cy="100" r="80" stroke="#FF7300" stroke-width="2" stroke-opacity="0.2" />
+  <path d="M100 20 A 80 80 0 0 1 180 100" stroke="#FF7300" stroke-width="4" stroke-linecap="round" stroke-opacity="0.6" />
+  
+  <!-- Central Hexagon / Robot Head Shape -->
+  <path d="M100 45 L145 70 V130 L100 155 L55 130 V70 Z" fill="#1A1A1A" stroke="#FF7300" stroke-width="2" />
+  
+  <!-- Eyes / Sensors -->
+  <rect x="75" y="85" width="20" height="8" rx="2" fill="#FF7300" filter="url(#glow)" />
+  <rect x="105" y="85" width="20" height="8" rx="2" fill="#FF7300" filter="url(#glow)" />
+  
+  <!-- Mouth / Interface Line -->
+  <path d="M85 120 H115" stroke="#FF7300" stroke-width="2" stroke-linecap="round" stroke-opacity="0.8" />
+  
+  <!-- Data Points / Particles -->
+  <circle cx="100" cy="100" r="3" fill="#FF7300" opacity="0.8" />
+  <circle cx="100" cy="135" r="2" fill="#FF7300" opacity="0.6" />
+  
+</svg>
