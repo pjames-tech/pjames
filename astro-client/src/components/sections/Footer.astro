@@ -2,9 +2,9 @@
 import SocialLinks from "../ui/SocialLinks.astro";
 ---
 
-<footer class="border-t border-white/5 bg-[rgb(var(--panel)/0.6)] backdrop-blur-sm pt-12 pb-24 md:py-12 mt-auto">
+<footer class="border-t border-white/5 bg-[rgb(var(--panel)/0.3)] backdrop-blur-md pt-12 pb-24 md:py-12 mt-auto">
   <div class="container-fluid">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-8 px-4 md:px-0">
       
       <!-- Brand & Copyright -->
       <div class="text-center md:text-left">
@@ -15,10 +15,11 @@ import SocialLinks from "../ui/SocialLinks.astro";
       </div>
 
       <!-- Useful Links -->
-      <div class="flex gap-6 text-sm font-medium text-muted">
+      <div class="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm font-medium text-muted">
         <a href="/" class="hover:text-orange-500 transition-colors">Home</a>
         <a href="/work" class="hover:text-orange-500 transition-colors">Work</a>
         <a href="/pricing" class="hover:text-orange-500 transition-colors">Pricing</a>
+        <a href="/about" class="hover:text-orange-500 transition-colors">About</a>
         <a href="/privacy" class="hover:text-orange-500 transition-colors">Privacy</a>
       </div>
 

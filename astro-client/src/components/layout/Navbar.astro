@@ -16,7 +16,7 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { href: "#work", label: "Work" },
   { href: "#services", label: "Services" },
-  { href: "#about", label: "About" },
+  { href: "/about", label: "About" },
 ];
 ---
 
@@ -87,7 +87,7 @@ const navLinks: NavLink[] = [
 <!-- Overlay backdrop -->
 <div id="offcanvas-overlay" class="offcanvas-overlay"></div>
 
-<!-- Offcanvas Menu (50% width from right) -->
+<!-- Offcanvas Menu (60% width from right) -->
 <div 
   id="offcanvas-menu" 
   class="offcanvas-menu"
@@ -260,7 +260,7 @@ const navLinks: NavLink[] = [
     position: fixed;
     top: 0;
     right: 0;
-    width: 50%;
+    width: 60%;
     height: 100vh;
     height: 100dvh;
     background: rgb(var(--panel));

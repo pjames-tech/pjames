@@ -1,8 +1,8 @@
 ---
-// Brief Form for "Start a Project" submissions
+const { embedded = false } = Astro.props;
 ---
 
-<div class="rounded-[1.25rem] bg-panel soft-border shadow-lg p-[var(--space-3)]">
+<div class={`brief-form-wrapper ${embedded ? '' : 'rounded-[1.25rem] bg-panel soft-border shadow-lg p-[var(--space-3)]'}`}>
   <h3 class="font-display font-bold text-[var(--step-1)] mb-4">
     Start a Project
   </h3>

@@ -150,6 +150,7 @@ const {
             // Extract Data Context
             const packageName = bookingTrigger.getAttribute('data-package');
             const packagePrice = bookingTrigger.getAttribute('data-price');
+            const packageFeaturesRaw = bookingTrigger.getAttribute('data-features');
             
             // Get Form Elements (Scoped to Modal)
             const modal = document.getElementById('booking-modal');
@@ -174,7 +175,20 @@ const {
                 projectNeedInput.readOnly = true;
                 
                 if (detailsInput) {
-                   detailsInput.value = `I'm interested in the ${packageName} package.`;
+                   // Pre-fill details deeply
+                   let detailsText = packagePrice 
+                     ? `I'm interested in the ${packageName} package (${packagePrice}).` 
+                     : `I'm interested in the ${packageName}.`;
+                   
+                   // Append features if available
+                   if (packageFeaturesRaw) {
+                     const features = packageFeaturesRaw.split('|');
+                     if (features.length > 0) {
+                       detailsText += `\n\nIncludes:\n- ${features.join('\n- ')}`;
+                     }
+                   }
+
+                   detailsInput.value = detailsText;
                 }
                 
                 if (hiddenPriceInput && packagePrice) {

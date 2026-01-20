@@ -3,7 +3,7 @@
 // Refactored: Process steps moved to dedicated Process.astro component
 ---
 
-<section id="about" class="py-36 container-fluid">
+<section id="about" class="pt-0 pb-24 container-fluid">
   <!-- Section Header -->
   <div class="mb-12 text-center">
     <p class="text-[var(--step--1)] uppercase tracking-[0.18em] text-[rgb(var(--accent))] font-medium mb-3">
@@ -53,64 +53,63 @@
           <span class="text-text font-medium text-lg block mt-2">Clarity converts, confusion costs.</span>
         </p>
 
-        <!-- THE TRINITY: Competence Stack -->
-        <div class="border-t border-dashed border-zinc-800/50 pt-8 mt-8">
-          <div class="flex items-center gap-3 mb-6">
-            <span class="text-[10px] font-mono uppercase tracking-widest text-[#FF7300] bg-[#FF7300]/10 px-2 py-1 rounded">The Trinity</span>
-            <div class="h-px bg-zinc-800 flex-1"></div>
+      </div>
+    </div>
+    
+    <!-- THE TRINITY: Competence Stack -->
+    <div class="bento-card p-8 md:p-12 mt-6">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-[#FF7300] bg-[#FF7300]/10 px-2 py-1 rounded">The Trinity</span>
+        <div class="h-px bg-zinc-800 flex-1"></div>
+      </div>
+
+      <div class="space-y-6">
+        
+        <!-- 1. DESIGN -->
+        <div class="group/stack">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">01 // DESIGN</span>
+            <span class="text-[10px] text-zinc-500 uppercase tracking-widest">Visual Authority</span>
           </div>
-
-          <div class="space-y-4">
-            
-            <!-- 1. DESIGN -->
-            <div class="group/stack">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">01 // DESIGN</span>
-                <span class="text-[10px] text-zinc-500 uppercase tracking-widest">Visual Authority</span>
-              </div>
-              <div class="relative h-1 bg-zinc-800/50 rounded-full overflow-hidden mb-2">
-                <div class="absolute inset-y-0 left-0 w-[95%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
-              </div>
-              <p class="text-sm text-zinc-400">
-                <span class="text-white font-medium">I design interfaces that build instant trust.</span>
-                <span class="hidden sm:inline text-zinc-600 ml-1">// UI/UX, Identity Systems</span>
-              </p>
-            </div>
-
-            <!-- 2. CODE -->
-            <div class="group/stack">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">02 // CODE</span>
-                <span class="text-[10px] text-zinc-500 uppercase tracking-widest">Full-Stack Arch</span>
-              </div>
-              <div class="relative h-1 bg-zinc-800/50 rounded-full overflow-hidden mb-2">
-                <div class="absolute inset-y-0 left-0 w-[90%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
-              </div>
-              <p class="text-sm text-zinc-400">
-                <span class="text-white font-medium">I build speed, security, and scalability.</span>
-                <span class="hidden sm:inline text-zinc-600 ml-1">// Next.js, Astro, TS</span>
-              </p>
-            </div>
-
-            <!-- 3. AUTOMATION -->
-            <div class="group/stack">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">03 // AUTOMATION</span>
-                <span class="text-[10px] text-zinc-500 uppercase tracking-widest">AI Agents</span>
-              </div>
-              <div class="relative h-1 bg-zinc-800/50 rounded-full overflow-hidden mb-2">
-                <div class="absolute inset-y-0 left-0 w-[100%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
-              </div>
-              <p class="text-sm text-zinc-400">
-                <span class="text-white font-medium">I engineer systems that sell while you sleep.</span>
-                <span class="hidden sm:inline text-zinc-600 ml-1">// LLMs, Workflows, n8n</span>
-              </p>
-            </div>
-
+          <div class="relative h-1.5 bg-zinc-800/50 rounded-full overflow-hidden mb-3">
+            <div class="absolute inset-y-0 left-0 w-[95%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
           </div>
+          <p class="text-base text-zinc-400">
+            <span class="text-white font-medium block sm:inline">I design interfaces that build instant trust.</span>
+            <span class="text-sm text-zinc-600 block sm:inline sm:ml-1">// UI/UX, Identity Systems</span>
+          </p>
         </div>
 
-        <!-- Signature / CTA or decorative element could go here -->
+        <!-- 2. CODE -->
+        <div class="group/stack">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">02 // CODE</span>
+            <span class="text-[10px] text-zinc-500 uppercase tracking-widest">Full-Stack Arch</span>
+          </div>
+          <div class="relative h-1.5 bg-zinc-800/50 rounded-full overflow-hidden mb-3">
+            <div class="absolute inset-y-0 left-0 w-[90%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
+          </div>
+          <p class="text-base text-zinc-400">
+            <span class="text-white font-medium block sm:inline">I build speed, security, and scalability.</span>
+            <span class="text-sm text-zinc-600 block sm:inline sm:ml-1">// Next.js, Astro, TS</span>
+          </p>
+        </div>
+
+        <!-- 3. AUTOMATION -->
+        <div class="group/stack">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">03 // AUTOMATION</span>
+            <span class="text-[10px] text-zinc-500 uppercase tracking-widest">AI Agents</span>
+          </div>
+          <div class="relative h-1.5 bg-zinc-800/50 rounded-full overflow-hidden mb-3">
+            <div class="absolute inset-y-0 left-0 w-[100%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
+          </div>
+          <p class="text-base text-zinc-400">
+            <span class="text-white font-medium block sm:inline">I engineer systems that sell while you sleep.</span>
+            <span class="text-sm text-zinc-600 block sm:inline sm:ml-1">// LLMs, Workflows, n8n</span>
+          </p>
+        </div>
+
       </div>
     </div>
     
