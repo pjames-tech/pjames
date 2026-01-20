@@ -243,7 +243,7 @@ export default function ChatBot() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-[#ff7300] text-white shadow-lg hover:shadow-xl hover:brightness-110 transition-all flex items-center justify-center"
+            className="fixed bottom-4 left-4 z-50 h-12 w-12 rounded-full bg-[#ff7300] text-white shadow-lg hover:shadow-xl hover:brightness-110 transition-all flex items-center justify-center"
             aria-label="Open chat">
             <svg
               className="w-6 h-6"
