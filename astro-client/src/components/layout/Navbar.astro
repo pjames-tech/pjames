@@ -26,58 +26,60 @@ const navLinks: NavLink[] = [
   data-always-visible={alwaysVisible}
   class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 opacity-0 -translate-y-full pointer-events-none"
 >
-  <nav class="nav-bar px-6 py-4 flex items-center gap-4 transition-all duration-500 pointer-events-auto">
-    <!-- Logo (Left) -->
-    <a href="/" class="flex-shrink-0 outline-none">
-      <img
-        src="/logo-new.png"
-        alt="P. JAMES"
-        class="h-10 w-auto object-contain"
-      />
-    </a>
+  <nav class="nav-bar flex items-center transition-all duration-500 pointer-events-auto">
+    <div class="container-fluid flex items-center gap-4 w-full">
+      <!-- Logo (Left) -->
+      <a href="/" class="flex-shrink-0 outline-none">
+        <img
+          src="/logo-new.png"
+          alt="P. JAMES"
+          class="h-10 w-auto object-contain"
+        />
+      </a>
 
-    <!-- Spacer pushes links to the right -->
-    <div class="flex-1"></div>
+      <!-- Spacer pushes links to the right -->
+      <div class="flex-1"></div>
 
-    <!-- Desktop Nav Links (Right) -->
-    <ul class="hidden md:flex items-center gap-1">
-      {navLinks.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            class="nav-link px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white rounded-full hover:bg-zinc-800/50 transition-all"
-          >
-            {link.label}
-          </a>
-        </li>
-      ))}
-    </ul>
+      <!-- Desktop Nav Links (Right) -->
+      <ul class="hidden md:flex items-center gap-1">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="nav-link px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white rounded-full hover:bg-zinc-800/50 transition-all"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
 
-    <!-- Desktop: Phone Icon Button (Far Right) -->
-    <button
-      id="navbar-phone-cta"
-      class="action-book phone-cta hidden md:flex"
-      aria-label="Book Consultation"
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
-      </svg>
-    </button>
+      <!-- Desktop: Phone Icon Button (Far Right) -->
+      <button
+        id="navbar-phone-cta"
+        class="action-book phone-cta hidden md:flex"
+        aria-label="Book Consultation"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+        </svg>
+      </button>
 
-    <!-- Mobile: Hamburger Button -->
-    <button
-      id="nav-toggle"
-      class="md:hidden p-2 rounded-full hover:bg-zinc-800/50 transition text-zinc-400 hover:text-white"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-    >
-      <svg id="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 12h18M3 6h18M3 18h18" />
-      </svg>
-      <svg id="close-icon" class="hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6L6 18M6 6l12 12" />
-      </svg>
-    </button>
+      <!-- Mobile: Hamburger Button -->
+      <button
+        id="nav-toggle"
+        class="md:hidden p-2 rounded-full hover:bg-zinc-800/50 transition text-zinc-400 hover:text-white"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
+        <svg id="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+        <svg id="close-icon" class="hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
   </nav>
 </div>
 
@@ -198,19 +200,31 @@ const navLinks: NavLink[] = [
       if (e.key === "Escape" && isOpen) closeMenu();
     });
     
-    // Scroll behavior: Toggle visibility and styles on scroll
+    let lastScrollY = window.scrollY;
+    
+    // Scroll behavior: Toggle styles on scroll instead of visibility
     const handleScroll = () => {
       const currentScroll = window.scrollY;
-      const threshold = 100; // Show header after 100px of scroll
-      const isVisible = currentScroll > threshold;
+      const threshold = 100; // Small threshold at top
       
-      if (isVisible) {
+      const isPastThreshold = currentScroll > threshold;
+      const isScrollingUp = currentScroll < lastScrollY;
+      
+      // SHOW if:
+      // 1. We are scrolling up AND pas the threshold
+      // HIDE if:
+      // 1. We are at the very top (currentScroll <= threshold)
+      // 2. We are scrolling down
+      
+      if (isScrollingUp && isPastThreshold) {
         navContainer.classList.remove("opacity-0", "-translate-y-full", "pointer-events-none");
         navContainer.classList.add("is-scrolled");
       } else {
         navContainer.classList.add("opacity-0", "-translate-y-full", "pointer-events-none");
         navContainer.classList.remove("is-scrolled");
       }
+      
+      lastScrollY = currentScroll;
     };
     
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -228,15 +242,16 @@ const navLinks: NavLink[] = [
     background: transparent;
     border-bottom: 1px solid transparent;
     backdrop-filter: blur(0px);
+    padding-block: 1.5rem;
   }
   
   /* State when user has scrolled */
   #nav-container.is-scrolled .nav-bar {
-    background: rgb(var(--panel) / 0.8);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgb(var(--border) / 0.15);
+    background: rgb(var(--panel) / 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgb(var(--border) / 0.1);
     padding-block: 0.75rem;
-    box-shadow: 0 4px 20px rgb(0 0 0 / 0.3);
+    box-shadow: 0 4px 30px rgb(0 0 0 / 0.3);
   }
 
   /* ========== OVERLAY ========== */
