@@ -3,7 +3,6 @@
 // Instagram Hook → Design → Standard → Full Stack
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Navbar from "../components/layout/Navbar.astro";
-import ChatBot from "../components/chat/ChatBot.tsx";
 import Footer from "../components/sections/Footer.astro";
 import BookingModal from "../components/modals/BookingModal.astro";
 
@@ -211,7 +210,6 @@ const packages: Package[] = [
   
   <Footer />
   <BookingModal />
-  <ChatBot client:only="react" />
 </BaseLayout>
 
 <style>

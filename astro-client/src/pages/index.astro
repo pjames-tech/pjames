@@ -21,7 +21,6 @@ import Footer from "../components/sections/Footer.astro";
 
 // Modal components
 import BookingModal from "../components/modals/BookingModal.astro";
-import BackToTop from "../components/layout/BackToTop.astro";
 ---
 
 <BaseLayout>
@@ -47,6 +46,5 @@ import BackToTop from "../components/layout/BackToTop.astro";
   <BookingModal />
 
   <!-- Floating Widgets -->
-  <BackToTop />
   <ChatBot client:only="react" />
 </BaseLayout>

@@ -40,7 +40,7 @@ const LEAD_QUESTIONS = [
 ];
 
 export default function ChatBot() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [viewState, setViewState] = useState<ViewState>("welcome");
   const [mode, setMode] = useState<ChatMode>("lead");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -51,16 +51,6 @@ export default function ChatBot() {
   const [isReady, setIsReady] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Check if first visit and auto-open chatbot
-  useEffect(() => {
-    const hasVisited = localStorage.getItem("archibot-visited");
-    if (!hasVisited) {
-      // First visit - open the chatbot and mark as visited
-      setIsOpen(true);
-      localStorage.setItem("archibot-visited", "true");
-    }
-  }, []);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -168,6 +158,74 @@ export default function ChatBot() {
     }
   };
 
+  const extractLeadInfo = (allMessages: Message[]) => {
+    const info: Record<string, string> = {};
+    const userText = allMessages
+      .filter((m) => m.role === "user")
+      .map((m) => m.text)
+      .join(" ");
+
+    // Basic regex extraction for common fields
+    const emailMatch = userText.match(
+      /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+    );
+    if (emailMatch) info.email = emailMatch[0];
+
+    // Name extraction is tricky, usually "My name is X" or similar
+    const nameMatch =
+      userText.match(/my name is ([a-zA-Z\s]+)/i) ||
+      userText.match(/i'm ([a-zA-Z\s]+)/i) ||
+      userText.match(/this is ([a-zA-Z\s]+)/i);
+    if (nameMatch && nameMatch[1]) {
+      const name = nameMatch[1].trim().split(" ")[0]; // Take first word for now
+      if (name.length > 2) info.name = name;
+    }
+
+    // Goal extraction - search for keywords
+    const goals = [
+      "real estate",
+      "leads",
+      "automation",
+      "branding",
+      "website",
+      "design",
+    ];
+    for (const goal of goals) {
+      if (userText.toLowerCase().includes(goal)) {
+        info.goal = goal.charAt(0).toUpperCase() + goal.slice(1);
+        break;
+      }
+    }
+
+    return info;
+  };
+
+  const autoSwitchToLead = (extractedInfo: Record<string, string>) => {
+    setMode("lead");
+    setViewState("chat");
+    setLeadAnswers(extractedInfo);
+
+    // Determine next step based on extracted info
+    let nextStep = 0;
+    while (
+      nextStep < LEAD_QUESTIONS.length &&
+      extractedInfo[LEAD_QUESTIONS[nextStep].key]
+    ) {
+      nextStep++;
+    }
+
+    setLeadStep(nextStep);
+
+    setTimeout(() => {
+      if (nextStep < LEAD_QUESTIONS.length) {
+        const greeting = extractedInfo.name
+          ? `I've noted that, ${extractedInfo.name}. Let's get a few more details so P. James can give you a better response. ${LEAD_QUESTIONS[nextStep].text}`
+          : `Perfect. Let's switch to Lead Capture mode so I can send your project details to P. James. ${LEAD_QUESTIONS[nextStep].text}`;
+        addMessage("assistant", greeting);
+      }
+    }, 800);
+  };
+
   const handleAIChat = async (text: string) => {
     setIsLoading(true);
 
@@ -187,10 +245,28 @@ export default function ChatBot() {
 
       if (res.ok) {
         const data = await res.json();
-        addMessage(
-          "assistant",
-          data.text || "I didn't get a response. Try again?",
+        const aiText = data.text || "";
+        addMessage("assistant", aiText);
+
+        // SMART HANDOFF LOGIC
+        // Detect if AI suggested contact or lead capture
+        const triggerPhrases = [
+          "switch to lead capture",
+          "personalized response",
+          "send your requirements",
+          "send your details",
+          "p. james will respond",
+          "get a custom quote",
+        ];
+
+        const shouldSwitch = triggerPhrases.some((phrase) =>
+          aiText.toLowerCase().includes(phrase),
         );
+
+        if (shouldSwitch) {
+          const info = extractLeadInfo([...messages, { role: "user", text }]);
+          setTimeout(() => autoSwitchToLead(info), 1500);
+        }
       } else if (res.status === 501) {
         addMessage(
           "assistant",
@@ -243,7 +319,7 @@ export default function ChatBot() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-4 left-4 z-50 h-12 w-12 rounded-full bg-[#ff7300] text-white shadow-lg hover:shadow-xl hover:brightness-110 transition-all flex items-center justify-center"
+            className="fixed bottom-4 right-4 z-50 h-12 w-12 rounded-full bg-[#ff7300] text-white shadow-lg hover:shadow-xl hover:brightness-110 transition-all flex items-center justify-center"
             aria-label="Open chat">
             <svg
               className="w-6 h-6"
@@ -275,7 +351,7 @@ export default function ChatBot() {
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-[#ff7300] overflow-hidden flex items-center justify-center border border-[#ff7300]">
                   <img
-                    src="/archibot-avatar.svg"
+                    src="/archibot-v2.svg"
                     alt="Archibot Avatar"
                     className="w-full h-full object-cover"
                   />
@@ -332,7 +408,7 @@ export default function ChatBot() {
                 <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
                   <div className="h-20 w-20 rounded-full bg-[#ff7300]/10 flex items-center justify-center mb-4 border border-[#ff7300]/20 overflow-hidden">
                     <img
-                      src="/archibot-avatar.svg"
+                      src="/archibot-v2.svg"
                       alt="Archibot"
                       className="w-full h-full object-cover"
                     />
