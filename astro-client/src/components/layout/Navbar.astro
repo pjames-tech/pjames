@@ -36,7 +36,10 @@ const navLinks: NavLink[] = [
       />
     </a>
 
-    <!-- Desktop Nav Links (Center) -->
+    <!-- Spacer pushes links to the right -->
+    <div class="flex-1"></div>
+
+    <!-- Desktop Nav Links (Right) -->
     <ul class="hidden md:flex items-center gap-1">
       {navLinks.map((link) => (
         <li>
@@ -50,10 +53,7 @@ const navLinks: NavLink[] = [
       ))}
     </ul>
 
-    <!-- Spacer -->
-    <div class="flex-1"></div>
-
-    <!-- Desktop: Phone Icon Button (Right) -->
+    <!-- Desktop: Phone Icon Button (Far Right) -->
     <button
       id="navbar-phone-cta"
       class="action-book phone-cta hidden md:flex"
