@@ -510,7 +510,7 @@ export default function ChatBot() {
                   {/* Input */}
                   <form
                     onSubmit={handleSubmit}
-                    className="p-3 border-t border-slate-800">
+                    className="p-4 border-t border-slate-800">
                     <div className="flex gap-2">
                       <input
                         id="archibot-input"
@@ -520,12 +520,12 @@ export default function ChatBot() {
                         onChange={(e) => setInput(e.target.value)}
                         placeholder={currentPlaceholder()}
                         disabled={isLoading || isReady}
-                        className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-500 outline-none focus:border-[#ff7300]/50 disabled:opacity-50 transition"
+                        className="flex-1 min-w-0 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-500 outline-none focus:border-[#ff7300]/50 disabled:opacity-50 transition"
                       />
                       <button
                         type="submit"
                         disabled={isLoading || !input.trim() || isReady}
-                        className="px-4 py-2.5 rounded-xl bg-[#ff7300] text-white font-medium text-sm hover:brightness-110 transition disabled:opacity-50 flex items-center justify-center">
+                        className="flex-shrink-0 px-4 py-2.5 rounded-xl bg-[#ff7300] text-white font-medium text-sm hover:brightness-110 transition disabled:opacity-50 flex items-center justify-center">
                         <svg
                           className="w-5 h-5"
                           viewBox="0 0 24 24"
