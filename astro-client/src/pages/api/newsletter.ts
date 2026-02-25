@@ -53,7 +53,7 @@ export const POST: APIRoute = async ({ request }) => {
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
     }
 
@@ -120,7 +120,7 @@ export const POST: APIRoute = async ({ request }) => {
           <tr>
             <td style="text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.05);">
               <p style="margin: 0; font-size: 14px; color: #f4f4f5; font-weight: 500;">P. James</p>
-              <p style="margin: 4px 0 0 0; font-size: 12px; color: #a1a1aa;">AI Brand Architect</p>
+              <p style="margin: 4px 0 0 0; font-size: 12px; color: #a1a1aa;">AI Brand Technologist</p>
               <p style="margin: 16px 0 0 0; font-size: 11px; color: #71717a;">
                 You're receiving this because you subscribed at pjames.dev.<br>
                 Reply to this email anytime — I read every message.
@@ -139,7 +139,7 @@ export const POST: APIRoute = async ({ request }) => {
           from: `"P. James" <${import.meta.env.SMTP_USER}>`,
           to: safeString(email),
           subject: "Welcome to The AI-Growth Newsletter 🚀",
-          text: `Welcome to The AI-Growth Newsletter!\n\nHey there! I'm P. James, and I build revenue engines — not just pretty websites.\n\nEvery week, I'll send you insights on:\n• AI Automation - Bots, workflows, and tools that save time\n• Brand Strategy - Identity systems that make your business memorable\n• Growth Tactics - What's actually working right now\n• Tool Breakdowns - Honest reviews and tutorials\n\nNo fluff. No spam. Just actionable insights.\n\nTalk soon,\nP. James\nAI Brand Architect`,
+          text: `Welcome to The AI-Growth Newsletter!\n\nHey there! I'm P. James, and I build revenue engines — not just pretty websites.\n\nEvery week, I'll send you insights on:\n• AI Automation - Bots, workflows, and tools that save time\n• Brand Strategy - Identity systems that make your business memorable\n• Growth Tactics - What's actually working right now\n• Tool Breakdowns - Honest reviews and tutorials\n\nNo fluff. No spam. Just actionable insights.\n\nTalk soon,\nP. James\nAI Brand Technologist`,
           html: welcomeHtml,
         });
       } catch (err: any) {
@@ -156,7 +156,7 @@ export const POST: APIRoute = async ({ request }) => {
             to: toEmail,
             subject: "🎉 New Newsletter Subscriber!",
             text: `New newsletter signup!\n\nEmail: ${safeString(
-              email
+              email,
             )}\nTimestamp: ${safeString(ts)}`,
           });
         } catch (err: any) {
@@ -174,7 +174,7 @@ export const POST: APIRoute = async ({ request }) => {
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error: any) {
     console.error("[Newsletter] Error:", error);

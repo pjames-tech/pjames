@@ -51,7 +51,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const subject = `🔥 New Lead — ${safeString(
-      answers.business || "Website enquiry"
+      answers.business || "Website enquiry",
     )}`;
 
     const html = `
@@ -71,7 +71,7 @@ export const POST: APIRoute = async ({ request }) => {
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #11131a; border-radius: 14px;">
                 <tr>
                   <td style="padding: 24px; text-align: center;">
-                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #BF5700;">🔥 New Lead from ARCHIBOT</h1>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #BF5700;">🔥 New Lead from MAXIMUS</h1>
                     <p style="margin: 8px 0 0 0; font-size: 14px; color: #a1a1aa;">Captured via Lead Capture Mode</p>
                   </td>
                 </tr>
@@ -87,24 +87,24 @@ export const POST: APIRoute = async ({ request }) => {
               
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                 <tr><td style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Name</span><br><span style="color: #f4f4f5; font-size: 16px; font-weight: 500;">${safeString(
-                  answers.name || "Not provided"
+                  answers.name || "Not provided",
                 )}</span></td></tr>
                 <tr><td style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Email</span><br><a href="mailto:${safeString(
-                  answers.email
+                  answers.email,
                 )}" style="color: #BF5700; font-size: 16px; font-weight: 500; text-decoration: none;">${safeString(
-      answers.email
-    )}</a></td></tr>
+                  answers.email,
+                )}</a></td></tr>
                 <tr><td style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Business / Niche</span><br><span style="color: #f4f4f5; font-size: 16px; font-weight: 500;">${safeString(
-                  answers.business || "Not provided"
+                  answers.business || "Not provided",
                 )}</span></td></tr>
                 <tr><td style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Goal (30-60 days)</span><br><span style="color: #f4f4f5; font-size: 16px;">${safeString(
-                  answers.goal || "Not provided"
+                  answers.goal || "Not provided",
                 )}</span></td></tr>
                 <tr><td style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Budget Range</span><br><span style="color: #f4f4f5; font-size: 16px; font-weight: 500;">${safeString(
-                  answers.budget || "Not provided"
+                  answers.budget || "Not provided",
                 )}</span></td></tr>
                 <tr><td style="padding: 12px 0;"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Timeline</span><br><span style="color: #f4f4f5; font-size: 16px;">${safeString(
-                  answers.timeline || "Not provided"
+                  answers.timeline || "Not provided",
                 )}</span></td></tr>
               </table>
             </td>
@@ -115,10 +115,10 @@ export const POST: APIRoute = async ({ request }) => {
           <tr>
             <td style="text-align: center;">
               <a href="mailto:${safeString(
-                answers.email
+                answers.email,
               )}?subject=Re: Your Project Inquiry" style="display: inline-block; background: linear-gradient(135deg, #BF5700, #FF7B00); color: #0a0b0e; font-weight: 700; text-decoration: none; padding: 16px 32px; border-radius: 999px; font-size: 16px;">Reply to ${safeString(
-      answers.name || "Lead"
-    )}</a>
+                answers.name || "Lead",
+              )}</a>
             </td>
           </tr>
         </table>
@@ -127,9 +127,9 @@ export const POST: APIRoute = async ({ request }) => {
           <tr>
             <td style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
               <p style="margin: 0; font-size: 12px; color: #a1a1aa;">Source: ${safeString(
-                source
+                source,
               )} • ${safeString(meta?.ts || new Date().toISOString())}</p>
-              <p style="margin: 8px 0 0 0; font-size: 12px; color: #71717a;">P. James | AI Brand Architect</p>
+              <p style="margin: 8px 0 0 0; font-size: 12px; color: #71717a;">P. James | AI Brand Technologist</p>
             </td>
           </tr>
         </table>
@@ -140,7 +140,7 @@ export const POST: APIRoute = async ({ request }) => {
 </html>`;
 
     const text = [
-      "🔥 New Lead from ARCHIBOT",
+      "🔥 New Lead from MAXIMUS",
       "",
       "Answers:",
       asTextBlock(answers),
@@ -154,7 +154,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (toEmail) {
       await transporter.sendMail({
         from: `"${safeString(
-          import.meta.env.FROM_NAME || "P. James Website"
+          import.meta.env.FROM_NAME || "P. James Website",
         )}" <${import.meta.env.SMTP_USER}>`,
         to: toEmail,
         replyTo: safeString(answers.email),

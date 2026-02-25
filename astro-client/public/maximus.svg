@@ -1,0 +1,55 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Skin Tone Grad -->
+    <linearGradient id="skin_main" x1="128" y1="40" x2="128" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#475569"/> <!-- High-end slate -->
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    
+    <!-- Accent for neural connection -->
+    <linearGradient id="neural_accent" x1="128" y1="100" x2="128" y2="140" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff7300"/>
+      <stop offset="1" stop-color="#bf5700"/>
+    </linearGradient>
+
+    <filter id="soft_glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Circle (Soft) -->
+  <circle cx="128" cy="128" r="115" fill="#0f172a" />
+  <circle cx="128" cy="128" r="115" stroke="#ff7300" stroke-width="2" opacity="0.1" />
+
+  <!-- Shoulders / Torso -->
+  <path d="M50 240c0-25 35-45 78-45s78 20 78 45v16H50v-16z" fill="#1e293b" />
+  <path d="M128 195v61" stroke="#ff7300" stroke-width="1" opacity="0.2" />
+
+  <!-- Face Shape -->
+  <path d="M128 45c-30 0-55 25-55 58 0 28 15 50 38 65 5 3 7 8 7 14v10h20v-10c0-6 2-11 7-14 23-15 38-37 38-65 0-33-25-58-55-58z" fill="#334155" />
+  
+  <!-- Face Contours -->
+  <path d="M128 55c-25 0-45 20-45 45 0 20 10 38 28 48 3 2 5 7 5 12h24c0-5 2-10 5-12 18-10 28-28 28-48 0-25-20-45-45-45z" fill="url(#skin_main)" opacity="0.8" />
+
+  <!-- Intelligent Features -->
+  <!-- Eyes -->
+  <g filter="url(#soft_glow)">
+    <circle cx="102" cy="110" r="6" fill="#ff7300" />
+    <circle cx="154" cy="110" r="6" fill="#ff7300" />
+  </g>
+  <circle cx="104" cy="108" r="2" fill="white" />
+  <circle cx="156" cy="108" r="2" fill="white" />
+
+  <!-- Smile -->
+  <path d="M112 150c4 5 28 5 32 0" stroke="#ff7300" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+
+  <!-- Neural Temples -->
+  <path d="M175 95l10-8M180 115h12" stroke="#ff7300" stroke-width="2" stroke-linecap="round" opacity="0.4" />
+  <path d="M81 95l-10-8M76 115h-12" stroke="#ff7300" stroke-width="2" stroke-linecap="round" opacity="0.4" />
+
+  <!-- Foresight Pulse -->
+  <circle cx="128" cy="75" r="4" fill="#ff7300" opacity="0.5">
+    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite" />
+  </circle>
+</svg>

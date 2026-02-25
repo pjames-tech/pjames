@@ -27,7 +27,7 @@ if (!project) {
   <main class="min-h-screen pt-8 md:pt-16 pb-16">
     <!-- Hero Section -->
     <section class="container-fluid mb-12">
-      <a href="/work" class="inline-flex items-center gap-2 text-zinc-400 hover:text-orange-400 transition mb-8 group">
+      <a href="/work" class="inline-flex items-center gap-2 text-muted hover:text-accent transition mb-8 group">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:-translate-x-1 transition-transform">
           <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
@@ -44,20 +44,20 @@ if (!project) {
                 [ {project.badge} ]
               </span>
             </span>
-            <span class="text-zinc-500 text-sm">{project.year}</span>
+            <span class="text-muted text-sm">{project.year}</span>
           </div>
           
-          <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+          <h1 class="text-4xl md:text-5xl font-bold text-text mb-4 leading-tight">
             {project.title}
           </h1>
           
-          <p class="text-lg text-zinc-400 mb-6 leading-relaxed">
+          <p class="text-lg text-muted mb-6 leading-relaxed">
             {project.description}
           </p>
           
           <div class="flex flex-wrap gap-2 mb-8">
             {project.tools.map((tool) => (
-              <span class="px-3 py-1 text-xs font-medium bg-zinc-800 text-zinc-300 rounded-full border border-zinc-700">
+              <span class="px-3 py-1 text-xs font-medium bg-panel2 border soft-border shadow-sm transition-all">
                 {tool}
               </span>
             ))}

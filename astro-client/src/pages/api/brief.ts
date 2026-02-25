@@ -50,7 +50,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const subject = `🔥 New Project Brief — ${safeString(
-      business || "Website enquiry"
+      business || "Website enquiry",
     )}`;
 
     const html = `
@@ -86,21 +86,21 @@ export const POST: APIRoute = async ({ request }) => {
               
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                 <tr><td style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Name</span><br><span style="color: #f4f4f5; font-size: 16px; font-weight: 500;">${safeString(
-                  name || "Not provided"
+                  name || "Not provided",
                 )}</span></td></tr>
                 <tr><td style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Email</span><br><a href="mailto:${safeString(
-                  email
+                  email,
                 )}" style="color: #BF5700; font-size: 16px; font-weight: 500; text-decoration: none;">${safeString(
-      email
-    )}</a></td></tr>
+                  email,
+                )}</a></td></tr>
                 <tr><td style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Business / Niche</span><br><span style="color: #f4f4f5; font-size: 16px; font-weight: 500;">${safeString(
-                  business || "Not provided"
+                  business || "Not provided",
                 )}</span></td></tr>
                 <tr><td style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Requested Package</span><br><span style="color: #f4f4f5; font-size: 16px; font-weight: 500;">${safeString(
-                  pkg || "Not specified"
+                  pkg || "Not specified",
                 )}</span></td></tr>
                 <tr><td style="padding: 12px 0;"><span style="color: #a1a1aa; font-size: 12px; text-transform: uppercase;">Details</span><br><span style="color: #f4f4f5; font-size: 16px; line-height: 1.5;">${safeString(
-                  details || "No details provided"
+                  details || "No details provided",
                 )}</span></td></tr>
               </table>
             </td>
@@ -111,10 +111,10 @@ export const POST: APIRoute = async ({ request }) => {
           <tr>
             <td style="text-align: center;">
               <a href="mailto:${safeString(
-                email
+                email,
               )}?subject=Re: Your Project Inquiry" style="display: inline-block; background: linear-gradient(135deg, #BF5700, #FF7B00); color: #0a0b0e; font-weight: 700; text-decoration: none; padding: 16px 32px; border-radius: 999px; font-size: 16px;">Reply to ${safeString(
-      name || "Lead"
-    )}</a>
+                name || "Lead",
+              )}</a>
             </td>
           </tr>
         </table>
@@ -123,9 +123,9 @@ export const POST: APIRoute = async ({ request }) => {
           <tr>
             <td style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
               <p style="margin: 0; font-size: 12px; color: #a1a1aa;">Source: ${safeString(
-                source || "website"
+                source || "website",
               )} • ${safeString(ts || new Date().toISOString())}</p>
-              <p style="margin: 8px 0 0 0; font-size: 12px; color: #71717a;">P. James | AI Brand Architect</p>
+              <p style="margin: 8px 0 0 0; font-size: 12px; color: #71717a;">P. James | AI Brand Technologist</p>
             </td>
           </tr>
         </table>
@@ -136,16 +136,16 @@ export const POST: APIRoute = async ({ request }) => {
 </html>`;
 
     const text = `🔥 New Project Brief\n\nName: ${safeString(
-      name
+      name,
     )}\nEmail: ${safeString(email)}\nBusiness: ${safeString(
-      business
+      business,
     )}\nPackage: ${safeString(pkg)}\n\nDetails:\n${safeString(
-      details
+      details,
     )}\n\nTimestamp: ${safeString(ts)}\nSource: ${safeString(source)}`;
 
     await transporter.sendMail({
       from: `"${safeString(
-        import.meta.env.FROM_NAME || "P. James Website"
+        import.meta.env.FROM_NAME || "P. James Website",
       )}" <${import.meta.env.SMTP_USER}>`,
       to: toEmail,
       replyTo: safeString(email),

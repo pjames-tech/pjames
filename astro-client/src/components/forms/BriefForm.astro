@@ -24,7 +24,7 @@ const { embedded = false } = Astro.props;
         <input
           name="name"
           autocomplete="name"
-          class="mt-2 w-full rounded-pill bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow"
+          class="mt-2 w-full rounded-pill bg-panel2/50 soft-border px-4 py-3 outline-none focus:bg-panel focus:border-accent/40 focus:shadow-sm"
           required
         />
       </label>
@@ -34,7 +34,7 @@ const { embedded = false } = Astro.props;
           name="email"
           type="email"
           autocomplete="email"
-          class="mt-2 w-full rounded-pill bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow"
+          class="mt-2 w-full rounded-pill bg-panel2/50 soft-border px-4 py-3 outline-none focus:bg-panel focus:border-accent/40 focus:shadow-sm"
           required
         />
       </label>
@@ -46,7 +46,7 @@ const { embedded = false } = Astro.props;
         name="business"
         autocomplete="organization"
         placeholder="e.g. Real Estate, Coaching, SaaS"
-        class="mt-2 w-full rounded-pill bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow"
+        class="mt-2 w-full rounded-pill bg-panel2/50 soft-border px-4 py-3 outline-none focus:bg-panel focus:border-accent/40 focus:shadow-sm"
       />
     </label>
     
@@ -56,7 +56,7 @@ const { embedded = false } = Astro.props;
         name="package"
         autocomplete="off"
         placeholder="Brand / Web / Bot"
-        class="project-need-input mt-2 w-full rounded-pill bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow read-only:bg-[rgb(var(--accent)/0.1)] read-only:text-[rgb(var(--accent))]"
+        class="project-need-input mt-2 w-full rounded-pill bg-panel2/50 soft-border px-4 py-3 outline-none focus:bg-panel focus:border-accent/40 focus:shadow-sm read-only:bg-accent/10 read-only:text-accent"
       />
     </label>
     
@@ -66,7 +66,7 @@ const { embedded = false } = Astro.props;
         name="details"
         rows={3}
         placeholder="Brief overview of your project..."
-        class="mt-2 w-full rounded-2xl bg-[rgb(var(--bg))]/35 soft-border px-4 py-3 outline-none focus:shadow-glow resize-none"
+        class="mt-2 w-full rounded-2xl bg-panel2/50 soft-border px-4 py-3 outline-none focus:bg-panel focus:border-accent/40 focus:shadow-sm resize-none"
       ></textarea>
     </label>
     

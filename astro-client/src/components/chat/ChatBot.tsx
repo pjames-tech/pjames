@@ -40,7 +40,7 @@ const LEAD_QUESTIONS = [
 ];
 
 export default function ChatBot() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [viewState, setViewState] = useState<ViewState>("welcome");
   const [mode, setMode] = useState<ChatMode>("lead");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -49,6 +49,7 @@ export default function ChatBot() {
   const [leadStep, setLeadStep] = useState(0);
   const [leadAnswers, setLeadAnswers] = useState<Record<string, string>>({});
   const [isReady, setIsReady] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -59,21 +60,58 @@ export default function ChatBot() {
 
   // Listen for external events to open the chatbot
   useEffect(() => {
-    const handleOpenArchibot = () => {
+    const handleOpenMaximus = () => {
       setIsOpen(true);
+      handleInteraction();
     };
 
-    window.addEventListener("open-archibot", handleOpenArchibot);
+    window.addEventListener("open-maximus", handleOpenMaximus);
     return () => {
-      window.removeEventListener("open-archibot", handleOpenArchibot);
+      window.removeEventListener("open-maximus", handleOpenMaximus);
     };
   }, []);
 
+  // Delay Maximus auto-popup and implement auto-close
+  useEffect(() => {
+    const popupDelayMs = 10_000;
+    const autoCloseDelayMs = 10_000;
+    let autoCloseTimer: number;
+
+    const timer = window.setTimeout(() => {
+      setIsOpen((currentOpen) => {
+        if (!currentOpen) {
+          // Open the bot
+          setIsReady(true); // Dummy to trigger re-render if needed
+
+          // Start auto-close timer if user hasn't interacted
+          autoCloseTimer = window.setTimeout(() => {
+            setIsOpen((stillOpen) => {
+              if (stillOpen && !hasInteracted) return false;
+              return stillOpen;
+            });
+          }, autoCloseDelayMs);
+
+          return true;
+        }
+        return currentOpen;
+      });
+    }, popupDelayMs);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.clearTimeout(autoCloseTimer);
+    };
+  }, [hasInteracted]);
+
+  const handleInteraction = () => setHasInteracted(true);
+
   const addMessage = (role: "user" | "assistant", text: string) => {
+    handleInteraction();
     setMessages((prev) => [...prev, { role, text }]);
   };
 
   const startMode = (newMode: ChatMode) => {
+    handleInteraction();
     setMode(newMode);
     setViewState("chat");
     setMessages([]);
@@ -129,7 +167,7 @@ export default function ChatBot() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            source: "archibot-lead",
+            source: "maximus-lead",
             answers,
             meta: { ts: new Date().toISOString() },
           }),
@@ -321,17 +359,8 @@ export default function ChatBot() {
             onClick={() => setIsOpen(true)}
             className="fixed bottom-4 right-4 z-50 h-12 w-12 rounded-full bg-[#ff7300] text-white shadow-lg hover:shadow-xl hover:brightness-110 transition-all flex items-center justify-center"
             aria-label="Open chat">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              />
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
             </svg>
           </motion.button>
         )}
@@ -347,25 +376,26 @@ export default function ChatBot() {
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
             className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-96px)] flex flex-col rounded-2xl overflow-hidden shadow-2xl">
             {/* Header */}
-            <div className="bg-slate-900 px-4 py-3 flex items-center justify-between">
+            {/* Header */}
+            <div className="bg-panel px-4 py-3 flex items-center justify-between border-b soft-border">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-[#ff7300] overflow-hidden flex items-center justify-center border border-[#ff7300]">
                   <img
-                    src="/archibot-v2.svg"
-                    alt="Archibot Avatar"
+                    src="/maximus.svg"
+                    alt="Maximus Avatar"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white text-sm">Archibot</h3>
-                  <p className="text-xs text-slate-400">AI Brand Associate</p>
+                  <h3 className="font-semibold text-text text-sm">Maximus</h3>
+                  <p className="text-xs text-muted">AI Brand Associate</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 {viewState === "chat" && (
                   <button
                     onClick={resetToWelcome}
-                    className="text-slate-400 hover:text-white transition p-1"
+                    className="text-muted hover:text-text transition p-1"
                     aria-label="Back to menu">
                     <svg
                       className="w-5 h-5"
@@ -383,7 +413,7 @@ export default function ChatBot() {
                 )}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="text-slate-400 hover:text-white transition p-1"
+                  className="text-muted hover:text-text transition p-1"
                   aria-label="Close chat">
                   <svg
                     className="w-5 h-5"
@@ -402,22 +432,22 @@ export default function ChatBot() {
             </div>
 
             {/* Body */}
-            <div className="flex-1 bg-slate-950 flex flex-col overflow-hidden">
+            <div className="flex-1 bg-bg flex flex-col overflow-hidden">
               {viewState === "welcome" ? (
                 /* Welcome View */
                 <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
                   <div className="h-20 w-20 rounded-full bg-[#ff7300]/10 flex items-center justify-center mb-4 border border-[#ff7300]/20 overflow-hidden">
                     <img
-                      src="/archibot-v2.svg"
-                      alt="Archibot"
+                      src="/maximus.svg"
+                      alt="Maximus"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h4 className="text-white font-semibold text-lg mb-2">
+                  <h4 className="text-text font-semibold text-lg mb-2">
                     Hey there! 👋
                   </h4>
-                  <p className="text-slate-400 text-sm mb-6 max-w-[280px]">
-                    I'm Archibot, your AI Brand Associate. How can I help you
+                  <p className="text-muted text-sm mb-6 max-w-[280px]">
+                    I'm Maximus, your AI Brand Associate. How can I help you
                     today?
                   </p>
                   <div className="flex flex-col gap-3 w-full max-w-[260px]">
@@ -440,7 +470,7 @@ export default function ChatBot() {
                     </button>
                     <button
                       onClick={() => startMode("ai")}
-                      className="w-full py-3 px-4 rounded-xl bg-slate-800 text-white font-medium text-sm hover:bg-slate-700 transition flex items-center justify-center gap-2">
+                      className="w-full py-3 px-4 rounded-xl bg-panel2 text-text font-medium text-sm hover:brightness-95 transition flex items-center justify-center gap-2 border soft-border shadow-sm">
                       <svg
                         className="w-5 h-5"
                         fill="none"
@@ -461,12 +491,12 @@ export default function ChatBot() {
                 /* Chat View */
                 <>
                   {/* Mode Indicator */}
-                  <div className="px-4 py-2 border-b border-slate-800">
+                  <div className="px-4 py-2 border-b soft-border">
                     <span
                       className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full ${
                         mode === "lead"
-                          ? "bg-[#ff7300]/20 text-[#ff7300]"
-                          : "bg-slate-800 text-slate-300"
+                          ? "bg-[#ff7300]/10 text-[#ff7300]"
+                          : "bg-panel2 text-muted border soft-border"
                       }`}>
                       <span
                         className={`w-1.5 h-1.5 rounded-full ${
@@ -484,22 +514,22 @@ export default function ChatBot() {
                         className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
                           msg.role === "user"
                             ? "ml-auto bg-[#ff7300] text-white"
-                            : "bg-slate-800 text-slate-100"
+                            : "bg-panel2 text-text border soft-border"
                         }`}>
                         {msg.text}
                       </div>
                     ))}
                     {isLoading && (
-                      <div className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm bg-slate-800 text-slate-400">
+                      <div className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm bg-panel2 text-muted border soft-border">
                         <span className="inline-flex gap-1">
                           <span
-                            className="w-2 h-2 bg-slate-500 rounded-full animate-bounce"
+                            className="w-1.5 h-1.5 bg-muted/40 rounded-full animate-bounce"
                             style={{ animationDelay: "0ms" }}></span>
                           <span
-                            className="w-2 h-2 bg-slate-500 rounded-full animate-bounce"
+                            className="w-1.5 h-1.5 bg-muted/40 rounded-full animate-bounce"
                             style={{ animationDelay: "150ms" }}></span>
                           <span
-                            className="w-2 h-2 bg-slate-500 rounded-full animate-bounce"
+                            className="w-1.5 h-1.5 bg-muted/40 rounded-full animate-bounce"
                             style={{ animationDelay: "300ms" }}></span>
                         </span>
                       </div>
@@ -510,17 +540,17 @@ export default function ChatBot() {
                   {/* Input */}
                   <form
                     onSubmit={handleSubmit}
-                    className="p-4 border-t border-slate-800">
+                    className="p-4 border-t soft-border">
                     <div className="flex gap-2">
                       <input
-                        id="archibot-input"
+                        id="maximus-input"
                         type="text"
                         autoComplete="off"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder={currentPlaceholder()}
                         disabled={isLoading || isReady}
-                        className="flex-1 min-w-0 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-500 outline-none focus:border-[#ff7300]/50 disabled:opacity-50 transition"
+                        className="flex-1 min-w-0 bg-panel2 border soft-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted/60 outline-none focus:border-[#ff7300]/50 disabled:opacity-50 transition"
                       />
                       <button
                         type="submit"

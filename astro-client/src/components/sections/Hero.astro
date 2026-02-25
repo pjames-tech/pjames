@@ -11,13 +11,12 @@ const features: FeatureCard[] = [
   { title: "Zero-Touch Closing", description: "AI infrastructure that nurtures and sells 24/7." },
 ];
 
+const whatsappNumber = "2347033302085"; // Added if needed components
 import ThreeHero from "../ui/ThreeHero.jsx";
 ---
 
 <header id="top" class="hero-section">
   <!-- Background Image - Heavily Faded -->
-  <!-- Background Image - Heavily Faded -->
-  <!-- Overlays removed for seamless blend -->
   <div class="background-layer hidden"></div>
 
   <!-- Main Grid Container -->
@@ -25,24 +24,14 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     
     <!-- Left Column: Content -->
     <div class="hero-content">
-      <!-- Status Badge -->
-      <div class="status-badge">
-        <span class="status-dot animate-pulse"></span>
-        <span class="status-text">
-          AI Brand Architect • Available
-        </span>
-      </div>
-      
-      <!-- Headline -->
+      <!-- Headline (Resend-Style One Liner) -->
       <h1 class="hero-headline">
-        Stop Building Websites.
-        <br />
-        <span class="text-accent architect-glow">Architect a Revenue Engine.</span>
+        <span class="text-accent architect-glow">Scale </span> without friction.
       </h1>
       
       <!-- Description -->
       <p class="hero-description">
-        Deploy an AI-driven brand architecture that runs on autopilot. From authority systems to automated pipelines; turn traffic into revenue on autopilot.
+        Build high-yield systems that save cost & time by fusing design, code and AI automation. Operate 10x faster and turn traffic into scalable revenue.
       </p>
       
       <!-- CTAs -->
@@ -50,7 +39,7 @@ import ThreeHero from "../ui/ThreeHero.jsx";
         <button
           class="btn-primary-custom group action-book"
         >
-          <span class="relative z-10">Build My Engine</span>
+          <span class="relative z-10">Get Started</span>
           <div class="btn-hover-overlay"></div>
         </button>
         <a
@@ -63,16 +52,9 @@ import ThreeHero from "../ui/ThreeHero.jsx";
       </div>
     </div>
     
-    <!-- Right Column: Feature Cards -->
-    <div class="hero-features">
-      {features.map((feature) => (
-        <div class="feature-card group">
-          <h3 class="feature-title group-hover:text-accent">
-            {feature.title}
-          </h3>
-          <p class="feature-desc">{feature.description}</p>
-        </div>
-      ))}
+    <!-- Right Column: 3D Element Container -->
+    <div class="hero-3d-container">
+      <ThreeHero client:only="react" />
     </div>
   </div>
 </header>
@@ -83,17 +65,17 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     position: relative;
     min-height: 100dvh;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    align-items: center;
     overflow-x: hidden;
-    padding-block: 3rem 2rem;
+    padding-block: clamp(1.2rem, 2.6vh, 2rem) clamp(1rem, 2vh, 1.6rem);
     will-change: transform;
   }
 
-  @media (min-width: 768px) {
+  @media (max-width: 767px) {
     .hero-section {
-      justify-content: center;
-      padding-block: 1rem 3rem;
+      align-items: flex-start;
+      min-height: auto;
+      padding-block: 2.4rem 1.2rem;
     }
   }
 
@@ -128,103 +110,85 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     position: relative;
     z-index: 10;
     display: grid;
-    gap: 3rem; /* Tighter gap */
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 520px);
+    grid-template-areas: "content visual";
+    gap: clamp(2rem, 4vw, 4.5rem);
     align-items: center;
-    grid-template-columns: 1.2fr 0.8fr; /* More space for text, compact cards */
-    max-width: 1150px; /* Tighter container to prevent 'scattered' look */
+    max-width: 1200px;
     margin-inline: auto;
+    min-height: clamp(560px, 74vh, 820px);
+    padding-block: 0;
   }
 
   .hero-content {
+    grid-area: content;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: clamp(1.1rem, 2vw, 1.9rem);
     text-align: left;
     align-items: flex-start;
+    position: relative;
+    z-index: 20;
+    max-width: 42rem;
   }
 
-  .hero-features {
+  .hero-3d-container {
+    grid-area: visual;
+    position: relative;
+    width: min(100%, 520px);
+    height: clamp(320px, 34vw, 540px);
+    min-height: 320px;
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem; /* Closer cards */
-    max-width: 420px; /* Constrain card width */
-    width: 100%;
-    margin-left: auto; /*Align to right side of its column */
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    margin-inline: auto;
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .hero-3d-container::before {
+    content: "";
+    position: absolute;
+    inset: 12% 6%;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(circle at 34% 30%, rgb(var(--accent) / 0.2), transparent 56%),
+      radial-gradient(circle at 68% 65%, rgb(var(--accent2) / 0.16), transparent 62%);
+    filter: blur(24px);
   }
 
   /* Components */
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    border-radius: 9999px;
-    border: 1px solid rgb(var(--border) / 0.15);
-    background: rgb(var(--panel) / 0.9);
-    padding: 0.4rem 1rem;
-    width: fit-content;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  @media (min-width: 768px) {
-    .status-badge {
-      padding: 0.3rem 0.8rem;
-      gap: 0.35rem;
-    }
-  }
-
-  .status-dot {
-    height: 0.4rem;
-    width: 0.4rem;
-    border-radius: 9999px;
-    background-color: #2EFF2E;
-    box-shadow: 0 0 8px rgba(46, 255, 46, 0.5);
-  }
-
-  @media (min-width: 768px) {
-    .status-dot {
-      height: 0.35rem;
-      width: 0.35rem;
-    }
-  }
-
-  .status-text {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: rgba(var(--text),0.8);
-    font-weight: 500;
-  }
-
-  @media (min-width: 768px) {
-    .status-text {
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-    }
-  }
-
   .hero-headline {
-    font-weight: 600;
-    font-size: clamp(2rem, 3.5vw + 1rem, 3.5rem);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.45rem, 4.35vw + 1rem, 4.45rem);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
     color: rgb(var(--text));
+    max-width: 14ch;
+    margin: 0;
   }
 
   .hero-description {
-    font-size: clamp(0.95rem, 0.5vw + 0.6rem, 1.1rem);
-    color: rgba(var(--text),0.7);
-    max-width: 46ch;
+    font-size: clamp(1rem, 0.45vw + 0.7rem, 1.16rem);
+    color: rgb(var(--text) / 0.85);
+    max-width: 52ch;
     font-weight: 300;
-    line-height: 1.6;
+    line-height: 1.65;
+    margin: 0;
   }
 
   /* Buttons */
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 0.9rem;
+    margin-top: 0.5rem;
   }
 
   .btn-primary-custom {
@@ -306,64 +270,75 @@ import ThreeHero from "../ui/ThreeHero.jsx";
   }
 
   .feature-desc {
-    font-size: 0.85rem; /* Smaller desc */
-    color: rgba(var(--text),0.6);
-    line-height: 1.4;
-    font-weight: 300;
-  }
+  font-size: 0.85rem; /* Smaller desc */
+  color: rgb(var(--text) / 0.8); /* Increased opacity */
+  line-height: 1.4;
+  font-weight: 400; /* Increased weight */
+}
 
   /* ========================================
      MOBILE RESPONSIVE (< 768px)
      ======================================== */
   @media (max-width: 767px) {
-    .hero-section {
-      padding-block: 3rem 2rem;
-    }
-
     .hero-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "visual"
+        "content";
+      gap: 1.5rem;
+      min-height: auto;
+      padding-top: 0;
     }
 
     .hero-content {
-      align-items: flex-start;
-      text-align: left;
-      order: 1;
+      order: 2;
+      align-items: center;
+      text-align: center;
+      max-width: 100%;
+      gap: 1.1rem;
     }
 
-    /* Compact badge on mobile */
-    .status-badge {
-      padding: 0.375rem 0.75rem;
-      gap: 0.375rem;
+    .hero-headline {
+      max-width: 11.5ch;
+      font-size: clamp(2.25rem, 10vw, 3.15rem);
+      line-height: 1.05;
     }
 
-    .status-text {
-      font-size: 10px;
-      letter-spacing: 0.1em;
+    .hero-description {
+      max-width: 42ch;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      margin-inline: auto;
     }
 
     /* Full-width stacked CTAs on mobile */
     .hero-actions {
       flex-direction: column;
       width: 100%;
-      max-width: 300px;
+      max-width: 320px;
       gap: 0.75rem;
+      margin-top: 0.35rem;
+      margin-inline: auto;
+      align-items: center;
     }
 
     .btn-primary-custom,
     .btn-secondary-custom {
       width: 100%;
       justify-content: center;
+      padding: 0.95rem 1.4rem;
     }
 
-    /* Feature cards hidden on mobile */
+    .hero-3d-container {
+      order: 1;
+      height: clamp(260px, 62vw, 340px);
+      min-height: 260px;
+      margin-top: 0;
+      margin-bottom: 0.35rem;
+    }
+
     .hero-features {
       display: none;
-    }
-
-    .feature-card {
-      padding: 1rem 1.25rem;
     }
 
     .feature-title {
@@ -379,16 +354,29 @@ import ThreeHero from "../ui/ThreeHero.jsx";
   @media (min-width: 768px) and (max-width: 1023px) {
     .hero-grid {
       grid-template-columns: 1fr;
-      text-align: center;
-      gap: 3rem;
+      grid-template-areas:
+        "content"
+        "visual";
+      gap: 2.5rem;
+      min-height: auto;
     }
+
     .hero-content {
       align-items: center;
       text-align: center;
+      margin-inline: auto;
     }
+
     .hero-actions {
       justify-content: center;
     }
+
+    .hero-3d-container {
+      height: clamp(360px, 46vw, 470px);
+      max-width: 560px;
+      margin-inline: auto;
+    }
+
     .hero-features {
       max-width: 500px;
       margin-inline: auto;

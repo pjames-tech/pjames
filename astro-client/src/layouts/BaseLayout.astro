@@ -1,7 +1,6 @@
 ---
 // VOID MODE: Dark-only high-ticket aesthetic
 import "../styles/global.css";
-import ThreeHero from "../components/ui/ThreeHero.jsx";
 
 interface Props {
   title?: string;
@@ -9,9 +8,21 @@ interface Props {
 }
 
 const { 
-  title = "P. James | AI Brand Architect",
+  title = "P. James | AI Brand Technologist",
   description = "AI Systems Architect & Brand Strategist based in Ibadan. Identity systems, landing pages, and revenue automation."
 } = Astro.props;
+
+const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+const particles = Array.from({ length: 34 }, () => ({
+  x: randomInRange(2, 98).toFixed(2),
+  y: randomInRange(4, 96).toFixed(2),
+  size: randomInRange(2, 5).toFixed(2),
+  driftX: randomInRange(-70, 70).toFixed(0),
+  driftY: randomInRange(-90, 90).toFixed(0),
+  duration: randomInRange(22, 46).toFixed(2),
+  delay: (-randomInRange(0, 24)).toFixed(2),
+  glow: randomInRange(0.18, 0.52).toFixed(2),
+}));
 ---
 
 <!doctype html>
@@ -27,7 +38,7 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"
       rel="stylesheet"
     />
     
@@ -40,9 +51,64 @@ const {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     
-    <!-- VOID MODE: Hardcoded dark theme -->
+    <!-- Theme Management Script -->
     <script is:inline>
-      document.documentElement.setAttribute('data-theme', 'dark');
+      const THEME_KEY = "theme";
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+      const getStoredTheme = () => {
+        if (typeof localStorage === "undefined") return null;
+        const stored = localStorage.getItem(THEME_KEY);
+        return stored === "dark" || stored === "light" ? stored : null;
+      };
+
+      const getSystemTheme = () => (mediaQuery.matches ? "dark" : "light");
+      const getResolvedTheme = () => getStoredTheme() ?? getSystemTheme();
+
+      const applyTheme = (theme, source = "app") => {
+        document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        window.dispatchEvent(new CustomEvent("theme-change", { detail: { theme, source } }));
+      };
+
+      const setThemePreference = (theme) => {
+        if (typeof localStorage !== "undefined") {
+          localStorage.setItem(THEME_KEY, theme);
+        }
+        applyTheme(theme, "user");
+      };
+
+      const clearThemePreference = () => {
+        if (typeof localStorage !== "undefined") {
+          localStorage.removeItem(THEME_KEY);
+        }
+        applyTheme(getSystemTheme(), "system");
+      };
+
+      applyTheme(getResolvedTheme(), "init");
+
+      // Follow device theme only when there is no explicit user preference.
+      const syncWithSystemTheme = () => {
+        if (!getStoredTheme()) {
+          applyTheme(getSystemTheme(), "system");
+        }
+      };
+
+      if (typeof mediaQuery.addEventListener === "function") {
+        mediaQuery.addEventListener("change", syncWithSystemTheme);
+      } else if (typeof mediaQuery.addListener === "function") {
+        mediaQuery.addListener(syncWithSystemTheme);
+      }
+
+      // Expose helpers for UI controls (Navbar toggle).
+      (window as any).__theme = {
+        getStoredTheme,
+        getSystemTheme,
+        getResolvedTheme,
+        applyTheme,
+        setThemePreference,
+        clearThemePreference,
+      };
     </script>
     
     <!-- Cal.com Embed Script -->
@@ -73,12 +139,21 @@ const {
       Cal("init", { origin: "https://cal.com" });
     </script>
   </head>
-  <body class="bg-black text-gray-100">
-    <!-- Global 3D Background -->
-    <div style="position: fixed; inset: 0; z-index: -1;">
-      <ThreeHero client:only="react" />
+  <body class="bg-bg text-text">
+    <!-- Premium Background Effects -->
+    <div class="bg-sheen-container">
+      <div class="stagelight"></div>
+      <div class="ambient-glow"></div>
+      <div class="ambient-particles" aria-hidden="true">
+        {particles.map((particle) => (
+          <span
+            class="ambient-particle"
+            style={`--px:${particle.x}%;--py:${particle.y}%;--ps:${particle.size}px;--pdx:${particle.driftX}px;--pdy:${particle.driftY}px;--dur:${particle.duration}s;--delay:${particle.delay}s;--glow:${particle.glow};`}
+          ></span>
+        ))}
+      </div>
     </div>
-    
+
     <slot />
     <script>
       import Lenis from 'lenis';
@@ -195,7 +270,7 @@ const {
                   hiddenPriceInput.value = packagePrice;
                 }
                 
-                // Optional: Notify Archibot
+                // Optional: Notify Maximus
                 window.dispatchEvent(new CustomEvent('booking-context-update', { 
                   detail: { package: packageName, price: packagePrice } 
                 }));

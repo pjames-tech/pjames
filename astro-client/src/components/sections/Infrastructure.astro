@@ -8,19 +8,19 @@ interface Pillar {
 
 const pillars: Pillar[] = [
   {
-    icon: "lightning",
-    title: "Global Velocity",
-    body: "Built on the Vercel Edge Network. We engineer sites that load in milliseconds, boosting SEO rank and conversion rates instantly.",
+    icon: "design",
+    title: "Brand Systems",
+    body: "High-ticket aesthetic meets conversion-optimized UI. I design identity systems that command authority and turn casual visitors into loyal clients.",
   },
   {
-    icon: "brain",
-    title: "Native Intelligence",
-    body: "Deep integration with LLMs. Automated lead qualification and dynamic content that adapts to user behavior in real-time.",
+    icon: "code",
+    title: "Performance Engineering",
+    body: "Bespoke engineering tailored to your needs. I choose the specific stack—whether Next.js, React, or TypeScript—that guarantees ultimate performance for your project.",
   },
   {
-    icon: "shield",
-    title: "Enterprise Grade",
-    body: "PostgreSQL architecture ensures your data is structured and secure. Built to scale from 100 to 1 million visitors without breaking.",
+    icon: "automation",
+    title: "Revenue Automation",
+    body: "Intelligent workflows that work while you sleep. Automated lead capture, AI qualification, and revenue engines that drive growth on autopilot.",
   },
 ];
 ---
@@ -31,7 +31,8 @@ const pillars: Pillar[] = [
       The Infrastructure
     </p>
     <h2 class="font-display font-bold text-[var(--step-3)] leading-[1.1]">
-      Engineered for speed, scale, and autonomy.
+      Engineered for speed, <br />
+      built for <span class="text-[rgb(var(--accent))]">revenue</span>.
     </h2>
   </div>
   
@@ -40,19 +41,19 @@ const pillars: Pillar[] = [
       <div class="pillar-card group">
         <!-- Icon -->
         <div class="icon-container">
-          {pillar.icon === "lightning" && (
+          {pillar.icon === "design" && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122l9.37-9.37C20.938 4.72 22.5 6.275 22.5 8.25c0 1.975-1.558 3.522-3.411 3.522-1.854 0-3.359-1.49-3.359-3.322 0-1.832 1.505-3.322 3.359-3.322 1.854 0 3.359 1.49 3.359 3.322M9.53 16.122L10.5 17m-1.03-1.122a1.5 1.5 0 11-2.121-2.121m2.121 2.121L5.647 16.848a3.75 3.75 0 01-5.061-5.061L3.899 8.274a1.875 1.875 0 012.652 0L9.53 11.25m-4.03 4.872L4.5 18.75m0 0l2.25-1.5M4.5 18.75l-1.5-2.25M8.55 18.321l-.75 2.25m0 0l2.25-.75" />
+            </svg>
+          )}
+          {pillar.icon === "code" && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+            </svg>
+          )}
+          {pillar.icon === "automation" && (
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-            </svg>
-          )}
-          {pillar.icon === "brain" && (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-            </svg>
-          )}
-          {pillar.icon === "shield" && (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-8 h-8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
             </svg>
           )}
         </div>

@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import OpenAI from "openai";
 
-const AI_INSTRUCTIONS = `You are ARCHIBOT, the AI assistant for P. James, an AI Systems Architect & Brand Strategist.
+const AI_INSTRUCTIONS = `You are MAXIMUS, the AI assistant for P. James, an AI Systems Architect & Brand Strategist.
 
 Your job:
 - Help visitors understand service packages and find the right fit.
@@ -86,7 +86,9 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const clean = messages
       .slice(-20)
       .map((m: any) => ({
-        role: m?.role === "assistant" ? "assistant" : "user",
+        role: (m?.role === "assistant" ? "assistant" : "user") as
+          | "assistant"
+          | "user",
         content: String(m?.content || m?.text || "")
           .trim()
           .slice(0, 1500),
@@ -95,22 +97,20 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     const client = new OpenAI({ apiKey });
 
-    const response = await client.responses.create({
+    const response = await client.chat.completions.create({
       model: import.meta.env.OPENAI_MODEL || "gpt-4o-mini",
-      instructions: AI_INSTRUCTIONS,
-      input: clean,
-      max_output_tokens: 280,
-      store: false,
+      messages: [{ role: "system", content: AI_INSTRUCTIONS }, ...clean],
+      max_tokens: 280,
     });
 
-    const text = String(response?.output_text || "").trim();
+    const text = String(response.choices[0]?.message?.content || "").trim();
 
     return new Response(
       JSON.stringify({ ok: true, text: text || "(No response)" }),
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error: any) {
     console.error("[Chat API Error]:", error);

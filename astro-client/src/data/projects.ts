@@ -37,7 +37,7 @@ export const projects: Project[] = [
     challenge:
       "Real estate agents were losing leads due to slow response times. Prospects would visit, leave their info, and not hear back for hours—by then, they'd already moved on to competitors.",
     solution:
-      "We deployed an AI-powered instant response system that engages within 3 seconds of form submission. The bot qualifies leads based on budget, timeline, and property preferences, then books directly into the agent's calendar.",
+      "I deployed an AI-powered instant response system that engages within 3 seconds of form submission. The bot qualifies leads based on budget, timeline, and property preferences, then books directly into the agent's calendar.",
     results: [
       "40% increase in lead conversion",
       "Average response time: 3 seconds",
@@ -55,7 +55,7 @@ export const projects: Project[] = [
       "Institutional rebranding framework designed to maximize perceived value and enrollment conversion.",
     tools: ["Adobe CC", "Figma", "Canva"],
     details:
-      "A complete identity overhaul for a private educational institution. We delivered a cohesive visual system, 50+ ready-to-use Canva social media templates, and a comprehensive brand voice guide. The entire project was executed in just 5 days, establishing immediate trust with prospective parents.",
+      "A complete identity overhaul for a private educational institution. I delivered a cohesive visual system, 50+ ready-to-use Canva social media templates, and a comprehensive brand voice guide. The entire project was executed in just 5 days, establishing immediate trust with prospective parents.",
     gallery: [
       "/projects/authority-protocol-main.png",
       "/projects/authority-protocol-gal-1.png",
@@ -66,7 +66,7 @@ export const projects: Project[] = [
     challenge:
       "The institution looked dated and unprofessional compared to newer competitors. Parents weren't taking them seriously despite excellent academic results.",
     solution:
-      "We architected a complete brand transformation: new visual identity, premium marketing collateral, and a social media kit that positions them as the authority in their market.",
+      "I architected a complete brand transformation: new visual identity, premium marketing collateral, and a social media kit that positions them as the authority in their market.",
     results: [
       "5-day turnaround",
       "50+ social templates delivered",
@@ -95,7 +95,7 @@ export const projects: Project[] = [
     challenge:
       "Leads were slipping through the cracks. No visibility into the pipeline meant the team didn't know who to follow up with or when.",
     solution:
-      "We built a centralized command center that tracks every lead from first touch to closed deal, with automated follow-up sequences and real-time dashboards.",
+      "I built a centralized command center that tracks every lead from first touch to closed deal, with automated follow-up sequences and real-time dashboards.",
     results: [
       "Zero lead leakage",
       "12-month automated follow-up",
