@@ -381,7 +381,7 @@ export default function ChatBot() {
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-[#ff7300] overflow-hidden flex items-center justify-center border border-[#ff7300]">
                   <img
-                    src="/maximus-photo.jpg"
+                    src="/maximus-hybrid.jpg"
                     alt="Maximus Avatar"
                     className="w-full h-full object-cover"
                   />
@@ -438,7 +438,7 @@ export default function ChatBot() {
                 <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
                   <div className="h-20 w-20 rounded-full bg-[#ff7300]/10 flex items-center justify-center mb-4 border border-[#ff7300]/20 overflow-hidden">
                     <img
-                      src="/maximus-photo.jpg"
+                      src="/maximus-hybrid.jpg"
                       alt="Maximus"
                       className="w-full h-full object-cover"
                     />
