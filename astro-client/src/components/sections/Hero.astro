@@ -67,7 +67,7 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     display: flex;
     align-items: center;
     overflow-x: hidden;
-    padding-block: clamp(1.2rem, 2.6vh, 2rem) clamp(1rem, 2vh, 1.6rem);
+    padding-block: clamp(4rem, 8vh, 6rem) clamp(1.5rem, 3vh, 2.5rem);
     will-change: transform;
   }
 
@@ -75,7 +75,7 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     .hero-section {
       align-items: flex-start;
       min-height: auto;
-      padding-block: 2.4rem 1.2rem;
+    padding-block: 6rem 2rem;
     }
   }
 
@@ -135,9 +135,9 @@ import ThreeHero from "../ui/ThreeHero.jsx";
   .hero-3d-container {
     grid-area: visual;
     position: relative;
-    width: min(100%, 520px);
-    height: clamp(320px, 34vw, 540px);
-    min-height: 320px;
+    width: min(100%, 480px);
+    height: clamp(300px, 32vw, 500px);
+    min-height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -202,6 +202,14 @@ import ThreeHero from "../ui/ThreeHero.jsx";
     background-color: rgb(var(--accent));
     color: white;
     transition: all 0.3s;
+  }
+
+  :global(html[data-theme="dark"]) .btn-primary-custom {
+    color: rgb(var(--bg));
+  }
+
+  :global(html[data-theme="light"]) .btn-primary-custom {
+    color: white;
   }
 
   .btn-primary-custom:hover {
