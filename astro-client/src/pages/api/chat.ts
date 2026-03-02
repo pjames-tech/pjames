@@ -56,6 +56,26 @@ function rateLimit(ip: string, max = 30, windowMs = 10 * 60 * 1000): boolean {
   return true;
 }
 
+function getClientIp(request: Request, clientAddress?: string): string {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    const firstIp = forwardedFor.split(",")[0]?.trim();
+    if (firstIp) return firstIp;
+  }
+
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  if (realIp) return realIp;
+
+  return clientAddress || "unknown";
+}
+
+function safeMessageContent(value: unknown): string {
+  return String(value ?? "")
+    .replace(/[\u0000-\u001F\u007F]/g, " ")
+    .trim()
+    .slice(0, 1500);
+}
+
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     const apiKey = import.meta.env.OPENAI_API_KEY;
@@ -67,7 +87,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     // Rate limiting
-    const ip = clientAddress || "unknown";
+    const ip = getClientIp(request, clientAddress);
     if (!rateLimit(ip)) {
       return new Response("Rate limit: please try again soon.", {
         status: 429,
@@ -75,25 +95,42 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       });
     }
 
-    const body = await request.json();
-    const messages = body.messages || [];
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return new Response("Invalid JSON body", { status: 400 });
+    }
 
-    if (!Array.isArray(messages) || messages.length === 0) {
+    if (!body || typeof body !== "object") {
+      return new Response("Invalid payload", { status: 400 });
+    }
+
+    const bodyObj = body as Record<string, unknown>;
+    const messages = Array.isArray(bodyObj.messages) ? bodyObj.messages : [];
+
+    if (messages.length === 0) {
       return new Response("messages[] is required", { status: 400 });
     }
 
     // Sanitize messages
     const clean = messages
       .slice(-20)
-      .map((m: any) => ({
-        role: (m?.role === "assistant" ? "assistant" : "user") as
+      .map((m) => {
+        const message =
+          m && typeof m === "object" ? (m as Record<string, unknown>) : {};
+        return {
+          role: (message.role === "assistant" ? "assistant" : "user") as
           | "assistant"
           | "user",
-        content: String(m?.content || m?.text || "")
-          .trim()
-          .slice(0, 1500),
-      }))
-      .filter((m: any) => m.content);
+          content: safeMessageContent(message.content || message.text || ""),
+        };
+      })
+      .filter((m) => m.content);
+
+    if (clean.length === 0) {
+      return new Response("messages[] is required", { status: 400 });
+    }
 
     const client = new OpenAI({ apiKey });
 
