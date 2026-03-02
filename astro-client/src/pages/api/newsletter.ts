@@ -11,18 +11,25 @@ function safeString(x: any): string {
     .slice(0, 4000);
 }
 
+function readEnv(name: string): string {
+  return String(import.meta.env[name] ?? "").trim();
+}
+
 async function getTransporter() {
-  const host = import.meta.env.SMTP_HOST;
-  const user = import.meta.env.SMTP_USER;
-  const pass = import.meta.env.SMTP_PASS;
+  const host = readEnv("SMTP_HOST");
+  const user = readEnv("SMTP_USER");
+  const pass = readEnv("SMTP_PASS");
 
   if (!host || !user || !pass) return null;
 
   return nodemailer.createTransport({
     host,
-    port: Number(import.meta.env.SMTP_PORT || 587),
-    secure: import.meta.env.SMTP_SECURE === "true",
+    port: Number(readEnv("SMTP_PORT") || 587),
+    secure: readEnv("SMTP_SECURE") === "true",
     auth: { user, pass },
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
   });
 }
 
@@ -31,7 +38,7 @@ const subscribers = new Set<string>();
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const toEmail = import.meta.env.LEAD_TO_EMAIL;
+    const toEmail = readEnv("LEAD_TO_EMAIL");
 
     const body = await request.json();
     const { email, ts } = body;
@@ -136,7 +143,7 @@ export const POST: APIRoute = async ({ request }) => {
 
       try {
         await transporter.sendMail({
-          from: `"P. James" <${import.meta.env.SMTP_USER}>`,
+          from: `"P. James" <${readEnv("SMTP_USER")}>`,
           to: safeString(email),
           subject: "Welcome to The AI-Growth Newsletter 🚀",
           text: `Welcome to The AI-Growth Newsletter!\n\nHey there! I'm P. James, and I build revenue engines — not just pretty websites.\n\nEvery week, I'll send you insights on:\n• AI Automation - Bots, workflows, and tools that save time\n• Brand Strategy - Identity systems that make your business memorable\n• Growth Tactics - What's actually working right now\n• Tool Breakdowns - Honest reviews and tutorials\n\nNo fluff. No spam. Just actionable insights.\n\nTalk soon,\nP. James\nAI Brand Technologist`,
@@ -150,8 +157,8 @@ export const POST: APIRoute = async ({ request }) => {
       if (toEmail) {
         try {
           await transporter.sendMail({
-            from: `"${safeString(import.meta.env.FROM_NAME || "Website")}" <${
-              import.meta.env.SMTP_USER
+            from: `"${safeString(readEnv("FROM_NAME") || "Website")}" <${
+              readEnv("SMTP_USER")
             }>`,
             to: toEmail,
             subject: "🎉 New Newsletter Subscriber!",
@@ -165,11 +172,15 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
+    const transportReady = Boolean(transporter);
+
     return new Response(
       JSON.stringify({
         ok: true,
         isNew: true,
-        message: "Welcome aboard! 🚀 Check your inbox for a welcome email.",
+        message: transportReady
+          ? "Welcome aboard! 🚀 Check your inbox for a welcome email."
+          : "You're subscribed successfully. Email delivery is currently unavailable.",
       }),
       {
         status: 200,

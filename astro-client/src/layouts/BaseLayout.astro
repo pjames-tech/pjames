@@ -11,18 +11,6 @@ const {
   title = "P. James | AI Brand Technologist",
   description = "AI Systems Architect & Brand Strategist based in Ibadan. Identity systems, landing pages, and revenue automation."
 } = Astro.props;
-
-const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
-const particles = Array.from({ length: 34 }, () => ({
-  x: randomInRange(2, 98).toFixed(2),
-  y: randomInRange(4, 96).toFixed(2),
-  size: randomInRange(2, 5).toFixed(2),
-  driftX: randomInRange(-70, 70).toFixed(0),
-  driftY: randomInRange(-90, 90).toFixed(0),
-  duration: randomInRange(22, 46).toFixed(2),
-  delay: (-randomInRange(0, 24)).toFixed(2),
-  glow: randomInRange(0.18, 0.52).toFixed(2),
-}));
 ---
 
 <!doctype html>
@@ -142,17 +130,9 @@ const particles = Array.from({ length: 34 }, () => ({
   <body class="bg-bg text-text">
     <!-- Premium Background Effects -->
     <div class="bg-sheen-container">
-      <div class="bg-mesh-gradient"></div>
+      <div class="bg-moving-gradient"></div>
       <div class="stagelight"></div>
       <div class="ambient-glow"></div>
-      <div class="ambient-particles" aria-hidden="true">
-        {particles.map((particle) => (
-          <span
-            class="ambient-particle"
-            style={`--px:${particle.x}%;--py:${particle.y}%;--ps:${particle.size}px;--pdx:${particle.driftX}px;--pdy:${particle.driftY}px;--dur:${particle.duration}s;--delay:${particle.delay}s;--glow:${particle.glow};`}
-          ></span>
-        ))}
-      </div>
     </div>
 
     <slot />
@@ -271,7 +251,7 @@ const particles = Array.from({ length: 34 }, () => ({
                   hiddenPriceInput.value = packagePrice;
                 }
                 
-                // Optional: Notify Maximus
+                // Optional: Notify Dane
                 window.dispatchEvent(new CustomEvent('booking-context-update', { 
                   detail: { package: packageName, price: packagePrice } 
                 }));

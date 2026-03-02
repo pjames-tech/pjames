@@ -11,24 +11,31 @@ function safeString(x: any): string {
     .slice(0, 4000);
 }
 
+function readEnv(name: string): string {
+  return String(import.meta.env[name] ?? "").trim();
+}
+
 async function getTransporter() {
-  const host = import.meta.env.SMTP_HOST;
-  const user = import.meta.env.SMTP_USER;
-  const pass = import.meta.env.SMTP_PASS;
+  const host = readEnv("SMTP_HOST");
+  const user = readEnv("SMTP_USER");
+  const pass = readEnv("SMTP_PASS");
 
   if (!host || !user || !pass) return null;
 
   return nodemailer.createTransport({
     host,
-    port: Number(import.meta.env.SMTP_PORT || 587),
-    secure: import.meta.env.SMTP_SECURE === "true",
+    port: Number(readEnv("SMTP_PORT") || 587),
+    secure: readEnv("SMTP_SECURE") === "true",
     auth: { user, pass },
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
   });
 }
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const toEmail = import.meta.env.LEAD_TO_EMAIL;
+    const toEmail = readEnv("LEAD_TO_EMAIL");
 
     if (!toEmail) {
       console.error("[Brief] LEAD_TO_EMAIL not set");
@@ -145,8 +152,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     await transporter.sendMail({
       from: `"${safeString(
-        import.meta.env.FROM_NAME || "P. James Website",
-      )}" <${import.meta.env.SMTP_USER}>`,
+        readEnv("FROM_NAME") || "P. James Website",
+      )}" <${readEnv("SMTP_USER")}>`,
       to: toEmail,
       replyTo: safeString(email),
       subject,

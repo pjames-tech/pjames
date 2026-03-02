@@ -60,18 +60,18 @@ export default function ChatBot() {
 
   // Listen for external events to open the chatbot
   useEffect(() => {
-    const handleOpenMaximus = () => {
+    const handleOpenDane = () => {
       setIsOpen(true);
       handleInteraction();
     };
 
-    window.addEventListener("open-maximus", handleOpenMaximus);
+    window.addEventListener("open-dane", handleOpenDane);
     return () => {
-      window.removeEventListener("open-maximus", handleOpenMaximus);
+      window.removeEventListener("open-dane", handleOpenDane);
     };
   }, []);
 
-  // Delay Maximus auto-popup and implement auto-close
+  // Delay Dane auto-popup and implement auto-close
   useEffect(() => {
     const popupDelayMs = 10_000;
     const autoCloseDelayMs = 10_000;
@@ -167,7 +167,7 @@ export default function ChatBot() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            source: "maximus-lead",
+            source: "dane-lead",
             answers,
             meta: { ts: new Date().toISOString() },
           }),
@@ -381,13 +381,13 @@ export default function ChatBot() {
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-[#ff7300] overflow-hidden flex items-center justify-center border border-[#ff7300]">
                   <img
-                    src="/maximus-hybrid.jpg"
-                    alt="Maximus Avatar"
+                    src="/dane-avatar.png"
+                    alt="Dane Avatar"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-text text-sm">Maximus</h3>
+                  <h3 className="font-semibold text-text text-sm">Dane</h3>
                   <p className="text-xs text-muted">AI Brand Associate</p>
                 </div>
               </div>
@@ -438,8 +438,8 @@ export default function ChatBot() {
                 <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
                   <div className="h-20 w-20 rounded-full bg-[#ff7300]/10 flex items-center justify-center mb-4 border border-[#ff7300]/20 overflow-hidden">
                     <img
-                      src="/maximus-hybrid.jpg"
-                      alt="Maximus"
+                      src="/dane-avatar.png"
+                      alt="Dane"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -447,8 +447,7 @@ export default function ChatBot() {
                     Hey there! 👋
                   </h4>
                   <p className="text-muted text-sm mb-6 max-w-[280px]">
-                    I'm Maximus, your AI Brand Associate. How can I help you
-                    today?
+                    I'm Dane, your AI Brand Associate. How can I help you today?
                   </p>
                   <div className="flex flex-col gap-3 w-full max-w-[260px]">
                     <button
@@ -523,13 +522,13 @@ export default function ChatBot() {
                       <div className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm bg-panel2 text-muted border soft-border">
                         <span className="inline-flex gap-1">
                           <span
-                            className="w-1.5 h-1.5 bg-muted/40 rounded-full animate-bounce"
+                            className="w-1.5 h-1.5 bg-[rgb(var(--muted)/0.4)] rounded-full animate-bounce"
                             style={{ animationDelay: "0ms" }}></span>
                           <span
-                            className="w-1.5 h-1.5 bg-muted/40 rounded-full animate-bounce"
+                            className="w-1.5 h-1.5 bg-[rgb(var(--muted)/0.4)] rounded-full animate-bounce"
                             style={{ animationDelay: "150ms" }}></span>
                           <span
-                            className="w-1.5 h-1.5 bg-muted/40 rounded-full animate-bounce"
+                            className="w-1.5 h-1.5 bg-[rgb(var(--muted)/0.4)] rounded-full animate-bounce"
                             style={{ animationDelay: "300ms" }}></span>
                         </span>
                       </div>
@@ -543,7 +542,7 @@ export default function ChatBot() {
                     className="p-4 border-t soft-border">
                     <div className="flex gap-2">
                       <input
-                        id="maximus-input"
+                        id="dane-input"
                         type="text"
                         autoComplete="off"
                         value={input}

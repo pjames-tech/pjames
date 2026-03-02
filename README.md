@@ -1,15 +1,15 @@
-# P. James — AI Brand Architect
+# P. James — AI Brand Technologist
 
 Personal portfolio website built with **Astro v5** and **Islands Architecture** for optimal performance.
 
-## Tech Stack
+## 🛠 Tech Stack
 
-- **Framework**: Astro v5 (Static + Server-side)
-- **Styling**: Tailwind CSS v4 (build-time)
-- **Interactivity**: SolidJS for ChatBot island
-- **Deployment**: Vercel (serverless functions)
-- **Email**: Nodemailer (SMTP)
-- **AI**: OpenAI GPT-4o-mini
+- **Framework**: [Astro](https://astro.build/) (Static Site Generation / Hybrid)
+- **Engine**: [Next.js](https://nextjs.org/) + [React](https://reactjs.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (Type-safe engineering)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [Lenis](https://lenis.darkroom.engineering/) (Smooth scroll)
+- **Infrastructure**: [Vercel Edge Network](https://vercel.com/) & [PostgreSQL](https://www.postgresql.org/) (Data)
 
 ## Features
 
@@ -51,7 +51,7 @@ Or connect your GitHub repo in Vercel dashboard.
 
 ## Project Structure
 
-```
+```text
 astro-client/
 ├── src/
 │   ├── components/     # Astro + SolidJS components

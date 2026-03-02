@@ -20,12 +20,16 @@ export default defineConfig({
       exclude: [
         "**/src/components/ui/ThreeHero.jsx",
         "**/src/components/chat/**",
+        "**/src/components/sections/Services/**",
+        "**/src/components/pricing/**",
       ],
     }),
     react({
       include: [
         "**/src/components/ui/ThreeHero.jsx",
         "**/src/components/chat/**",
+        "**/src/components/sections/Services/**",
+        "**/src/components/pricing/**",
       ],
     }),
   ],

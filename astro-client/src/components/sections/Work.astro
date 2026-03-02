@@ -3,6 +3,11 @@
 // Links to dedicated case study pages (no modal)
 import ProjectCard from "../ui/ProjectCard.astro";
 import { projects } from "../../data/projects";
+
+const featuredProjectOrder = ["realty-os", "authority-protocol", "center-onyx"];
+const featuredProjects = featuredProjectOrder
+  .map((slug) => projects.find((project) => project.slug === slug))
+  .filter((project): project is (typeof projects)[number] => Boolean(project));
 ---
 
 <section id="work" class="py-36 container-fluid">
@@ -16,7 +21,7 @@ import { projects } from "../../data/projects";
   </div>
 
   <div class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(20rem,100%),1fr))]">
-    {projects.slice(0, 3).map((project) => (
+    {featuredProjects.map((project) => (
       <ProjectCard {...project} />
     ))}
   </div>
@@ -26,7 +31,7 @@ import { projects } from "../../data/projects";
       href="/work" 
       class="inline-flex items-center gap-2 border border-orange-500/50 text-orange-500 hover:bg-orange-500/10 px-8 py-4 rounded-full uppercase tracking-wider text-sm font-bold transition-all group"
     >
-      View the Framework Vault
+      View more Frameworks
       <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
     </a>
   </div>

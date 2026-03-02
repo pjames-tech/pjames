@@ -2,10 +2,11 @@
 // Case Study Page Template with Image Gallery
 // Dynamic route for individual project case studies
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Navbar from "../../components/layout/Navbar.astro";
 import Footer from "../../components/sections/Footer.astro";
 import BookingModal from "../../components/modals/BookingModal.astro";
 import { projects } from "../../data/projects";
+
+export const prerender = true;
 
 export function getStaticPaths() {
   return projects.map((project) => ({
@@ -22,8 +23,6 @@ if (!project) {
 ---
 
 <BaseLayout title={`${project.title} | P. James`} description={project.description}>
-  <Navbar />
-  
   <main class="min-h-screen pt-8 md:pt-16 pb-16">
     <!-- Hero Section -->
     <section class="container-fluid mb-12">
@@ -41,7 +40,7 @@ if (!project) {
             <span class="inline-flex items-center gap-1 px-2 py-1 rounded border border-orange-500/30 bg-orange-500/10">
               <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
               <span class="font-mono text-[10px] uppercase tracking-wider text-orange-400">
-                [ {project.badge} ]
+                {project.badge}
               </span>
             </span>
             <span class="text-muted text-sm">{project.year}</span>
@@ -57,7 +56,7 @@ if (!project) {
           
           <div class="flex flex-wrap gap-2 mb-8">
             {project.tools.map((tool) => (
-              <span class="px-3 py-1 text-xs font-medium bg-panel2 border soft-border shadow-sm transition-all">
+              <span class="px-3 py-1 text-xs font-medium bg-panel2 border soft-border shadow-sm rounded-sm transition-all">
                 {tool}
               </span>
             ))}
@@ -74,7 +73,7 @@ if (!project) {
         </div>
         
         <!-- Main Image -->
-        <div class="relative aspect-video rounded-2xl overflow-hidden border border-zinc-800">
+        <div class="relative aspect-video rounded-2xl overflow-hidden border border-[rgb(var(--border)/0.14)]">
           <img 
             src={project.image} 
             alt={project.title}
@@ -88,14 +87,14 @@ if (!project) {
     
     <!-- Image Gallery -->
     <section class="container-fluid mb-16">
-      <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
+      <h2 class="text-xl font-bold text-text mb-6 flex items-center gap-3">
         <span class="w-8 h-px bg-orange-500"></span>
         Project Gallery
       </h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         {project.gallery.map((img, index) => (
           <button 
-            class="gallery-thumb group relative aspect-video rounded-xl overflow-hidden border border-zinc-800 hover:border-orange-500/50 transition-all cursor-pointer"
+            class="gallery-thumb group relative aspect-video rounded-xl overflow-hidden border border-[rgb(var(--border)/0.14)] hover:border-orange-500/50 transition-all cursor-pointer"
             data-index={index}
           >
             <img 
@@ -121,11 +120,11 @@ if (!project) {
         <!-- The Challenge -->
         {project.challenge && (
           <div class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+            <h2 class="text-2xl font-bold text-text mb-4 flex items-center gap-3">
               <span class="w-8 h-px bg-orange-500"></span>
               The Challenge
             </h2>
-            <p class="text-zinc-400 leading-relaxed text-lg">
+            <p class="text-muted leading-relaxed text-lg">
               {project.challenge}
             </p>
           </div>
@@ -134,11 +133,11 @@ if (!project) {
         <!-- The Solution -->
         {project.solution && (
           <div class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+            <h2 class="text-2xl font-bold text-text mb-4 flex items-center gap-3">
               <span class="w-8 h-px bg-orange-500"></span>
               The Solution
             </h2>
-            <p class="text-zinc-400 leading-relaxed text-lg">
+            <p class="text-muted leading-relaxed text-lg">
               {project.solution}
             </p>
           </div>
@@ -147,18 +146,18 @@ if (!project) {
         <!-- Results -->
         {project.results && project.results.length > 0 && (
           <div class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <h2 class="text-2xl font-bold text-text mb-6 flex items-center gap-3">
               <span class="w-8 h-px bg-orange-500"></span>
               The Results
             </h2>
             <div class="grid sm:grid-cols-2 gap-4">
               {project.results.map((result) => (
-                <div class="p-4 rounded-xl bg-zinc-900 border border-zinc-800">
+                <div class="p-4 rounded-xl bg-[rgb(var(--panel2)/0.45)] border border-[rgb(var(--border)/0.12)]">
                   <div class="flex items-start gap-3">
                     <svg class="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                     </svg>
-                    <span class="text-zinc-300">{result}</span>
+                    <span class="text-text/85">{result}</span>
                   </div>
                 </div>
               ))}
@@ -168,10 +167,10 @@ if (!project) {
         
         <!-- CTA -->
         <div class="text-center p-8 rounded-2xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/20">
-          <h3 class="text-2xl font-bold text-white mb-3">
+          <h3 class="text-2xl font-bold text-text mb-3">
             Ready to Build Your System?
           </h3>
-          <p class="text-zinc-400 mb-6">
+          <p class="text-muted mb-6">
             Let's architect something that works while you sleep.
           </p>
           <a href="/pricing" class="inline-flex items-center gap-3 px-8 py-4 bg-orange-500 text-black font-bold text-lg rounded-full hover:bg-orange-400 transition-all hover:scale-105">

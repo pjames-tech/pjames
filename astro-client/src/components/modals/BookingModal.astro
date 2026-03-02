@@ -68,12 +68,12 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(w
         </a>
       </div>
 
-      <!-- Newsletter Section -->
+      <!-- Brief Section -->
       <div class="container-fluid mt-12 pt-8">
         <p class="text-sm text-muted mb-2">Have a project scope ready?</p>
-        <button id="btn-go-to-form" class="text-orange-500 font-medium hover:underline text-sm">
+        <a id="btn-go-to-form" href="/#contact" class="text-orange-500 font-medium hover:underline text-sm">
           Fill the Brief &rarr;
-        </button>
+        </a>
       </div>
     </div>
 
@@ -83,7 +83,6 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(w
         <button id="back-to-selection-cal" class="text-xs text-muted hover:text-text flex items-center gap-1">
           &larr; Back
         </button>
-        <span class="text-xs font-bold text-orange-400 tracking-widest uppercase">Strategy Call</span>
       </div>
       
       <!-- Cal Embed Container -->
@@ -162,25 +161,13 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(w
     // View Navigation
     btnShowCal?.addEventListener("click", () => switchView('cal'));
     
-    // "Fill the Brief" button - close modal and scroll to contact section
-    btnGoToForm?.addEventListener("click", () => {
+    // "Fill the Brief" link - always route to homepage contact section
+    btnGoToForm?.addEventListener("click", (e) => {
+      e.preventDefault();
       modal.close();
-      // Small delay to let modal close animation finish
       setTimeout(() => {
-        const contactSection = document.getElementById('contact');
-        if (contactSection) {
-          // Use Lenis if available for smoother scroll
-          if (window.lenis) {
-            window.lenis.scrollTo(contactSection, { 
-              duration: 1.5, 
-              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              offset: -50
-            });
-          } else {
-            contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }
-      }, 150);
+        window.location.href = "/#contact";
+      }, 120);
     });
     
     btnBackCal?.addEventListener("click", () => switchView('selection'));

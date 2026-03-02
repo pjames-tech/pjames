@@ -11,18 +11,25 @@ function safeString(x: any): string {
     .slice(0, 4000);
 }
 
+function readEnv(name: string): string {
+  return String(import.meta.env[name] ?? "").trim();
+}
+
 async function getTransporter() {
-  const host = import.meta.env.SMTP_HOST;
-  const user = import.meta.env.SMTP_USER;
-  const pass = import.meta.env.SMTP_PASS;
+  const host = readEnv("SMTP_HOST");
+  const user = readEnv("SMTP_USER");
+  const pass = readEnv("SMTP_PASS");
 
   if (!host || !user || !pass) return null;
 
   return nodemailer.createTransport({
     host,
-    port: Number(import.meta.env.SMTP_PORT || 587),
-    secure: import.meta.env.SMTP_SECURE === "true",
+    port: Number(readEnv("SMTP_PORT") || 587),
+    secure: readEnv("SMTP_SECURE") === "true",
     auth: { user, pass },
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
   });
 }
 
@@ -34,7 +41,11 @@ function asTextBlock(obj: Record<string, any>): string {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const toEmail = import.meta.env.LEAD_TO_EMAIL;
+    const toEmail = readEnv("LEAD_TO_EMAIL");
+    if (!toEmail) {
+      console.error("[Lead] LEAD_TO_EMAIL not set");
+      return new Response("Server configuration error", { status: 500 });
+    }
 
     const body = await request.json();
     const { source, answers, meta } = body;
@@ -71,7 +82,7 @@ export const POST: APIRoute = async ({ request }) => {
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #11131a; border-radius: 14px;">
                 <tr>
                   <td style="padding: 24px; text-align: center;">
-                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #BF5700;">🔥 New Lead from MAXIMUS</h1>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #BF5700;">🔥 New Lead from DANE</h1>
                     <p style="margin: 8px 0 0 0; font-size: 14px; color: #a1a1aa;">Captured via Lead Capture Mode</p>
                   </td>
                 </tr>
@@ -140,7 +151,7 @@ export const POST: APIRoute = async ({ request }) => {
 </html>`;
 
     const text = [
-      "🔥 New Lead from MAXIMUS",
+      "🔥 New Lead from DANE",
       "",
       "Answers:",
       asTextBlock(answers),
@@ -151,20 +162,18 @@ export const POST: APIRoute = async ({ request }) => {
       `Source: ${safeString(source)}`,
     ].join("\n");
 
-    if (toEmail) {
-      await transporter.sendMail({
-        from: `"${safeString(
-          import.meta.env.FROM_NAME || "P. James Website",
-        )}" <${import.meta.env.SMTP_USER}>`,
-        to: toEmail,
-        replyTo: safeString(answers.email),
-        subject,
-        text,
-        html,
-      });
+    await transporter.sendMail({
+      from: `"${safeString(
+        readEnv("FROM_NAME") || "P. James Website",
+      )}" <${readEnv("SMTP_USER")}>`,
+      to: toEmail,
+      replyTo: safeString(answers.email),
+      subject,
+      text,
+      html,
+    });
 
-      console.log(`[Lead] Sent successfully to ${toEmail}`);
-    }
+    console.log(`[Lead] Sent successfully to ${toEmail} from ${safeString(answers.email)}`);
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,

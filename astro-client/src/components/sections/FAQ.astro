@@ -78,7 +78,7 @@ const faqs: FAQ[] = [
     <p class="text-muted max-w-xl mx-auto">
       These are the most commonly asked questions about my services.
       <br />
-      Can't find what you're looking for? <button id="open-maximus-faq" class="text-text underline underline-offset-4 hover:text-[#FF7300] transition cursor-pointer">Chat with MAXIMUS</button>!
+      Can't find what you're looking for? <button id="open-dane-faq" class="text-text underline underline-offset-4 hover:text-[#FF7300] transition cursor-pointer">Chat with Dane</button>!
     </p>
   </div>
 
@@ -217,18 +217,17 @@ const faqs: FAQ[] = [
 
   document.addEventListener('DOMContentLoaded', initFAQ);
   document.addEventListener('astro:page-load', initFAQ);
-
-  // Open ChatBot when "Chat with MAXIMUS" is clicked
-  const initMaximusLink = () => {
-    const btn = document.getElementById('open-maximus-faq');
+  // Open ChatBot when "Chat with Dane" is clicked
+  const initDaneLink = () => {
+    const btn = document.getElementById('open-dane-faq');
     if (btn) {
       btn.addEventListener('click', () => {
         // Dispatch custom event to open the ChatBot
-        window.dispatchEvent(new CustomEvent('open-maximus'));
+        window.dispatchEvent(new CustomEvent('open-dane'));
       });
     }
   };
   
-  document.addEventListener('DOMContentLoaded', initMaximusLink);
-  document.addEventListener('astro:page-load', initMaximusLink);
+  document.addEventListener('DOMContentLoaded', initDaneLink);
+  document.addEventListener('astro:page-load', initDaneLink);
 </script>

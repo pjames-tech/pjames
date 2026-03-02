@@ -1,88 +1,26 @@
 ---
-// Services section - Redesigned for a high-end, premium tech aesthetic
-// Focus on "Architecture, NOT Aesthetics" with better visual hierarchy
-interface ServiceItem {
-  number: string;
-  title: string;
-  description: string;
-  tags: string[];
-}
-
-const services: ServiceItem[] = [
-  { 
-    number: "01", 
-    title: "Brand Strategy", 
-    description: "Positioning you as the logical choice in your niche. We build the authoritative foundation before a single line of code is written.",
-    tags: ["Market Psychology", "authority Positioning"] 
-  },
-  { 
-    number: "02", 
-    title: "Conversion-Engineered UI", 
-    description: "Interfaces designed with cognitive load theory to guide prospects into action. High-speed, high-conversion frameworks.",
-    tags: ["Sales Psych", "Astro Performance"] 
-  },
-  { 
-    number: "03", 
-    title: "Autonomous AI Workflows", 
-    description: "Smart agentic pipelines that nurture leads and close revenue 24/7. Infrastructure that makes your business operationally persistent.",
-    tags: ["LLM Integration", "Automated Revenue"] 
-  },
-];
+// Services section — Modular Capabilities Framework
+// Renders the ServicesGrid React component with Framer Motion
+import ServicesGrid from "./Services/ServicesGrid";
 ---
 
 <section id="services" class="py-36 relative overflow-visible">
-  <!-- Dynamic Background Energy -->
-  <div class="absolute top-0 right-0 w-[60%] h-[100%] bg-[radial-gradient(circle_at_70%_30%,rgb(var(--accent)/0.08),transparent_70%)] pointer-events-none"></div>
-  <div class="absolute bottom-0 left-0 w-[50%] h-[80%] bg-[radial-gradient(circle_at_30%_70%,rgb(var(--accent2)/0.05),transparent_70%)] pointer-events-none"></div>
-
+ 
   <div class="container-fluid relative z-10">
     <div class="flex flex-col lg:flex-row justify-between items-end gap-8 mb-20">
       <div class="max-w-xl">
         <p class="text-[var(--step--1)] uppercase tracking-[0.3em] text-[rgb(var(--accent))] font-bold mb-4">
-          Architectural Prowess
+          Engineered for Scale.
         </p>
         <h2 class="font-display font-bold text-[var(--step-4)] leading-[0.95] tracking-tight text-text">
-          Infrastructure for <br/>
-          <span class="text-text/40 italic font-serif lowercase">hyper-velocity</span> growth.
+          Tailored services for
+          <span class="text-text/40 italic font-serif lowercase">Impact</span>
         </h2>
       </div>
     </div>
 
-    <!-- staggered Services Grid -->
-    <div class="grid lg:grid-cols-3 gap-8">
-      {services.map((service, index) => (
-        <div 
-          class={`service-card group p-8 rounded-3xl bg-[rgb(var(--panel)/0.4)] backdrop-blur-md soft-border hover:border-[rgb(var(--accent)/0.3)] transition-all duration-500 relative overflow-hidden ${index === 1 ? 'lg:translate-y-12' : ''}`}
-        >
-          <!-- Subtle Glow Overlay -->
-          <div class="absolute inset-0 bg-gradient-to-br from-[rgb(var(--accent)/0.03)] to-transparent opacity-0 group-hover:opacity-100 transition duration-700"></div>
-          
-          <div class="relative z-10">
-            <span class="font-display font-bold text-[var(--step-2)] text-[rgb(var(--accent)/0.2)] group-hover:text-[rgb(var(--accent)/0.3)] transition-colors duration-500 block mb-6">
-              {service.number}
-            </span>
-            
-            <h3 class="font-display font-bold text-[var(--step-1)] text-text mb-4 leading-tight">
-              {service.title}
-            </h3>
-            <p class="text-muted text-sm leading-relaxed mb-8">
-              {service.description}
-            </p>
-
-            <div class="flex flex-wrap gap-2 mt-auto">
-              {service.tags.map(tag => (
-                <span class="text-[10px] uppercase tracking-widest px-3 py-1 rounded-full bg-text/5 text-muted border border-text/5 group-hover:border-[rgb(var(--accent)/0.2)] transition">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <!-- Bottom Accent Line -->
-          <div class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[rgb(var(--accent))] to-transparent w-0 group-hover:w-full transition-all duration-700 delay-100"></div>
-        </div>
-      ))}
-    </div>
+    <!-- Modular Capabilities Grid (React + Framer Motion) -->
+    <ServicesGrid client:visible />
 
     <div class="mt-28 flex flex-col items-center">
       <div class="p-1 rounded-full bg-panel/30 backdrop-blur-sm border border-text/5 inline-flex mb-8">
@@ -98,23 +36,7 @@ const services: ServiceItem[] = [
 </section>
 
 <style>
-  .service-card {
-    min-height: 420px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-  
   .shadow-glow-sm {
     box-shadow: 0 0 20px rgb(var(--accent) / 0.15);
-  }
-
-  .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px -20px rgba(0,0,0,0.5);
-  }
-
-  [data-theme="light"] .service-card {
-    background: rgb(255 255 255 / 0.6);
   }
 </style>

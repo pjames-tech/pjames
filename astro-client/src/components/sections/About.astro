@@ -1,169 +1,314 @@
 ---
-// About section - "AI Brand Technologist" Profile
-// Refactored: Process steps moved to dedicated Process.astro component
+const businessHours = { start: 8, end: 19 };
+const lagosHour = Number(
+  new Intl.DateTimeFormat("en-GB", {
+    hour: "2-digit",
+    hour12: false,
+    timeZone: "Africa/Lagos"
+  }).format(new Date())
+);
+const isAvailableNow = lagosHour >= businessHours.start && lagosHour < businessHours.end;
+const availabilityState = isAvailableNow ? "AVAILABLE" : "ASYNC_QUEUE";
+const availabilityNote = isAvailableNow
+  ? "Response Window: <24H (WAT)"
+  : "System Queue: <24H (WAT)";
 ---
 
 <section id="about" class="pt-0 pb-24 container-fluid">
-  <!-- Section Header -->
   <div class="mb-12 text-center">
     <p class="text-[var(--step--1)] uppercase tracking-[0.18em] text-[rgb(var(--accent))] font-medium mb-3">
-      The Mind Behind
+      Strategic Operator
     </p>
-    <div class="about-status-badge">
-      <span class="about-status-dot animate-pulse"></span>
-      <span class="about-status-text">AI Brand Technologist • Available</span>
-    </div>
     <h2 class="font-display font-bold text-[var(--step-3)] leading-[1.1]">
       The Architect.
     </h2>
   </div>
-  
-  <!-- Single Profile Card (Centered) -->
-  <div class="max-w-4xl mx-auto">
-    
-    <div class="bento-card group flex flex-col md:flex-row items-center gap-8 md:gap-12 p-8 md:p-12">
-      <!-- Photo -->
-      <div class="profile-image-container flex-shrink-0">
-        <img
-          src="/profile.jpg"
-          alt="P. James - AI Brand Technologist"
-          class="profile-image"
-        />
-        <div class="profile-glow"></div>
-      </div>
-      
-      <!-- Bio Content -->
-      <div class="text-center md:text-left flex-1">
-        <h3 class="font-display font-bold text-[var(--step-2)] text-text mb-2">
-          P. James | AI Brand Technologist
-        </h3>
-        
-        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 text-sm mb-6">
-          <div class="flex items-center gap-1.5 text-[rgb(var(--accent))] font-medium px-3 py-1 rounded-full bg-[rgb(var(--accent)/0.1)] border border-[rgb(var(--accent)/0.2)]">
-            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-            </svg>
-            <span>Based in Nigeria</span>
-          </div>
-          <span class="text-muted hidden md:inline">•</span>
-          <span class="text-muted">Active Globally</span>
-        </div>
-        
-        <p class="text-[var(--step-0)] text-muted leading-relaxed mb-8">
-          You don't just need a graphic designer, you need someone who understands systems. 
-          I bridge the gap between visual identity and technical infrastructure, 
-          architecting digital ecosystems engineered for growth. Where others see "pages", I see pipelines.
-          <br class="hidden md:block" />
-          <span class="text-text font-medium text-lg block mt-2">Clarity converts, confusion costs.</span>
-        </p>
 
+  <div class="about-dashboard max-w-6xl mx-auto grid gap-6 lg:grid-cols-[1.35fr_1fr]">
+    <article class="bento-card group backdrop-blur-md p-6 md:p-8 lg:p-10">
+      <div class="grid gap-8 md:grid-cols-[220px_1fr] items-center">
+        <div class="profile-image-container">
+          <img
+            src="/profile.png"
+            alt="P. James - Systems Architect and AI Brand Technologist"
+            class="profile-image"
+          />
+          <span class="profile-corner corner-tl"></span>
+          <span class="profile-corner corner-tr"></span>
+          <span class="profile-corner corner-bl"></span>
+          <span class="profile-corner corner-br"></span>
+          <div class="profile-scanline"></div>
+          <div class="profile-feed font-mono">
+            <span class="feed-dot"></span>
+            <span>Active</span>
+          </div>
+          <div class="profile-glow"></div>
+        </div>
+
+        <div class="text-center md:text-left flex-1">
+          <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-[rgb(var(--accent))] mb-2">
+            Systems Architect / AI Brand Technologist
+          </p>
+          <h3 class="font-display font-bold text-[var(--step-2)] text-text mb-3">
+            P. James
+          </h3>
+
+          <div
+            class="about-status-badge"
+            data-availability-badge
+            data-state={isAvailableNow ? "available" : "queued"}
+          >
+            <span class="about-status-dot"></span>
+            <span class="about-status-text">
+              STATUS: <span data-availability-state>{availabilityState}</span>
+            </span>
+          </div>
+
+          
+
+          <p class="text-[var(--step-0)] text-muted leading-relaxed mb-4">
+            I architect digital ecosystems engineered for high-velocity growth. Where others see pages, I see revenue pipelines.
+          </p>
+          <p class="text-text font-medium text-lg">
+            Clarity converts, confusion costs.
+          </p>
+          <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-muted/70 mt-4" data-availability-note>
+            {availabilityNote}
+          </p>
+        </div>
       </div>
-    </div>
-    
-    <!-- THE TRINITY: Competence Stack -->
+    </article>
+
+    <aside class="bento-card spec-card group/spec backdrop-blur-md p-6 md:p-8">
       <div class="flex items-center gap-3 mb-8">
-        <span class="text-[10px] font-mono uppercase tracking-widest text-[#FF7300] bg-[#FF7300]/10 px-2 py-1 rounded">The Trinity</span>
+        <span class="spec-chip font-mono">[ SYSTEM_CORE_COMPETENCIES ]</span>
         <div class="h-px bg-border/20 flex-1"></div>
       </div>
 
-      <div class="space-y-6">
-        
-        <!-- 1. DESIGN -->
-        <div class="group/stack">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">01 // DESIGN</span>
-            <span class="text-[10px] text-muted uppercase tracking-widest">Visual Authority</span>
+      <div class="space-y-4">
+        <div class="spec-row spec-row--primary" style="--fill: 98%;">
+          <div class="spec-row-top">
+            <span class="spec-index">01 // AUTOMATION</span>
+            <span class="spec-percent">98%</span>
           </div>
-          <div class="relative h-1.5 bg-panel2 rounded-full overflow-hidden mb-3">
-            <div class="absolute inset-y-0 left-0 w-[95%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
-          </div>
-          <p class="text-base text-muted">
-            <span class="text-text font-medium block sm:inline">I design interfaces that build instant trust.</span>
-            <span class="text-sm text-muted/60 block sm:inline sm:ml-1">// UI/UX, Identity Systems</span>
-          </p>
+          <p class="spec-label">Autonomous Pipelines (Automation)</p>
+          <div class="spec-meter"><span></span></div>
         </div>
 
-        <!-- 2. CODE -->
-        <div class="group/stack">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">02 // CODE</span>
-            <span class="text-[10px] text-muted uppercase tracking-widest">Full-Stack Arch</span>
+        <div class="spec-row" style="--fill: 91%;">
+          <div class="spec-row-top">
+            <span class="spec-index">02 // CODE</span>
+            <span class="spec-percent">91%</span>
           </div>
-          <div class="relative h-1.5 bg-panel2 rounded-full overflow-hidden mb-3">
-            <div class="absolute inset-y-0 left-0 w-[90%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
-          </div>
-          <p class="text-base text-muted">
-            <span class="text-text font-medium block sm:inline">I build speed, security, and scalability.</span>
-            <span class="text-sm text-muted/60 block sm:inline sm:ml-1">// Next.js, Astro, TS</span>
-          </p>
+          <p class="spec-label">Scalable Architecture (Code)</p>
+          <div class="spec-meter"><span></span></div>
         </div>
 
-        <!-- 3. AUTOMATION -->
-        <div class="group/stack">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-mono text-xs text-[#FF7300] font-bold tracking-wider">03 // AUTOMATION</span>
-            <span class="text-[10px] text-muted uppercase tracking-widest">AI Agents</span>
+        <div class="spec-row" style="--fill: 88%;">
+          <div class="spec-row-top">
+            <span class="spec-index">03 // DESIGN</span>
+            <span class="spec-percent">88%</span>
           </div>
-          <div class="relative h-1.5 bg-panel2 rounded-full overflow-hidden mb-3">
-            <div class="absolute inset-y-0 left-0 w-[100%] bg-[#FF7300] rounded-full opacity-80 group-hover/stack:opacity-100 transition-opacity"></div>
-          </div>
-          <p class="text-base text-muted">
-            <span class="text-text font-medium block sm:inline">I engineer systems that sell while you sleep.</span>
-            <span class="text-sm text-muted/60 block sm:inline sm:ml-1">// LLMs, Workflows, n8n</span>
-          </p>
+          <p class="spec-label">Visual Authority (Design)</p>
+          <div class="spec-meter"><span></span></div>
         </div>
-
       </div>
-    </div>
-    
+    </aside>
   </div>
 </section>
 
+<script is:inline>
+  (() => {
+    const root = document.querySelector("#about");
+    if (!root) return;
+
+    const stateTarget = root.querySelector("[data-availability-state]");
+    const noteTarget = root.querySelector("[data-availability-note]");
+    const badgeTarget = root.querySelector("[data-availability-badge]");
+
+    if (!stateTarget || !noteTarget || !badgeTarget) return;
+
+    const inOfficeHours = () => {
+      const formattedHour = new Intl.DateTimeFormat("en-GB", {
+        hour: "2-digit",
+        hour12: false,
+        timeZone: "Africa/Lagos"
+      }).format(new Date());
+      const hour = Number(formattedHour);
+      return hour >= 8 && hour < 19;
+    };
+
+    const syncAvailability = () => {
+      const active = inOfficeHours();
+      stateTarget.textContent = active ? "AVAILABLE" : "ASYNC_QUEUE";
+      noteTarget.textContent = active ? "Response Window: <24H (WAT)" : "System Queue: <24H (WAT)";
+      badgeTarget.setAttribute("data-state", active ? "available" : "queued");
+    };
+
+    syncAvailability();
+    window.setInterval(syncAvailability, 60000);
+  })();
+</script>
+
 <style>
-  /* Bento Card Base */
+  .about-dashboard {
+    align-items: stretch;
+  }
+
   .bento-card {
-    background: rgb(var(--panel));
-    border: 1px solid rgb(var(--border) / 0.1);
+    position: relative;
+    overflow: hidden;
     border-radius: var(--radius-lg, 24px);
-    transition: all 0.3s ease-out;
+    border: 1px solid rgb(var(--border) / 0.16);
+    background: linear-gradient(155deg, rgb(var(--panel) / 0.94), rgb(var(--panel2) / 0.84));
+    backdrop-filter: blur(12px);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+
+  .bento-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      115deg,
+      rgb(var(--accent) / 0),
+      rgb(var(--accent) / 0.5),
+      rgb(var(--accent) / 0)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
   }
 
   .bento-card:hover {
-    border-color: rgb(var(--accent) / 0.3);
-    box-shadow: 0 20px 40px -10px rgb(var(--border) / 0.1);
+    border-color: rgb(var(--accent) / 0.26);
+    box-shadow: 0 24px 45px -22px rgb(var(--accent) / 0.42);
     transform: translateY(-2px);
   }
 
-  /* Profile Image */
+  .bento-card:hover::before {
+    opacity: 1;
+  }
+
   .profile-image-container {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: min(100%, 220px);
+    aspect-ratio: 1 / 1;
+    margin-inline: auto;
+    padding: 0.55rem;
+    border-radius: var(--radius-md, 20px);
+    border: 1px solid rgb(var(--accent) / 0.22);
+    background: linear-gradient(145deg, rgb(var(--panel2) / 0.9), rgb(var(--panel) / 0.5));
+    isolation: isolate;
   }
 
   .profile-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: var(--radius-md, 20px);
-    border: 1px solid rgb(var(--border) / 0.1);
-    filter: grayscale(100%);
-    transition: filter 0.5s;
+    border-radius: calc(var(--radius-md, 20px) - 4px);
+    border: 1px solid rgb(var(--border) / 0.22);
+    filter: saturate(0.72) contrast(1.04);
+    transition: filter 0.5s ease;
   }
-  
+
   .group:hover .profile-image {
-    filter: grayscale(0%);
+    filter: saturate(1) contrast(1.08);
+  }
+
+  .profile-scanline {
+    position: absolute;
+    inset: 0.55rem;
+    border-radius: calc(var(--radius-md, 20px) - 4px);
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 13px,
+      rgb(var(--accent) / 0.08) 13px 15px
+    );
+    mix-blend-mode: screen;
+    pointer-events: none;
+    opacity: 0.45;
+    animation: scanDrift 6s linear infinite;
+  }
+
+  .profile-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+  }
+
+  .corner-tl {
+    top: 0.45rem;
+    left: 0.45rem;
+    border-top: 2px solid rgb(var(--accent) / 0.8);
+    border-left: 2px solid rgb(var(--accent) / 0.8);
+    border-top-left-radius: 8px;
+  }
+
+  .corner-tr {
+    top: 0.45rem;
+    right: 0.45rem;
+    border-top: 2px solid rgb(var(--accent) / 0.8);
+    border-right: 2px solid rgb(var(--accent) / 0.8);
+    border-top-right-radius: 8px;
+  }
+
+  .corner-bl {
+    bottom: 0.45rem;
+    left: 0.45rem;
+    border-bottom: 2px solid rgb(var(--accent) / 0.8);
+    border-left: 2px solid rgb(var(--accent) / 0.8);
+    border-bottom-left-radius: 8px;
+  }
+
+  .corner-br {
+    bottom: 0.45rem;
+    right: 0.45rem;
+    border-bottom: 2px solid rgb(var(--accent) / 0.8);
+    border-right: 2px solid rgb(var(--accent) / 0.8);
+    border-bottom-right-radius: 8px;
+  }
+
+  .profile-feed {
+    position: absolute;
+    left: 0.9rem;
+    bottom: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.28rem 0.52rem;
+    border-radius: 999px;
+    border: 1px solid rgb(var(--accent) / 0.3);
+    background: rgb(var(--panel) / 0.8);
+    color: rgb(var(--text) / 0.9);
+    font-size: 0.58rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .feed-dot {
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 999px;
+    background: rgb(var(--accent));
+    box-shadow: 0 0 10px rgb(var(--accent) / 0.55);
+    animation: feedBlink 2.8s ease-in-out infinite;
   }
 
   .profile-glow {
     position: absolute;
-    inset: -8px;
-    background: radial-gradient(circle at center, rgb(var(--accent) / 0.3), transparent 70%);
-    border-radius: 50%;
+    inset: -10px;
+    background: radial-gradient(circle at center, rgb(var(--accent) / 0.28), transparent 70%);
     z-index: -1;
-    opacity: 0;
-    transition: opacity 0.5s, transform 0.5s;
-    transform: scale(0.8);
+    opacity: 0.58;
+    transform: scale(0.92);
+    transition: opacity 0.45s ease, transform 0.45s ease;
   }
 
   .group:hover .profile-glow {
@@ -174,28 +319,176 @@
   .about-status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    border-radius: 9999px;
-    border: 1px solid rgb(var(--border) / 0.15);
-    background: rgb(var(--panel) / 0.9);
+    gap: 0.45rem;
+    border-radius: 999px;
+    border: 1px solid rgb(var(--border) / 0.18);
+    background: rgb(var(--panel) / 0.82);
     padding: 0.35rem 0.9rem;
-    margin-bottom: 0.9rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
   }
 
   .about-status-dot {
-    height: 0.4rem;
     width: 0.4rem;
-    border-radius: 9999px;
-    background-color: #2eff2e;
-    box-shadow: 0 0 8px rgba(46, 255, 46, 0.5);
+    height: 0.4rem;
+    border-radius: 999px;
+    animation: statusPulse 2.6s ease-in-out infinite;
+  }
+
+  .about-status-badge[data-state="available"] .about-status-dot {
+    background: #39ff79;
+    box-shadow: 0 0 8px rgba(57, 255, 121, 0.38);
+  }
+
+  .about-status-badge[data-state="queued"] .about-status-dot {
+    background: #ffc857;
+    box-shadow: 0 0 8px rgba(255, 200, 87, 0.3);
   }
 
   .about-status-text {
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.11em;
-    color: rgba(var(--text), 0.8);
-    font-weight: 500;
+    color: rgb(var(--text) / 0.85);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  .spec-card {
+    height: 100%;
+  }
+
+  .spec-chip {
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--accent));
+    background: rgb(var(--accent) / 0.1);
+    border: 1px solid rgb(var(--accent) / 0.26);
+    padding: 0.28rem 0.45rem;
+    border-radius: 0.4rem;
+  }
+
+  .spec-row {
+    border: 1px solid rgb(var(--border) / 0.16);
+    border-radius: 14px;
+    padding: 0.82rem 0.9rem;
+    background: rgb(var(--panel2) / 0.36);
+    transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .spec-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.32rem;
+  }
+
+  .spec-index,
+  .spec-percent,
+  .spec-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .spec-index {
+    font-size: 0.64rem;
+    color: rgb(var(--text) / 0.68);
+  }
+
+  .spec-percent {
+    font-size: 0.7rem;
+    color: rgb(var(--accent));
+  }
+
+  .spec-label {
+    font-size: 0.62rem;
+    color: rgb(var(--text) / 0.86);
+    margin-bottom: 0.55rem;
+  }
+
+  .spec-meter {
+    height: 7px;
+    border-radius: 999px;
+    background: rgb(var(--border) / 0.14);
+    overflow: hidden;
+  }
+
+  .spec-meter > span {
+    display: block;
+    height: 100%;
+    width: var(--fill);
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgb(var(--accent) / 0.55), rgb(var(--accent)));
+    opacity: 0.86;
+  }
+
+  .spec-row--primary {
+    border-color: rgb(var(--accent) / 0.38);
+    background: linear-gradient(130deg, rgb(var(--accent) / 0.13), rgb(var(--panel2) / 0.3));
+    box-shadow: 0 14px 32px -22px rgb(var(--accent) / 0.7);
+  }
+
+  .spec-row--primary .spec-index,
+  .spec-row--primary .spec-label {
+    color: rgb(var(--text) / 0.94);
+  }
+
+  .spec-row--primary .spec-percent {
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .spec-row--primary .spec-meter {
+    height: 10px;
+  }
+
+  .spec-row--primary .spec-meter > span {
+    opacity: 1;
+  }
+
+  .group\/spec:hover .spec-row {
+    border-color: rgb(var(--accent) / 0.25);
+  }
+
+  @keyframes statusPulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.07);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scanDrift {
+    from {
+      transform: translateY(-4px);
+    }
+    to {
+      transform: translateY(4px);
+    }
+  }
+
+  @keyframes feedBlink {
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .profile-image-container {
+      width: min(100%, 230px);
+    }
+
+    .spec-chip {
+      font-size: 0.6rem;
+    }
   }
 </style>

@@ -4,20 +4,27 @@
 // COLOR: Void & Ember (Black + Orange)
 interface Props {
   alwaysVisible?: boolean;
+  homeSectionLinks?: boolean;
 }
 
-const { alwaysVisible = false } = Astro.props;
+const { alwaysVisible = false, homeSectionLinks = false } = Astro.props;
 
 interface NavLink {
   href: string;
   label: string;
 }
 
-const navLinks: NavLink[] = [
-  { href: "#work", label: "Work" },
-  { href: "#services", label: "Services" },
-  { href: "/about", label: "About" },
-];
+const navLinks: NavLink[] = homeSectionLinks
+  ? [
+      { href: "/#work", label: "Work" },
+      { href: "/#services", label: "Services" },
+      { href: "/about", label: "About" },
+    ]
+  : [
+      { href: "#work", label: "Work" },
+      { href: "#services", label: "Services" },
+      { href: "/about", label: "About" },
+    ];
 
 const whatsappNumber = "2347033302085";
 ---

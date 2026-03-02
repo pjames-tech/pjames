@@ -75,6 +75,67 @@ export const projects: Project[] = [
     ],
   },
   {
+    title: "Center-Onyx",
+    category: "Web Foundation",
+    year: "2025",
+    badge: "DEPLOYED",
+    image: "/projects/pipeline-command-main.png",
+    description:
+      "Static marketing infrastructure engineered for premium positioning, low latency, and deployment simplicity.",
+    tools: ["HTML5", "CSS3", "Static Hosting"],
+    details:
+      "Center-Onyx is a lightweight, production-ready marketing site architecture built for fast launch cycles and clear brand communication. The stack prioritizes clean semantic markup, minimal runtime overhead, and frictionless deployment across modern static hosting providers.",
+    gallery: [
+      "/projects/pipeline-command-main.png",
+      "/projects/pipeline-command-gal-1.png",
+      "/projects/pipeline-command-gal-2.png",
+    ],
+    link: "https://github.com/pjames-tech/Center-Onyx",
+    slug: "center-onyx",
+    challenge:
+      "The objective was to establish a premium digital presence without introducing framework complexity or deployment friction.",
+    solution:
+      "I structured the project as a pure static architecture with semantic sections, clean asset organization, and hosting-agnostic deployment so updates remain fast and low risk.",
+    results: [
+      "Fast cold-load performance",
+      "No build-pipeline dependency",
+      "Simple cross-platform deployment",
+      "Clean, maintainable project structure",
+    ],
+  },
+  {
+    title: "AI-Driven Executive Authority System",
+    category: "Authority System",
+    year: "2025",
+    badge: "CASE STUDY",
+    image:
+      "https://mir-cdn.behance.net/v1/rendition/project_modules/source/e44e49241805803.695ffdb0d4a89.png",
+    description:
+      "Automated content system engineered for mobile-first consumption where 90% of executives engage.",
+    tools: ["Brand Strategy", "Visual Identity", "System Design"],
+    details:
+      "Behance case study showcasing an executive authority system that combines strategic positioning with a premium visual language for stronger market credibility.",
+    gallery: [
+      "https://mir-cdn.behance.net/v1/rendition/project_modules/source/070a4b241805803.695fe1f9ead67.png",
+      "https://mir-cdn.behance.net/v1/rendition/project_modules/source/150acc241805803.6960066530b0e.png",
+      "https://mir-cdn.behance.net/v1/rendition/project_modules/source/9bcdef241805803.695ffdb0d55ce.png",
+      "https://mir-cdn.behance.net/v1/rendition/project_modules/source/0ccfd8241805803.695ffdb0d5e4e.png",
+      "https://mir-cdn.behance.net/v1/rendition/project_modules/source/f6223a241805803.695fe1f9e9ddb.jpg",
+    ],
+    link: "https://www.behance.net/gallery/241805803/AI-Driven-Executive-Authority-System",
+    slug: "ai-driven-executive-authority-system",
+    challenge:
+      "High-level experts have great ideas but no time to design them.",
+    solution:
+      "An AI-powered design system that turns speech into high-status visual assets in minutes.",
+    results: [
+      "Automated content generation",
+      "High-fidelity content",
+      "Compelling headlines",
+      "Pre-designed layouts",
+    ],
+  },
+  {
     title: "Pipeline Command Center",
     category: "Operations Architecture",
     year: "2025",
