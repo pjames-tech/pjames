@@ -30,7 +30,7 @@ if (!project) {
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:-translate-x-1 transition-transform">
           <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
-        Back to Systems
+        Back to Frameworks
       </a>
       
       <div class="grid lg:grid-cols-2 gap-12 items-center">
@@ -187,13 +187,31 @@ if (!project) {
   
   <!-- Lightbox for Gallery -->
   <dialog id="lightbox" class="fixed inset-0 z-[100] bg-black/95 backdrop:bg-black/95 p-4 max-w-full max-h-full w-full h-full">
-    <div class="relative w-full h-full flex items-center justify-center">
+    <div id="lightbox-stage" class="relative w-full h-full flex items-center justify-center" style="touch-action: pan-y;">
       <button id="lightbox-close" class="absolute top-4 right-4 p-2 text-white hover:text-orange-400 transition">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M18 6L6 18M6 6l12 12"/>
         </svg>
       </button>
-      <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[85vh] object-contain rounded-lg"/>
+      <button
+        id="lightbox-prev"
+        class="absolute left-4 md:left-6 p-2 rounded-full bg-black/50 border border-white/20 text-white hover:text-orange-400 hover:border-orange-400/50 transition"
+        aria-label="Previous image"
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <button
+        id="lightbox-next"
+        class="absolute right-4 md:right-6 p-2 rounded-full bg-black/50 border border-white/20 text-white hover:text-orange-400 hover:border-orange-400/50 transition"
+        aria-label="Next image"
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+      <img id="lightbox-img" src="" alt="" draggable="false" class="max-w-full max-h-[85vh] object-contain rounded-lg"/>
     </div>
   </dialog>
   
@@ -203,25 +221,107 @@ if (!project) {
 
 <script>
   const initGallery = () => {
-    const thumbs = document.querySelectorAll('.gallery-thumb');
+    const thumbs = Array.from(document.querySelectorAll('.gallery-thumb')) as HTMLButtonElement[];
     const lightbox = document.getElementById('lightbox') as HTMLDialogElement;
     const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const lightboxStage = document.getElementById('lightbox-stage');
     const closeBtn = document.getElementById('lightbox-close');
+    const prevBtn = document.getElementById('lightbox-prev') as HTMLButtonElement | null;
+    const nextBtn = document.getElementById('lightbox-next') as HTMLButtonElement | null;
     
     if (!lightbox || !lightboxImg) return;
+    if (lightbox.dataset.galleryBound === 'true') return;
+
+    lightbox.dataset.galleryBound = 'true';
+
+    const galleryImages = thumbs
+      .map((thumb) => thumb.querySelector('img'))
+      .filter((img): img is HTMLImageElement => Boolean(img))
+      .map((img) => ({ src: img.src, alt: img.alt }));
+
+    if (!galleryImages.length) return;
+
+    let currentIndex = 0;
+
+    const renderLightboxImage = () => {
+      const current = galleryImages[currentIndex];
+      if (!current) return;
+      lightboxImg.src = current.src;
+      lightboxImg.alt = current.alt;
+    };
+
+    const goToPrevious = (e?: Event) => {
+      e?.stopPropagation();
+      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      renderLightboxImage();
+    };
+
+    const goToNext = (e?: Event) => {
+      e?.stopPropagation();
+      currentIndex = (currentIndex + 1) % galleryImages.length;
+      renderLightboxImage();
+    };
+
+    const handleLightboxKeydown = (e: KeyboardEvent) => {
+      if (!lightbox.open) return;
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goToPrevious();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goToNext();
+      } else if (e.key === 'Escape') {
+        lightbox.close();
+      }
+    };
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let hasTouchStart = false;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (!lightbox.open || e.touches.length !== 1) return;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      hasTouchStart = true;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!lightbox.open || !hasTouchStart || e.changedTouches.length !== 1) return;
+      const endX = e.changedTouches[0].clientX;
+      const endY = e.changedTouches[0].clientY;
+      const deltaX = endX - touchStartX;
+      const deltaY = endY - touchStartY;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+      hasTouchStart = false;
+
+      // Horizontal swipe with vertical restraint.
+      if (absX > 40 && absY < 80) {
+        if (deltaX > 0) {
+          goToPrevious();
+        } else {
+          goToNext();
+        }
+      }
+    };
     
     thumbs.forEach((thumb) => {
       thumb.addEventListener('click', () => {
-        const img = thumb.querySelector('img');
-        if (img) {
-          lightboxImg.src = img.src;
-          lightboxImg.alt = img.alt;
-          lightbox.showModal();
-        }
+        const index = Number(thumb.dataset.index);
+        currentIndex = Number.isNaN(index) ? 0 : index;
+        renderLightboxImage();
+        lightbox.showModal();
       });
     });
     
     closeBtn?.addEventListener('click', () => lightbox.close());
+    prevBtn?.addEventListener('click', goToPrevious);
+    nextBtn?.addEventListener('click', goToNext);
+    lightboxStage?.addEventListener('touchstart', handleTouchStart, { passive: true });
+    lightboxStage?.addEventListener('touchend', handleTouchEnd, { passive: true });
+    document.addEventListener('keydown', handleLightboxKeydown);
+
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox) lightbox.close();
     });
