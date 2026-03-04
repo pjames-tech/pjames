@@ -9,6 +9,26 @@ interface Message {
 type ChatMode = "lead" | "ai";
 type ViewState = "welcome" | "chat";
 
+// ── sessionStorage keys ──
+const SK = {
+  messages: "dane-messages",
+  mode: "dane-mode",
+  viewState: "dane-viewState",
+  leadStep: "dane-leadStep",
+  leadAnswers: "dane-leadAnswers",
+  isReady: "dane-isReady",
+} as const;
+
+/** Safely read & parse a sessionStorage value, returning `fallback` on failure. */
+function ssGet<T>(key: string, fallback: T): T {
+  try {
+    const raw = sessionStorage.getItem(key);
+    return raw !== null ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 // Lead capture question flow
 const LEAD_QUESTIONS = [
   { key: "name", text: "What's your name?", placeholder: "Your name" },
@@ -41,22 +61,65 @@ const LEAD_QUESTIONS = [
 
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [viewState, setViewState] = useState<ViewState>("welcome");
-  const [mode, setMode] = useState<ChatMode>("lead");
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [viewState, setViewState] = useState<ViewState>(() =>
+    ssGet<ViewState>(SK.viewState, "welcome"),
+  );
+  const [mode, setMode] = useState<ChatMode>(() =>
+    ssGet<ChatMode>(SK.mode, "lead"),
+  );
+  const [messages, setMessages] = useState<Message[]>(() =>
+    ssGet<Message[]>(SK.messages, []),
+  );
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [leadStep, setLeadStep] = useState(0);
-  const [leadAnswers, setLeadAnswers] = useState<Record<string, string>>({});
-  const [isReady, setIsReady] = useState(false);
+  const [leadStep, setLeadStep] = useState(() => ssGet<number>(SK.leadStep, 0));
+  const [leadAnswers, setLeadAnswers] = useState<Record<string, string>>(() =>
+    ssGet<Record<string, string>>(SK.leadAnswers, {}),
+  );
+  const [isReady, setIsReady] = useState(() =>
+    ssGet<boolean>(SK.isReady, false),
+  );
   const [hasInteracted, setHasInteracted] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
+
+  // ── Persist state → sessionStorage ──
+  useEffect(() => {
+    sessionStorage.setItem(SK.messages, JSON.stringify(messages));
+  }, [messages]);
+  useEffect(() => {
+    sessionStorage.setItem(SK.mode, JSON.stringify(mode));
+  }, [mode]);
+  useEffect(() => {
+    sessionStorage.setItem(SK.viewState, JSON.stringify(viewState));
+  }, [viewState]);
+  useEffect(() => {
+    sessionStorage.setItem(SK.leadStep, JSON.stringify(leadStep));
+  }, [leadStep]);
+  useEffect(() => {
+    sessionStorage.setItem(SK.leadAnswers, JSON.stringify(leadAnswers));
+  }, [leadAnswers]);
+  useEffect(() => {
+    sessionStorage.setItem(SK.isReady, JSON.stringify(isReady));
+  }, [isReady]);
 
   // Scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Close on click outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (chatRef.current && !chatRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
 
   // Listen for external events to open the chatbot
   useEffect(() => {
@@ -112,20 +175,45 @@ export default function ChatBot() {
 
   const startMode = (newMode: ChatMode) => {
     handleInteraction();
+
+    // Check if they are switching modes mid-conversation
+    const isModeSwitch = messages.length > 0 && mode !== newMode;
+
     setMode(newMode);
     setViewState("chat");
-    setMessages([]);
-    setLeadStep(0);
-    setLeadAnswers({});
-    setIsReady(false);
 
-    if (newMode === "lead") {
-      addMessage("assistant", LEAD_QUESTIONS[0].text);
-    } else {
-      addMessage(
-        "assistant",
-        "Hey! 👋 Ask me anything about branding, automation, or AI systems.",
-      );
+    // 1. If it's a completely fresh chat
+    if (messages.length === 0) {
+      if (newMode === "lead") {
+        addMessage("assistant", LEAD_QUESTIONS[0].text);
+      } else {
+        addMessage(
+          "assistant",
+          "Hey! 👋 Ask me anything about branding, automation, or AI systems.",
+        );
+      }
+    }
+    // 2. If they are switching modes mid-conversation
+    else if (isModeSwitch) {
+      if (newMode === "lead") {
+        // Check if they already finished the lead form
+        if (isReady) {
+          addMessage(
+            "assistant",
+            "You've already submitted your project details! But you can review them above.",
+          );
+        } else {
+          addMessage(
+            "assistant",
+            `Let's get back to your project details. ${LEAD_QUESTIONS[leadStep].text}`,
+          );
+        }
+      } else if (newMode === "ai") {
+        addMessage(
+          "assistant",
+          "Switched to AI chat! What else would you like to know?",
+        );
+      }
     }
   };
 
@@ -340,10 +428,17 @@ export default function ChatBot() {
 
   const resetToWelcome = () => {
     setViewState("welcome");
+  };
+
+  /** Clear all persisted state and return to the welcome screen. */
+  const handleRestart = () => {
+    Object.values(SK).forEach((key) => sessionStorage.removeItem(key));
     setMessages([]);
+    setMode("lead");
     setLeadStep(0);
     setLeadAnswers({});
     setIsReady(false);
+    setViewState("welcome");
   };
 
   return (
@@ -370,6 +465,7 @@ export default function ChatBot() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={chatRef}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -411,6 +507,24 @@ export default function ChatBot() {
                     </svg>
                   </button>
                 )}
+                {/* Restart – clears session & goes to welcome */}
+                <button
+                  onClick={handleRestart}
+                  className="text-muted hover:text-text transition p-1"
+                  aria-label="Restart chat">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.992 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182M20.015 4.356v4.992"
+                    />
+                  </svg>
+                </button>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="text-muted hover:text-text transition p-1"
@@ -506,7 +620,9 @@ export default function ChatBot() {
                   </div>
 
                   {/* Messages */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  <div
+                    data-lenis-prevent
+                    className="flex-1 overflow-y-auto p-4 space-y-3">
                     {messages.map((msg, idx) => (
                       <div
                         key={idx}
@@ -548,12 +664,16 @@ export default function ChatBot() {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder={currentPlaceholder()}
-                        disabled={isLoading || isReady}
+                        disabled={isLoading || (mode === "lead" && isReady)}
                         className="flex-1 min-w-0 bg-panel2 border soft-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted/60 outline-none focus:border-[#ff7300]/50 disabled:opacity-50 transition"
                       />
                       <button
                         type="submit"
-                        disabled={isLoading || !input.trim() || isReady}
+                        disabled={
+                          isLoading ||
+                          !input.trim() ||
+                          (mode === "lead" && isReady)
+                        }
                         className="flex-shrink-0 px-4 py-2.5 rounded-xl bg-[#ff7300] text-white font-medium text-sm hover:brightness-110 transition disabled:opacity-50 flex items-center justify-center">
                         <svg
                           className="w-5 h-5"
